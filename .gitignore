@@ -24,3 +24,7 @@
 /dialogue.tab
 /dialogue.txt
 /strings.json
+
+Watta-*-dists/
+*.zip
+*.tar.bz2
