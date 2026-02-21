@@ -88,6 +88,7 @@ label chii_intro:
     c "Glad to hear!"
     label centre_day_2_skip:
     show screen action_display
+    $ chii_settled = True
     $ centre_first = True
     $ cutscene_on = False
     jump centre
@@ -108,6 +109,7 @@ image chii_shop:
 
 default chii_reset = True
 default chii_neko_bracelet_repeat = False
+default chii_meet_sanco_timer = 4
 default chii_go_to_lake_timer = 0
 label chii_test:
     $ actions_locked = True
