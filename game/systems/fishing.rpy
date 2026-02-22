@@ -251,6 +251,20 @@ init python:
     def get_centered_bar_x():
         return max(0.0, (1.0 - bar_length) / 2.0)
 
+    def get_toughness_width_scale(toughness):
+        import math
+        # fish.rpy currently ranges from toughness 1 (easiest) to 50 (hardest).
+        t = max(1.0, min(50.0, float(toughness)))
+
+        # Normalize toughness (1 → 0.0, 50 → 1.0)
+        x = (t - 1.0) / 49.0
+        x = max(0.0, min(1.0, x))  # safety clamp
+
+        # Exponential ease-out curve
+        reduction = 0.999 * (1 - math.exp(-6 * x))
+
+        return 1.0 - reduction
+
     def reset_fishing_state():
         global startup_timer, holding, bar_up_speed, bar_down_speed
         global bar_x, fish_x, tension
@@ -465,15 +479,18 @@ label kuro_fish_cast:
     $ renpy.pause(1, hard=True)
     hide screen fish_intro_anim
     $ current_fish = pick_fish()
-    $ control_width = int((150 + int(rod["size"]*1.5)) * bar_size_scale)
-    $ bar_length = control_width / big_bar_width
-    $ reset_fishing_state()
-    $ fish_toughness = current_fish["toughness"] - rod["resilience"] / 5
-    if fish_toughness < 0.1:
-        $ fish_toughness = 0.1 
     if current_fish is None:
         "Your rod is too weak to catch any fish here."
         return
+
+    $ fish_toughness = current_fish["toughness"] - rod["resilience"] / 5
+    if fish_toughness < 0.1:
+        $ fish_toughness = 0.1
+
+    $ base_control_width = int((150 + int(rod["size"]*1.5)) * bar_size_scale)
+    $ control_width = max(40, int(base_control_width * get_toughness_width_scale(current_fish["toughness"])))
+    $ bar_length = control_width / big_bar_width
+    $ reset_fishing_state()
     #$ renpy.notify(f"{current_fish}")
     call screen fishing_demo
 
