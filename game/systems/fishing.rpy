@@ -234,8 +234,9 @@ init python:
 
     # --------------------------
     # Apply rod stats
-    # --------------------------
-    control_width = 150        # bar width from rod
+    # --------------------------    
+    bar_size_scale = 1
+    control_width = int(150 * bar_size_scale)        # bar width from rod
     resilience = 0       # reduces fish movement
 
     # --------------------------
@@ -246,6 +247,21 @@ init python:
 
     # normalized bar length (so bar stays inside bounds)
     bar_length = control_width / big_bar_width
+    
+    def get_centered_bar_x():
+        return max(0.0, (1.0 - bar_length) / 2.0)
+
+    def reset_fishing_state():
+        global startup_timer, holding, bar_up_speed, bar_down_speed
+        global bar_x, fish_x, tension
+
+        startup_timer = 0.0
+        holding = False
+        bar_up_speed = 0.0
+        bar_down_speed = 0.0
+        bar_x = get_centered_bar_x()
+        fish_x = 0.5
+        tension = 40.0
 
     # --------------------------
     # FISH POSITION & MOVEMENT
@@ -280,10 +296,12 @@ init python:
 
             # Keep bars in the center during intro
             tension = 40
-            bar_x = 0.4
+            holding = False
+            bar_x = get_centered_bar_x()
             fish_x = 0.5
             bar_up_speed = 0.0
             bar_down_speed = 0.0
+            return None
 
         # --------------------------
         # 2. PLAYER BAR MOVEMENT
@@ -447,8 +465,9 @@ label kuro_fish_cast:
     $ renpy.pause(1, hard=True)
     hide screen fish_intro_anim
     $ current_fish = pick_fish()
-    $ control_width = 150 + int(rod["size"]*1.5)
+    $ control_width = int((150 + int(rod["size"]*1.5)) * bar_size_scale)
     $ bar_length = control_width / big_bar_width
+    $ reset_fishing_state()
     $ fish_toughness = current_fish["toughness"] - rod["resilience"] / 5
     if fish_toughness < 0.1:
         $ fish_toughness = 0.1 
@@ -479,12 +498,12 @@ init python:
 
 label tension_fail:
     scene bg fishl
-    $ startup_timer = 0.0  
+    $ reset_fishing_state()
     $ renpy.notify(f"You let {current_fish['name']} got away!")
     call screen fish_options
 label tension_success:
     scene bg fishw
-    $ startup_timer = 0.0  
+    $ reset_fishing_state()
     $ apply_fish_effect(current_fish)
     call screen fish_caught
 
