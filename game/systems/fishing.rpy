@@ -14,6 +14,8 @@ default rarity_names = {
     3: "Extreme",
     4: "Grandpa"
 }
+
+default manhake_attempt_counter = 0
 # ====================================================
 #   RARITY CHANCES (BASE)
 # ====================================================
@@ -106,7 +108,34 @@ init python:
     # ====================================================
     import random
 
+    def _pick_weighted_fish(candidates):
+        """Weighted fish pick to reduce streaks within the same rarity tier."""
+        if not candidates:
+            return None
+
+        total_weight = 0.0
+        weighted_candidates = []
+
+        for fish in candidates:
+            caught_count = fish_catch_counts.get(fish["name"], 0)
+            # Lower chance for fish that have already been caught many times.
+            # sqrt keeps this soft so randomness is still present.
+            catch_balance_weight = 1.0 / ((caught_count + 1) ** 0.5)
+            weighted_candidates.append((fish, catch_balance_weight))
+            total_weight += catch_balance_weight
+
+        roll = random.random() * total_weight
+        cumulative = 0.0
+        for fish, weight in weighted_candidates:
+            cumulative += weight
+            if roll <= cumulative:
+                return fish
+
+        return weighted_candidates[-1][0]
+
     def pick_fish():
+        global manhake_attempt_counter
+
         rarity_prob = get_rarity_chances()
 
         # --- FIX: Normalize again (avoid rounding drift problems) ---
@@ -132,6 +161,25 @@ init python:
             f for f in fish_list
             if f["rarity"] == chosen_rarity and f["weight"] <= (rod["maxweight"]+20)
         ]
+        
+        # Soft pity for ManHake after Nemu's third talk.
+        if nemu_third_talk_done and not nemu_manhake:
+            manhake_attempt_counter += 1
+
+            manhake_fish = next((f for f in fish_list if f["name"] == "ManHake"), None)
+            if manhake_fish and manhake_fish["weight"] <= (rod["maxweight"] + 20):
+                # Hard guarantee at 20 attempts.
+                if manhake_attempt_counter >= 5:
+                    manhake_attempt_counter = 0
+                    notify_rarity_simple(rarity_prob, manhake_fish["rarity"])
+                    return manhake_fish
+
+                # Soft pity: increasing chance from attempt 8 onward.
+                if chosen_rarity == 2 and manhake_fish in candidates and manhake_attempt_counter >= 3:
+                    pity_progress = (manhake_attempt_counter - 8) / 12.0
+                    pity_chance = min(0.75, max(0.05, pity_progress * 0.75))
+                    if random.random() < pity_chance:
+                        return manhake_fish
 
         # If none fit weight, fallback to ANY fish the rod can handle
         if not candidates:
@@ -141,8 +189,8 @@ init python:
         if not candidates:
             return None
 
-        # Final random pick
-        return random.choice(candidates)
+        # Final weighted pick within the chosen tier.
+        return _pick_weighted_fish(candidates)
 
 
 
