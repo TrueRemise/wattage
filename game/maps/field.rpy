@@ -216,7 +216,7 @@ label eastgate_test:
         wo "Find a way to get rid of them won't ya!"
         show woogie proud
         wo "I believe in you Watton"
-        show woogie at slide_out_right
+        show woogie proud at slide_out_right
         pause 1
         show watta mad
         w "Is Watta"

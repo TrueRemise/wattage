@@ -77,7 +77,6 @@ label rngskip:
     $ save_lock = True
     jump lan_test
 
-default chii_meet_sanco_timer = 4
 label floral:
     $ current_location = "floral respite"
     jump floralskip

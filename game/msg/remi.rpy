@@ -603,6 +603,42 @@ label remi_second_talk:
     $ the_knower = 2
     $ remi_first_talk_done_stage = 3
     $ cutscene_on = False
+    if is_item_get("Neko's Bracelet"):
+        show remi hah
+        r "By the way uhh..."
+        r "Neko's bracelet."
+        show remi default
+        r "You should... {w=0.5}really just return it back to her."
+        r "But if you are not going to..."
+        show remi hmm
+        r "I have this deal Watta,..."
+        r "I'll trade it for this mostly cool item and some money."
+        show watta huh
+        w "What are you going to do with it?"
+        show remi look
+        r "Huh? It's not really important Watta, I need to..."
+        r "Imma put this on an auction and get some money Watta, I need money to live after all."
+        show watta frown
+        w "...kay? Then why pay me for it?"
+        show remi smile
+        r "Gotta make the deal fair, so how's that sound?"
+        menu:
+            "Deal":
+                r "I appreciate it Watta, thank you for caring about my well being..."
+                show remi smile
+                r "I might be able to afford better medication from now on..."
+                r "Here, a cool item, take it and don't question anything."
+                $ item_remove("Neko's Bracelet")
+                $ sol_add(200)
+                $ item_add("Nekomin Badge")
+            "No deal":
+                r "It's okay... I'm not interested all that much"
+                show remi default
+                r "Just, there are a ton of bad people out there who could get their hands on it."
+                r "You can assume me being one so, just try to return it to her"
+                r "That's for the best, don't let it get in anyone else's hands..."
+                r "For the best."
+                $ remi_neko_bracelet_talk = True
     $ action_done()
     jump big_screen
 
