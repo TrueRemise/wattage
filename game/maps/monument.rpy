@@ -102,7 +102,7 @@ default nekopia_first = False
 default lane_to_monument_first = 0
 label nekopia_first:
     show watta default
-    w "This should be Renia's store, judging by the exterior."
+    w "This should be Reni's store, judging by the exterior."
     $ nekopia_first = True
     jump nekopiaskip
 label nekopia:
@@ -234,14 +234,14 @@ screen monitoring:
 
 label mnt_camera:
     w "There are a lot of cameras here."
-    w "To think i'm being monitored like this..."
+    w "To think we're being monitored like this..."
     w "Kinda scary..."
     jump monitoringskip
 label mnt_chair1:
     w "It's a not so comfy chair."
     jump monitoringskip
 label mnt_chair2:
-    w "It's not a not comfy chair."
+    w "It's a comfy chair."
     if mnt_secret_hall_open:
         jump monitoringskip
     else:
