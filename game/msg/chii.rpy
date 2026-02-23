@@ -203,7 +203,8 @@ label chii_first_talk:
     w "Where did you get this rock from?"
     show chii what
     c "Huh? I don't really know its origins."
-    c "It was one of my mom's artifacts from long ago, I never knew what it did, so when she passed it on to me I figured I should give it to someone who could use it"
+    c "It was one of my mom's artifacts from long ago, I never knew what it did."
+    c "When she passed it on to me I figured I should give it to someone who could use it instead of letting dust gather."
     show chii wink at bounce
     c "And guess I gave it to the correct person!"
     w "Strange..."
@@ -337,8 +338,8 @@ label chii_talk1:
     c "Ever heard of Bloomfield? You know, the indoor town with artificial lighting?"
     c "Yeah, that place. Probably the best place to grow plants."
     c "But that's the issue, EVERYONE and their grandmas grow plants"
-    c "So making any real money there is difficult, not to mention everyone is interested in plants and not some random dinky artifacts given to a girl as heirlooms"
-    c "Came over here in hopes of both making money and finding a proper owner for all these silly trinkets I got, especially given those in my family forgot what most of them even do."
+    c "So making any real money there is difficult, not to mention no one's interessted in some random dinky artifacts given to a girl as heirlooms"
+    c "Came over here in hopes of both making money and finding an owner for all these silly trinkets, especially given those in my family forgot what most even do."
     c "Who knows why some are useless now, maybe we're not worthy? Well whatever the case, i'm hoping people like you get a better use outta 'em!"
     $ chii_talked_about_bloomfield = True
     hide chii_shop
@@ -346,7 +347,7 @@ label chii_talk1:
 label chii_talk2:
     show chii_shop
     c "Huh? You want to nibble my hair?"
-    c "Look I know it looks like grass but it is NOT for grazing! If you want grass maybe a visit to Bloomfield might do ya good!"
+    c "Look I know it seems like grass but it is NOT for grazing! If you want grass maybe a visit to Bloomfield might do ya good!"
     c "Then again, I dunno if the people there would be happy about a sheep running wild in there"
     c "..."
     c "Stop staring at my ahoge! I don't care if it smells minty, it's not food!"
@@ -358,7 +359,8 @@ label chii_talk3:
     c "It used to be all wilted, but once my mom gave it to me the flowers bloomed back to life and have stayed that way!"
     c "All I have to do is get enough sunlight, keeps me and the flowers healthy."
     c "If the garland stays healthy then supposively I should have better luck in life"
-    c "Now whether or not that's true, I dunno. But hey, I stumbled upon you in my time of need AND one of my artifacts immediately worked. So despite everything I'd say this garland is pretty lucky."
+    c "Now whether or not that's true, I dunno. But hey, I stumbled upon you in my time of need AND one of my artifacts immediately worked."
+    c "So despite everything I'd say this garland is pretty lucky."
     c "..."
     c "No! You can't eat it!"
     hide chii_shop
@@ -483,7 +485,8 @@ label chii_neko_bracelet:
     c "But... sadly as a merchant I can't take this."
     c "It's not an artifact, so I can't get much use out of it. I'm also not really in any position to spend..."
     c "So unless you want give it to me for free..."
-    c "No? Figures, worth a shot at least. I recommend you show it off to my neighbor Flan, she's likely to buy it at a good price. Just leave my store and walk straight across to her before I end up splurging on it myself."
+    c "No? Figures, worth a shot at least. I recommend you show it off to Flan, she's likely to buy it at a good price."
+    c "Just leave my store and walk straight across to her before I end up splurging on it myself."
     $ chii_neko_bracelet_repeat = True
     hide chii_shop
     call screen shop_screen
@@ -493,17 +496,25 @@ label chii_go_to_lake_talk:
     play music "bgm_floral.mp3" fadein 1.0 volume 0.5 if_changed
     show bg floral respitel at whiten_lesser
     show watta default at left
-    show chii default at right
-    c "Welcome back Watta"
-    c "WHAT?"
-    c "You removed the binding of Swan Lake?"
-    c "Oh my god I used to visit that area a lot as a kid."
-    c "There used to be a HUGE amusement park there but I recalled it got brought down."
-    c "Well speaking of which there are also many exotic plants and flowers around the area that I haven't got the chance to gather!"
-    c "Which would be the perfect time now that you unlocked the place."
-    c "Don't get me wrong I still think it's kinda illegal but yknow its already unlocked and you been fine there..."
-    extend "So ye just a quick trip and back.."
-    c "So ye, like last time, buy everything you can before I go, I'll stay here for a lil more bit before prepping."
+    show chii happy at right
+    c "Welcome back Watta!"
+    show chii what
+    c "WHAT!?"
+    c "You removed the binding on Swan Lake?"
+    show chii cry
+    c "Oh my god! I used to visit that area a lot as a kid."
+    show chii cry2
+    c "There used to be a HUGE amusement park there but I recall it got brought down for whatever reason."
+    show chii smile
+    c "I also remember seeing a TON of exotic flora I have yet to see anywhere else!"
+    c "And now with it unlocked, it might be the perfect time for me to go visit!"
+    show chii sweat
+    c "Don't get me wrong... It's probably illegal to go there but-"
+    c "You know its already unlocked and you're not in jail or hurt..."
+    show chii tease
+    extend "...So yeah just a quick trip and back should be fine!"
+    show chii wink
+    c "Alright, like last time buy everything you can before I go. I'll be here a little longer as i prepare."
     $ chii_go_to_lake_timer = 2
     hide chii
     hide watta

@@ -102,7 +102,7 @@ default nekopia_first = False
 default lane_to_monument_first = 0
 label nekopia_first:
     show watta default
-    w "This should be Reni's store, judging by the exterior."
+    w "This should be Renia's store, judging by the exterior."
     $ nekopia_first = True
     jump nekopiaskip
 label nekopia:
@@ -233,15 +233,15 @@ screen monitoring:
     
 
 label mnt_camera:
-    w "There are a lot of camera views here."
-    w "To think you are being monitored like this..."
+    w "There are a lot of cameras here."
+    w "To think i'm being monitored like this..."
     w "Kinda scary..."
     jump monitoringskip
 label mnt_chair1:
     w "It's a not so comfy chair."
     jump monitoringskip
 label mnt_chair2:
-    w "It's a comfy chair."
+    w "It's not a not comfy chair."
     if mnt_secret_hall_open:
         jump monitoringskip
     else:
@@ -283,10 +283,10 @@ label mnt_magazine:
     w "The secret files..."
     jump monitoringskip
 label mnt_leave:
-    "Do you want to leave the house? You can not turn back."
+    "Do you want to leave the house? You cannot turn back."
     menu:
-        "Do you want to leave the house? You can not turn back.{fast}"
-        "I got no time for this":
+        "Do you want to leave the house? You cannot turn back.{fast}"
+        "I've got no time for this":
             $ actions_locked = False
             jump monument
         "Meh":
@@ -302,7 +302,7 @@ label mnt_book:
         show watta deter at shaker
         w "What is happening..."
         w "Wait..."
-        w "Something is opening up!"
+        w "Something's opening up!"
         $ mnt_secret_hall_open = True
         hide watta
         jump monitoringskip
@@ -311,7 +311,7 @@ label mnt_book:
         w "A- A secret passage?"
         show watta deter
         w "Wait wait wait, this is interesting."
-        w "Just a quick check before he comes back"
+        w "Just a quick check before he comes back..."
         scene bg black with Fade(1,0,1)
         play sound "sfx/walking.mp3"
         stop music fadeout 2
@@ -350,7 +350,7 @@ default jail_time_left = 22
 
 
 label mnt_sign:
-    "The RSA cryptosystem is one of the oldest widely used for secure data transmission.\nThe keys for the RSA algorithm are generated in the following way:"
+    "The RSA cryptosystem is one of the oldest widely used systems for secure data transmission.\nThe keys for the RSA algorithm are generated in the following way:"
     "1. Choose two large prime numbers p and q\n2. n = pq is used as the modulus for both the public and private keys.\n3. Compute {font=Calibri.ttf}ϕ{/font=Calibri.ttf}(n), where {font=Calibri.ttf}ϕ{/font=Calibri.ttf}(n) = (p - 1)(q - 1)."
     "4. Choose an integer e such that 1 < e < {font=Calibri.ttf}ϕ{/font=Calibri.ttf} (n) and gcd(e, {font=Calibri.ttf}ϕ{/font=Calibri.ttf}(n)) = 1; that is, e and {font=Calibri.ttf}ϕ{/font=Calibri.ttf}(n) are coprime.\n5. Determine d as d {font=Calibri.ttf}≡{/font=Calibri.ttf} e{font=Calibri.ttf}⁻¹{/font=Calibri.ttf} (mod {font=Calibri.ttf}ϕ{/font=Calibri.ttf}(n)); that is, d is the modular multiplicative inverse of e modulo {font=Calibri.ttf}ϕ{/font=Calibri.ttf}(n)."
     "Encryption: The message M, first turned into an integer m, such that 0 ≤ m < n, then compute the ciphertext c, using public key e, by:\nc{font=Calibri.ttf}≡{/font=Calibri.ttf}m{font=Calibri.ttf}ᵉ{/font=Calibri.ttf}(mod n)."
@@ -417,7 +417,7 @@ label day_4_from_snowie:
     show bg jail at shake
     w "WHO TOOK MY BAG?"
     w "OMG"
-    w "YOU WILL HAVE TO PAY FOR THIS"
+    w "YOU'LL PAY FOR THIS!"
     hide watta
     "Objective: Get out of here."
     show screen jail_timer("jail_time_up")
@@ -829,7 +829,7 @@ label jail_time_up:
     hide screen jail_box_code_input
     unknown "{font=Vivi.ttf}Huh?"
     unknown "{font=Vivi.ttf}Why are you here?"
-    unknown "{font=Vivi.ttf}You are not supposed to be here."
+    unknown "{font=Vivi.ttf}You're not supposed to be here."
     unknown "{font=Vivi.ttf}Hold on I will open the door for you."
     pause 2
     scene bg jailfront with Fade(1,0,1)
@@ -837,7 +837,7 @@ label jail_time_up:
     show watta sleepyb at left
     pause 1.0
     show vivi speak at bounced
-    unknown "{font=Vivi.ttf}Wait,{w=1} is this your bag I found it hanging outside."
+    unknown "{font=Vivi.ttf}Wait,{w=1} is this your bag? I found it hanging outside."
     show watta delighted at bounced
     w "Thank you"
     show vivi bruh
@@ -954,7 +954,7 @@ label to_vivi_cavern_promptu:
         $ vivi_cavern_promptu = True
     else:
         show vivi angry2
-        unknown "{font=Vivi.ttf}Please don't make me do this the hardway"
+        unknown "{font=Vivi.ttf}Please don't make me do this the hard way"
     hide vivi
     jump cavernskip
 label to_cavern_log_read:
@@ -968,8 +968,8 @@ label oil_lake_first:
     w "Wait this is.."
     show watta wtf at bounce
     w "Is oil!"
-    w "In such a mass."
-    w "Such crazy"
+    w "In such a massive amount."
+    w "So crazy!"
     $ oil_lake_cavern_found = True
     hide watta
     jump cavernskip
@@ -1010,23 +1010,23 @@ label to_monument_from_cavern:
             w "What? Why are you...{w=0.5}{nw}"
             w "Were you waiting here the whole time?"
             show woogie laugh2 with dissolve
-            wo "In deed."
-            wo "As an elite detective detecting is one thing but taking care of yer assistant is also important."
+            wo "In-deed."
+            wo "As an elite detective, detecting is one thing but taking care of yer assistant is also important."
             wo "Such is why I can't leave ya here all alone"
             show woogie laugh
             extend " and naked."
             show watta sweat
-            w "Wao actually that's caring"
+            w "Wao you're actually caring"
             show watta upset at bounced
-            w "But you should find something better to do rather than waiting here wasting time."
+            w "But you should find something better to do rather than waiting here and wasting time."
             show woogie sus
             wo "Fact is I came across this area right when ya climbed outside."
             show woogie proud
-            wo "So yes no time wasted."
+            wo "So yes, no time wasted."
             show watta default
-            w "Such interesting coincidence."
+            w "Such an interesting coincidence."
             show woogie hmm
-            wo "There is no such thing as a coincidence Walrus."
+            wo "There is no such thing as a coincidence, Walrus."
             show woogie default
             wo "The fact that ya climbed out right when I arrive mean yar energetically aligned with me..."
             wo "And our detective career,"

@@ -297,18 +297,30 @@ label neko_invited_intro:
             w "What weird water wheel would watta weave whether watta would weave water wheel weirdly"
         "Im Watta atta":
             w "Im Watta atta batta chatter splatter, data latta rattle that’ll shatter."
-        "option 1":
-            "a"
-        "option 1":
-            "a"
-        "option 1":
-            "a"
-        "option 1":
-            "a"
-        "option 1":
-            "a"
-        "option 1":
-            "a"
+        "Airline food":
+            w "...So what's the deal with airline food?"
+        "Hole inspector":
+            w "So.. my old job was being a hole inspector-"
+            nk "That sounds cool! What'd you do?"
+            w "I had to make sure the hole i inspected daily remained bottomless."
+            nk "What? Wait how can it be bottomless?"
+            w "I dunno... but one day it wasn't."
+            nk "????????????????"
+            w "I got fired right after for not taking care of my hole"
+            nk "Okay????"
+        "Hungry":
+            w "Actually, being on stage makes me hungry..."
+            nk "Oh you too? Hehe, you know what that means!"
+            w "Grass!"
+            nk "Fish!"
+            nk "Wait grass????"
+        "Vaporeon":
+            w "Did you know that in terms of male human and female pokemon-"
+            nk "Nope we're not doing this"
+        "Wood":
+            w "How much wood would a wattachuck chuck if a wattachuck could chuck wood?"
+        "A":
+            W "A..."
     show bg neko62 with dissolve
     pause 0.5
     show bg neko63 at shake
