@@ -200,7 +200,7 @@ label hall_leave_confirmation:
             wo "Be cautious when making new friends Walter"
             wo "They can be spooky sometimes,"
             show woogie laugh
-            wo "Only I, shall be the trust-worthy"
+            wo "Only I, shall be the trusted one"
             hide woogie
         $ snowie_first_quest = False
         $ snowie_monitoring_intro = True
