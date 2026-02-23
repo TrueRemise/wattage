@@ -65,7 +65,7 @@ label bailey_second_talk:
         b "When I saw all the fungus I thought he sent me this as a joke, I was ready to throw it in the trash..."
         b "but as it turns out it's something we can work around."
         b "I was able to make it safer and after some testing it is now drinkable! It's very similar to wine, it can even get you drunk so don't chug it."
-        b "Oh you don't drink sauce? {w=0.5}That's weird!"
+        b "...Oh you don't drink sauce? {w=0.5}That's weird!"
         hide watta
         hide bailey
         $ bailey_give_sauce_normal = 5
@@ -137,17 +137,27 @@ label bailey_second_talk:
                     show bailey shock
                     b "What the?"
                     b "For real?"
+                    show bailey sus
                     b "But,{w=0.3} who owns it?"
-                    w "Seems like none."
-                    b "You found a... What?"
-                    extend " You found yourself an untouched oil pool?"
-                    b "We have been finding one for months."
-                    b "You can't be serious right now"
+                    show watta delighted
+                    w "Seems like no one."
+                    b "I can't believe it"
+                    show bailey shock
+                    extend " You found yourself an untouched oil pool!?"
+                    show bailey mad
+                    show watta sweat
+                    b "We have been looking for one for months."
+                    b "You can't be serious right now!"
+                    show watta deter
                     w "Believe it or not it's there."
+                    show bailey pant
                     b "Okay"
                     b "It can't be worse than this"
+                    show bailey default
                     b "Show me the location"
+                    show bailey smile
                     extend ", I'll call the crews for extraction later"
+                    show watta smile
                     w "Okay follow me."
                     hide bailey
                     hide watta
@@ -156,8 +166,12 @@ label bailey_second_talk:
                     $ bailey_following_oil_talk = True
                     jump railworkskip
                 else:
+                    show bailey angry
+                    show watta upset
                     b "Again?"
+                    show watta sweat
                     w "Last time there was an urgent, I will lead you to the pool this time fr."
+                    show bailey default
                     b "Geez"
                     b "Please don't mess around with me like that anymore"
                     hide bailey
@@ -183,16 +197,22 @@ label bailey_talk_skip:
 default bailey_train_no_oil = False
 label train_test:
     if not bailey_train_no_oil:
-        show bailey default at right
+        show bailey pant at right
         show watta default at left
         b "Hold on a second I forgot something."
+        show watta deter
         w "???"
         b "The path to alley is pretty far, and sadly the train is out of fuel"
+        show bailey default
+        show watta default
         b "The thing is, along with the depression, the fossil fuel industry close down..."
+        show bailey pant
         b "And with what we have left is not sufficent for the railroad anymore."
         b "Now the Railroad is kind of useless. With the shut down of the Alley this station turned into a ruin."
+        show bailey mad
         b "I guess I will have to ask them reserved an amount enough for this trip, but it will take forever. Shittt..."
-        w "That's suck..."
+        show watta sad
+        w "That sucks..."
         $ bailey_train_no_oil = True
     else:
         "Need powered..."
@@ -206,23 +226,28 @@ label bailey_hall_talk:
     if not bailey_first_time_hall:
         if spira_first:
             b "Oh it's you again!"
+            show bailey smile
             b "Already become a Nekomin I see."
         else:
             b "Oh a new Nekomin?"
-            b "When did you enroll in, haven't heard about a new one coming"
+            show bailey shock
+            b "When did you enroll? I haven't heard about a new one coming"
+            show bailey neutral
             b "Well either way"
-        b "Since this is your first time being here,"
-        b "We are all wanting to help our beloved Neko to shine."
-        b "So we have to encourage her and aid her thru this dilemma"
-        b "Well the details will be discussed later, so just have to wait here for now."
-        b "Talk to me again if you want to kill the time being"
+        b "Since this is your first time being here..."
+        show bailey smile
+        b "We are all wanting to help our beloved Neko shine."
+        b "So we have to encourage her and aid her through this dilemma"
+        b "Well, the details will be discussed later, so just have to wait here for now."
+        show bailey neutral
+        b "Come talk to me if you want to kill time."
         $ bailey_first_time_hall = True
         hide bailey
         jump hallskip
     else:
-        b "Do you wanna kill the time?"
+        b "Do you want to kill the time?"
         menu:
-            "Sure dude":
+            "Kill time":
                 jump tsukino_meeting_begin
             "Nah":
                 jump hallskip
@@ -231,6 +256,7 @@ label bailey_following_action_done:
     $ phone_open = False
     show bailey angry
     b "Why is it taking so long?"
+    show bailey mad
     b "I don't have forever, stop messing around."
     b "Goodbye"
     hide bailey
@@ -255,15 +281,18 @@ label bailey_following_thru_district:
         show bailey default at right
         show watta default at left
         b "You want to get to monument through that path?"
-        b "Are you insane that is so long."
+        b "Are you insane? That is so long."
         if lane_first:
             w "Okay okay chill..."
             hide watta
             hide bailey
             $ bailey_following_lane_to_spira_talk = True
         else:
+            show watta sad
             w "But I don't know any other path..."
+            show bailey smile
             b "Oh it's fine, I can teach you the short cut, even though it's"
+            show bailey pant
             extend " a little bit eurghh.."
             hide watta
             hide bailey
@@ -282,9 +311,13 @@ label bailey_following_oil_scene:
     show watta default at left
     show bailey default at right
     w "Here we go"
+    show bailey shock
     b "What the?"
     b "Right under the monument?"
+    show bailey pant
     b "Wait.."
+    show bailey smile
+    show watta smile
     extend " this is magnificent"
     b "With this high quality in such amount..."
     b "We can totally make use of this."
@@ -294,7 +327,7 @@ label bailey_following_oil_scene:
     show bailey default at bounced
     scene bg oilgun with Fade(1,0.4,2)
     pause 1.0
-    b "Wait wait wait we can totally{nw}"
+    b "Wait wait wait we can totally-{nw}"
     show bg white
     pause 0.1
     show bg black
@@ -304,16 +337,16 @@ label bailey_following_oil_scene:
     play music "bgm_cavern.mp3" fadein 1.0 if_changed
     show watta default at left
     show vivi default at right
-    unknown "{font=Vivi.ttf}Such hassle."
+    unknown "{font=Vivi.ttf}Such a hassle."
     w "You killed him???"
     unknown "{font=Vivi.ttf}Don't worry,"
     extend " he's just sedated, not a single cell was harmed."
-    w "Phew"
+    w "Phew..."
     unknown "{font=Vivi.ttf}Watta... {w=0.5}one question."
     unknown "{font=Vivi.ttf}When I told you to leave this place immediately."
-    unknown "{font=Vivi.ttf}How, in the world would you think it's fine to invite someone here?"
+    unknown "{font=Vivi.ttf}Why, in the world would you think it's fine to invite someone here?"
     w "I'm sorry"
-    unknown "{font=Vivi.ttf}And it's also the freaking dog what a problem."
+    unknown "{font=Vivi.ttf}And it's also the freaking dog, what a problem."
     w "Dog?"
     unknown "{font=Vivi.ttf}You want some oil?"
     unknown "{font=Vivi.ttf}These buckets are enough for a round trip to the Alley."
@@ -323,7 +356,7 @@ label bailey_following_oil_scene:
     unknown "{font=Vivi.ttf}There is a hidden oil rig in the Alley around this location."
     if not is_item_get("Memorizing Sheet"):
         unknown "{font=Vivi.ttf}You bring no notes?."
-        unknown "{font=Vivi.ttf}Here is some cash, go out there and buy some."
+        unknown "{font=Vivi.ttf}Here is some cash, go out there and buy one."
         unknown "{font=Vivi.ttf}I will just write down in my own note."
         pause 1.0
         unknown "{font=Vivi.ttf}Here."
@@ -343,27 +376,46 @@ label bailey_following_oil_scene:
 
 label bailey_body_returned:
     show watta default at left
-    show bailey default at right
+    show bailey mad at right
     b "Watta"
+    show watta deter
     w "Hmm??"
+    show bailey pant
     b "I had such a crazy dream yesterday."
+    show watta sweat
     b "And it was insanely real as well"
+    show bailey default
     b "So in the dream I was sitting here like usual, and you came up to me and said:"
+    show watta deter
     extend "\"I found a hugeeee pool of oil\""
     w "uhh huh"
+    show bailey shock
     b "And I was like\"No way\" but you led me to the place and it was real."
+    show bailey angry
+    show watta upset
     b "But a gang member or someone showed up and they point the gun at me,"
-    b "I don't remember why but he said I was trespassing their grounds and shot me death."
-    b "Such crazy"
+    b "I don't remember why but he said I was trespassing their grounds and shot me dead."
+    show bailey sus
+    b "Super crazy"
+    show watta deter
     w "Ye it's crazy"
+    show watta sweat
     pause 2
+    show watta upset
     w "Also I bought some oil see if it can work"
+    show bailey smile
     b "Oh these crude oil definitely work yes yes."
-    b "Also damn you are so rich can you lend me some at times"
+    show bailey neutral
+    show watta deter
+    b "Also damn you must be rich if you can just... LEND me oil."
+    b "While you're at it, why not lend me some cash as well?"
+    show bailey smile
     b "Just joking"
     b "We will need to refine the oil first before fueling."
     b "Might take some times"
+    show watta smile
     w "Alright"
+    show bailey neutral
     b "Go do something while waiting."
     $ bailey_refining_timer = 2
     $ bailey_body_returned = False
