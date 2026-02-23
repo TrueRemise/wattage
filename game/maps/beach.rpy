@@ -132,5 +132,5 @@ label woogie_fishonthebeach:
     show woogie laugh4
     wo "FISH OF DECEASE?"
     show woogie laugh3 at slide_out_right
-    wo "OMG I CANT"
+    wo "OMG I CAN'T"
     jump beach

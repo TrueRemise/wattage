@@ -158,7 +158,7 @@ label owl_quest_check:
             o "Good."
             o "Good."
             o "I can replicate the outside world once more, thanks to you."
-            o "I think you are trustworthy enough to withhold the informations."
+            o "I think you are trustworthy enough to be told the information."
             show screen task_aquired("OWL'S QUEST COMPLETED", "QUALITY: GOOD", "images/task/taskowl.png")
             pause 3.0
             $ owl_quest_done = True
@@ -272,13 +272,13 @@ label owl_byebye:
 label owl_about_swan_lake:
     show owl speak
     o "The swan lake."
-    o "Decades ago, there were an area filled with lives and swamps."
-    o "Gorgeous landscape, stunning tropical climate, exclusive resources."
+    o "Decades ago, there was an area filled with life and swamps."
+    o "Gorgeous landscape, stunning tropical climate, exotic resources."
     o "We claimed the lands and built stuffs on it, while trying to keep the natural vibe intact."
     o "One day, for some reason, a corruption outbreak occured."
     o "The unused swan boats got infected and started to move on their own."
-    o "On the daylight they will be immobile swanboat like the usual, but when night comes they will start acting wild."
-    o "The queen realized this problem so for the sake of people's safety she locked the area away."
+    o "During the daylight they would be immobile swanboats like the usual, but when night comes they start acting wild."
+    o "The queen realized this problem... so for the sake of people's livelyhood she locked the area away."
     o "And I volunteered to be the guardian of this place looking out for the swans."
     o "This building was built in the center of the area. On high elevation with view to all sides."
     o "It's also where I draw and store the paintings."
@@ -289,20 +289,20 @@ label owl_about_soulbearer:
     o "The soulbearers, the big 7, you should know all of them by now."
     o "They inherited the 7 broken pieces of the Soul of Art."
     o "With the duty of keeping them safe, while the queen is in a coma."
-    o "However the purpose of it was unclear for the non-disclosure of the reason."
+    o "However the purpose of it was unclear for a reason I cannot disclose."
     o "They did their best before, but it has been a long while now, it's unclear they still prioritize it beyond all things."
-    o "If for anything, should all find and solve the problems rather than being so idle."
+    o "Rather than being idle, they should all be searching for a solution."
     show owl default
     jump owl_talk_skip
 label owl_about_ability:
     show owl speak
     o "Magic is something that should have been forgotten long time ago."
     o "Due to the magnitude of its power, people swore an oath to not use it during the modern days."
-    o "But recently someone used it to cause disasters across the city, this caught everyone offguard because many don't know the concept of magic even."
-    o "Likely due to the work of the monarch, which are also used to drain the queen's lifeforce, who is unfortunately the only other person who can use magic."
+    o "But recently, someone used it to cause disasters across the city, this caught everyone offguard because many don't even understand the concept of magic."
+    o "Likely due to the work of the monarch, which was also used to drain the queen's lifeforce. Unfortunately she's the only other person who can use magic."
     o "I was given a part of time soul when I moved here, which give me the power related to time."
-    o "But it's not powerful. It's the power to see into the future of something."
-    o "The drawback is that it can't go past 12 hours and I can't see my own."
+    o "While not powerful, it still lets me see briefly into the future."
+    o "It can't go past 12 hours and I can't see my own future."
     show owl default
     jump owl_talk_skip
 label owl_about_festival:
@@ -315,7 +315,7 @@ label owl_about_remi:
     o "He's a good one, he knows many things."
     o "He's just too shy to be comfortable around people, at least for long."
     o "I am one of the few he would seek when he's in trouble."
-    o "Might be the only one in such a situation right now to him."
+    o "Now I might be the only one in such position."
     o "But I can't physically help him so, look after him won't ya?"
     show owl default
     $ owl_about_remi = True

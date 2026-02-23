@@ -168,7 +168,7 @@ screen eastgate:
         action Jump("field")
 
 label westgate_test:
-    "Only those with souls to nature may pass."
+    "Only those with souls of nature may pass."
     if westgate_unlock == False:
         if soul_of_bloomfield == True:
             menu:
