@@ -233,7 +233,7 @@ screen monitoring:
     
 
 label mnt_camera:
-    w "There are a lot of cameras here."
+    w "There are a lot of camera screens here."
     w "To think we're being monitored like this..."
     w "Kinda scary..."
     jump monitoringskip
