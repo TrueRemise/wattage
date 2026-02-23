@@ -155,8 +155,8 @@ label owl_quest_check:
             jump owl_quest_restart
         if len(set(image_taken_list)) == 3:
             o "Good."
-            o "Great."
-            o "Perfect."
+            o "Good."
+            o "Good."
             o "I can replicate the outside world once more, thanks to you."
             o "I think you are trustworthy enough to be told the information."
             show screen task_aquired("OWL'S QUEST COMPLETED", "QUALITY: GOOD", "images/task/taskowl.png")
