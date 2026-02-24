@@ -23,12 +23,17 @@ default fish_list = [
     {"name":"Jumbo Fish", "rarity":3, "toughness":15, "weight":50, "effect":"effect_toko_1", "desc":"I think his fish looks delicious"},
     {"name":"Hallucirenia", "rarity":3, "toughness":8, "weight":75, "effect":"effect_1_resilience", "desc":"I sure don't want to get in troubles"},
     {"name":"Stone Fish", "rarity":4, "toughness":30, "weight":150, "effect":"effect_stone", "desc":"You wouldn't want this in your kidney"},
-    {"name":"SCP-169", "rarity":4, "toughness":50, "weight":225, "effect":"effect_10_size", "desc":"You have offishially become the legendary fisher"},
+    {"name":"FISCP-169", "rarity":4, "toughness":50, "weight":225, "effect":"effect_10_size", "desc":"You have offishially become the legendary fisher"},
 ]
+default fish_catch_counts = {}
 
 init python:
     def apply_fish_effect(fish):
         global fish_effect, nemu_manhake
+
+        fish_name = fish.get("name")
+        if fish_name:
+            fish_catch_counts[fish_name] = fish_catch_counts.get(fish_name, 0) + 1
 
         eff = fish.get("effect", "nothing")
 

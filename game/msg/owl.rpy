@@ -106,7 +106,7 @@ label owl_lake_night:
     show bg owlnestn at whiten_lesser
     show owl default at left
     show watta default at right
-    show owl deter
+    show owl default
     o "Hey, don't get outside at this hour."
     show owl default
     show watta huh
@@ -155,8 +155,8 @@ label owl_quest_check:
             jump owl_quest_restart
         if len(set(image_taken_list)) == 3:
             o "Good."
-            o "Great."
-            o "Perfect."
+            o "Good."
+            o "Good."
             o "I can replicate the outside world once more, thanks to you."
             o "I think you are trustworthy enough to be told the information."
             show screen task_aquired("OWL'S QUEST COMPLETED", "QUALITY: GOOD", "images/task/taskowl.png")

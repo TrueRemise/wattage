@@ -64,7 +64,14 @@ label spira_ft:
     show watta happy
     w "Well I'm not but I do want to help, is close to festival after all"
     show bailey smile
-    b "Really? That's nice, people like you are rare really. Here, come to my office I will explain more to you!"
+    b "Really? That's nice, people like you are rare really."
+    if ( day == 3 and (phase == 2 or phase == 3)):
+        b "I would invite you to my office later, buttttt-"
+        b "I have to attend something real quick"
+        b "I will be back tomorrow."
+        b "See ya"
+    else:
+        b "Here, come to my office I will explain more to you!"
     hide bailey
     hide watta
     $ spira_first = True

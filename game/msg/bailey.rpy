@@ -344,7 +344,7 @@ label bailey_following_oil_scene:
     w "Phew..."
     unknown "{font=Vivi.ttf}Watta... {w=0.5}one question."
     unknown "{font=Vivi.ttf}When I told you to leave this place immediately."
-    unknown "{font=Vivi.ttf}Why in the world would you think it's fine to invite someone here?"
+    unknown "{font=Vivi.ttf}Why, in the world would you think it's fine to invite someone here?"
     w "I'm sorry"
     unknown "{font=Vivi.ttf}And it's also the freaking dog, what a problem."
     w "Dog?"
@@ -408,6 +408,7 @@ label bailey_body_returned:
     show bailey neutral
     show watta deter
     b "Also damn you must be rich if you can just... LEND me oil."
+    b "While you're at it, why not lend me some cash as well?"
     show bailey smile
     b "Just joking"
     b "We will need to refine the oil first before fueling."

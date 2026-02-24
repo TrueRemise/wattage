@@ -77,7 +77,6 @@ label rngskip:
     $ save_lock = True
     jump lan_test
 
-default chii_meet_sanco_timer = 4
 label floral:
     $ current_location = "floral respite"
     jump floralskip
@@ -201,7 +200,7 @@ label hall_leave_confirmation:
             wo "Be cautious when making new friends Walter"
             wo "They can be spooky sometimes,"
             show woogie laugh
-            wo "Except I, trust me under all circumstances."
+            wo "Only I, shall be the trusted one."
             hide woogie
         $ snowie_first_quest = False
         $ snowie_monitoring_intro = True

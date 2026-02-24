@@ -14,6 +14,8 @@ default rarity_names = {
     3: "Extreme",
     4: "Grandpa"
 }
+
+default manhake_attempt_counter = 0
 # ====================================================
 #   RARITY CHANCES (BASE)
 # ====================================================
@@ -106,7 +108,34 @@ init python:
     # ====================================================
     import random
 
+    def _pick_weighted_fish(candidates):
+        """Weighted fish pick to reduce streaks within the same rarity tier."""
+        if not candidates:
+            return None
+
+        total_weight = 0.0
+        weighted_candidates = []
+
+        for fish in candidates:
+            caught_count = fish_catch_counts.get(fish["name"], 0)
+            # Lower chance for fish that have already been caught many times.
+            # sqrt keeps this soft so randomness is still present.
+            catch_balance_weight = 1.0 / ((caught_count + 1) ** 0.5)
+            weighted_candidates.append((fish, catch_balance_weight))
+            total_weight += catch_balance_weight
+
+        roll = random.random() * total_weight
+        cumulative = 0.0
+        for fish, weight in weighted_candidates:
+            cumulative += weight
+            if roll <= cumulative:
+                return fish
+
+        return weighted_candidates[-1][0]
+
     def pick_fish():
+        global manhake_attempt_counter
+
         rarity_prob = get_rarity_chances()
 
         # --- FIX: Normalize again (avoid rounding drift problems) ---
@@ -132,6 +161,25 @@ init python:
             f for f in fish_list
             if f["rarity"] == chosen_rarity and f["weight"] <= (rod["maxweight"]+20)
         ]
+        
+        # Soft pity for ManHake after Nemu's third talk.
+        if nemu_third_talk_done and not nemu_manhake:
+            manhake_attempt_counter += 1
+
+            manhake_fish = next((f for f in fish_list if f["name"] == "ManHake"), None)
+            if manhake_fish and manhake_fish["weight"] <= (rod["maxweight"] + 20):
+                # Hard guarantee at 20 attempts.
+                if manhake_attempt_counter >= 5:
+                    manhake_attempt_counter = 0
+                    notify_rarity_simple(rarity_prob, manhake_fish["rarity"])
+                    return manhake_fish
+
+                # Soft pity: increasing chance from attempt 8 onward.
+                if chosen_rarity == 2 and manhake_fish in candidates and manhake_attempt_counter >= 3:
+                    pity_progress = (manhake_attempt_counter - 8) / 12.0
+                    pity_chance = min(0.75, max(0.05, pity_progress * 0.75))
+                    if random.random() < pity_chance:
+                        return manhake_fish
 
         # If none fit weight, fallback to ANY fish the rod can handle
         if not candidates:
@@ -141,8 +189,8 @@ init python:
         if not candidates:
             return None
 
-        # Final random pick
-        return random.choice(candidates)
+        # Final weighted pick within the chosen tier.
+        return _pick_weighted_fish(candidates)
 
 
 
@@ -186,8 +234,9 @@ init python:
 
     # --------------------------
     # Apply rod stats
-    # --------------------------
-    control_width = 150        # bar width from rod
+    # --------------------------    
+    bar_size_scale = 1
+    control_width = int(150 * bar_size_scale)        # bar width from rod
     resilience = 0       # reduces fish movement
 
     # --------------------------
@@ -198,6 +247,35 @@ init python:
 
     # normalized bar length (so bar stays inside bounds)
     bar_length = control_width / big_bar_width
+    
+    def get_centered_bar_x():
+        return max(0.0, (1.0 - bar_length) / 2.0)
+
+    def get_toughness_width_scale(toughness):
+        import math
+        # fish.rpy currently ranges from toughness 1 (easiest) to 50 (hardest).
+        t = max(1.0, min(50.0, float(toughness)))
+
+        # Normalize toughness (1 → 0.0, 50 → 1.0)
+        x = (t - 1.0) / 49.0
+        x = max(0.0, min(1.0, x))  # safety clamp
+
+        # Exponential ease-out curve
+        reduction = 0.999 * (1 - math.exp(-6 * x))
+
+        return 1.0 - reduction
+
+    def reset_fishing_state():
+        global startup_timer, holding, bar_up_speed, bar_down_speed
+        global bar_x, fish_x, tension
+
+        startup_timer = 0.0
+        holding = False
+        bar_up_speed = 0.0
+        bar_down_speed = 0.0
+        bar_x = get_centered_bar_x()
+        fish_x = 0.5
+        tension = 40.0
 
     # --------------------------
     # FISH POSITION & MOVEMENT
@@ -232,10 +310,12 @@ init python:
 
             # Keep bars in the center during intro
             tension = 40
-            bar_x = 0.4
+            holding = False
+            bar_x = get_centered_bar_x()
             fish_x = 0.5
             bar_up_speed = 0.0
             bar_down_speed = 0.0
+            return None
 
         # --------------------------
         # 2. PLAYER BAR MOVEMENT
@@ -399,14 +479,18 @@ label kuro_fish_cast:
     $ renpy.pause(1, hard=True)
     hide screen fish_intro_anim
     $ current_fish = pick_fish()
-    $ control_width = 150 + int(rod["size"]*1.5)
-    $ bar_length = control_width / big_bar_width
-    $ fish_toughness = current_fish["toughness"] - rod["resilience"] / 5
-    if fish_toughness < 0.1:
-        $ fish_toughness = 0.1 
     if current_fish is None:
         "Your rod is too weak to catch any fish here."
         return
+
+    $ fish_toughness = current_fish["toughness"] - rod["resilience"] / 5
+    if fish_toughness < 0.1:
+        $ fish_toughness = 0.1
+
+    $ base_control_width = int((150 + int(rod["size"]*1.5)) * bar_size_scale)
+    $ control_width = max(40, int(base_control_width * get_toughness_width_scale(current_fish["toughness"])))
+    $ bar_length = control_width / big_bar_width
+    $ reset_fishing_state()
     #$ renpy.notify(f"{current_fish}")
     call screen fishing_demo
 
@@ -431,12 +515,12 @@ init python:
 
 label tension_fail:
     scene bg fishl
-    $ startup_timer = 0.0  
+    $ reset_fishing_state()
     $ renpy.notify(f"You let {current_fish['name']} got away!")
     call screen fish_options
 label tension_success:
     scene bg fishw
-    $ startup_timer = 0.0  
+    $ reset_fishing_state()
     $ apply_fish_effect(current_fish)
     call screen fish_caught
 

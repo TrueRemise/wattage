@@ -102,7 +102,7 @@ default nekopia_first = False
 default lane_to_monument_first = 0
 label nekopia_first:
     show watta default
-    w "This should be Renia's store, judging by the exterior."
+    w "This should be Reni's store, judging by the exterior."
     $ nekopia_first = True
     jump nekopiaskip
 label nekopia:
@@ -233,15 +233,15 @@ screen monitoring:
     
 
 label mnt_camera:
-    w "There are a lot of cameras here."
-    w "To think i'm being monitored like this..."
+    w "There are a lot of camera screens here."
+    w "To think we're being monitored like this..."
     w "Kinda scary..."
     jump monitoringskip
 label mnt_chair1:
     w "It's a not so comfy chair."
     jump monitoringskip
 label mnt_chair2:
-    w "It's not a not comfy chair."
+    w "It's a comfy chair."
     if mnt_secret_hall_open:
         jump monitoringskip
     else:
@@ -765,9 +765,9 @@ screen jail_box_code_input():
                         hover_color "#8da417"
 
 
-default rsa_n_input = [ ]
-default rsa_c_input = [ ]
-default rsa_d_input = [ ]
+default rsa_n_input = 0
+default rsa_c_input = 0
+default rsa_d_input = 0
 init python:
     def rsa_m_calculating():
 
@@ -792,13 +792,19 @@ init python:
 init python:
     def jail_box_code_check():
         global jail_box_code, jail_box_revealed2
-        jail_code = int(jail_box_code.strip())
+        jail_code_raw = jail_box_code.strip()
 
-        if not jail_code:
+        if not jail_code_raw:
             renpy.notify("Please enter a number.")
             return None
 
         
+        try:
+            jail_code = int(jail_code_raw)
+        except ValueError:
+            renpy.notify("Please enter a valid number.")
+            return None
+
         jail_right_code = rsa_m_calculating()
         if jail_code == jail_right_code:
             renpy.notify("Code is correct.")
