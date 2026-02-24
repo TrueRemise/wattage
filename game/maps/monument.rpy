@@ -765,9 +765,9 @@ screen jail_box_code_input():
                         hover_color "#8da417"
 
 
-default rsa_n_input = [ ]
-default rsa_c_input = [ ]
-default rsa_d_input = [ ]
+default rsa_n_input = 0
+default rsa_c_input = 0
+default rsa_d_input = 0
 init python:
     def rsa_m_calculating():
 
@@ -792,13 +792,19 @@ init python:
 init python:
     def jail_box_code_check():
         global jail_box_code, jail_box_revealed2
-        jail_code = int(jail_box_code.strip())
+        jail_code_raw = jail_box_code.strip()
 
-        if not jail_code:
+        if not jail_code_raw:
             renpy.notify("Please enter a number.")
             return None
 
         
+        try:
+            jail_code = int(jail_code_raw)
+        except ValueError:
+            renpy.notify("Please enter a valid number.")
+            return None
+
         jail_right_code = rsa_m_calculating()
         if jail_code == jail_right_code:
             renpy.notify("Code is correct.")

@@ -33,6 +33,10 @@ init python:
         if bailey_following_oil:
             renpy.hide_screen("phone_screen")
             renpy.call_in_new_context("bailey_following_action_done")
+            actions_left -= 1
+            actions_left = max(actions_left, 0)  # safety
+            if actions_left <= 0:
+                next_phase()
             return
         if first_work:
             renpy.notify(f"You should do your morning shift.{cutscene_on}")

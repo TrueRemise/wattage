@@ -106,7 +106,7 @@ label owl_lake_night:
     show bg owlnestn at whiten_lesser
     show owl default at left
     show watta default at right
-    show owl deter
+    show owl default
     o "Hey, don't get outside at this hour."
     show owl default
     show watta huh

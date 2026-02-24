@@ -261,11 +261,11 @@ init python:
         # --- travel cost ---
         if (travel_upgrade < 2
             and not (first_work and loc == "district" and loc == "outhome")):
-            action_done()
 
         # update world state BEFORE jump
         current_location = loc
         # update global bg for next area
         update_world_bg()
+        action_done()
 
         renpy.jump(loc)
