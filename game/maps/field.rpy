@@ -305,7 +305,6 @@ label field_to_lake_cutscene_2:
     w "Hopefully not..."
     $ loc_unlock("lake")
     $ lake_first = True
-    $ action_done()
     $ current_location = "lake"
     hide watta
     call screen lake
