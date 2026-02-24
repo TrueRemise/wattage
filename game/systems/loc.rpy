@@ -261,6 +261,7 @@ init python:
         # --- travel cost ---
         if (travel_upgrade < 2
             and not (first_work and loc == "district" and loc == "outhome")):
+            pass
 
         # update world state BEFORE jump
         current_location = loc
