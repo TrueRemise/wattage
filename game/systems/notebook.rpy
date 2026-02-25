@@ -172,9 +172,11 @@ default notebook_chars = [
         "image": "iog",
         "unlocked": False
     },
-
-    # continue until you reach 20 total
 ]
+default notebook_key_items = []          # ordered list of item IDs
+default notebook_key_item_data = {}      # item_id → data
+default notebook_key_item_counts = {}    # item_id → quantity
+
 
 default current_tab = "People"
 screen notebook_screen():
@@ -202,8 +204,7 @@ screen notebook_screen():
         add "images/notebook/tab_selector.png":
             xalign 0.9775
             yalign 0.723
-        use notebook_char_friend_screen
-        use notebook_char_screen
+        use notebook_key_item_screen
     if hovered_char:
         frame:
             background None
@@ -293,7 +294,6 @@ screen notebook_char_friend_screen():
 
 screen notebook_char_screen():
 
-    add "images/notebook/friends.png"
     frame:
         xalign 0.08
         yalign 0.8
@@ -325,8 +325,37 @@ screen notebook_char_screen():
                         ysize 160
                         background "#49ff4c00"
                         focus_mask True
-init python:
 
+screen notebook_key_item_screen():
+
+    add "images/notebook/friends.png"
+    frame:
+        xalign 0.08
+        yalign 0.16
+        background None
+
+        grid 4 4 spacing 1:
+
+            for item in notebook_key_items:
+
+                $ item = notebook_key_item_data[item]
+                $ count = notebook_key_item_counts[item]
+
+                button:
+                    xsize 140
+                    ysize 160
+                    background "#ffffffff"
+                    focus_mask True
+                    add "images/notebook/%s.png" % item["image"]:
+                        anchor (0.5, 0.5)
+                        xpos 50
+                        ypos 70
+                        at hover_fade
+                    action SetScreenVariable("hovered_char", item)
+                    hovered [
+                        SetScreenVariable("hovered_char", item),
+                    ]
+init python:
     def notebook_unlock(char_name):
         for char in notebook_chars:
             if char["name"] == char_name:
@@ -344,3 +373,24 @@ init python:
                 renpy.notify(f"Journal updated for {char_name}")
                 return True
         return False
+
+
+    def key_item_add(name, desc, image):
+
+        # If item is new
+        if image not in notebook_key_item_data:
+
+            notebook_key_items.append(image)
+
+            notebook_key_item_data[image] = {
+                "name": name,
+                "desc": desc,
+                "image": image
+            }
+
+            notebook_key_item_counts[image] = 1
+
+        else:
+            notebook_key_item_counts[image] += 1
+
+        renpy.notify(f"Obtained: {name}")
