@@ -345,7 +345,7 @@ screen hole:
 
 
 
-default jail_time_left = 22
+default jail_time_left = 30
 
 
 

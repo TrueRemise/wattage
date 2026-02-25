@@ -219,11 +219,11 @@ label things_that_change_when_you_sleep:
         $ tsuyu_go_sane_at_two = 2
     if backyard_tomato_planted >= 1:
         $ backyard_tomato_planted = max(3,backyard_tomato_planted+1)
-    if glass_daisy_timer == 1:
+    if glass_daisy_timer == 1 and is_item_get("Glass Daisy"):
         $ glass_daisy_timer = 2
         $ item_remove("Glass Daisy")
         $ item_add("Exquisite Daisy")
-    elif glass_daisy_timer == 2:
+    elif glass_daisy_timer == 2 and is_item_get("Exquisite Daisy"):
         $ glass_daisy_timer = 3
         $ item_remove("Exquisite Daisy")
         $ item_add("Normal Daisy")
