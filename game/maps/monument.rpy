@@ -610,6 +610,7 @@ label jail_stone_cutscene:
     show screen stone_aquired()
     $ renpy.pause(11, hard=True)
     $ stone_add()
+    $ key_item_add("Twisted Stone")
     hide screen task_aquired
     $ jail_box_revealed3 = True
     pause 1
