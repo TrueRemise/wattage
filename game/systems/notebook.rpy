@@ -355,6 +355,11 @@ screen notebook_key_item_screen():
                     hovered [
                         SetScreenVariable("hovered_char", item),
                     ]
+                    if count > 1:
+                        text str(count):
+                            size 30
+                            xalign 0.95
+                            yalign 0.95
 init python:
     def notebook_unlock(char_name):
         for char in notebook_chars:
@@ -378,19 +383,19 @@ init python:
     def key_item_add(name, desc, image):
 
         # If item is new
-        if image not in notebook_key_item_data:
+        if name not in notebook_key_item_data:
 
-            notebook_key_items.append(image)
+            notebook_key_items.append(name)
 
-            notebook_key_item_data[image] = {
+            notebook_key_item_data[name] = {
                 "name": name,
                 "desc": desc,
                 "image": image
             }
 
-            notebook_key_item_counts[image] = 1
+            notebook_key_item_counts[name] = 1
 
         else:
-            notebook_key_item_counts[image] += 1
-
-        renpy.notify(f"Obtained: {name}")
+            notebook_key_item_counts[name] += 1
+    def key_items_add(name):
+        notebook_key_item_counts[name] += 1
