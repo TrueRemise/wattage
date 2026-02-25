@@ -286,6 +286,7 @@ label bailey_following_thru_district:
             w "Okay okay chill..."
             hide watta
             hide bailey
+            $ lane_to_spira_first = True
             $ bailey_following_lane_to_spira_talk = True
         else:
             show watta sad
