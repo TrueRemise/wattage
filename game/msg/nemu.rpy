@@ -298,6 +298,15 @@ label nemu_shop:
     stop music fadeout 0.5
     play music "bgm_rod.mp3" fadein 1.0 
     scene fish_nemu with Fade(0.1,0,0.1)
+    $ rod_level_preview = rod_level
+    python:
+        for stat in rod_preview:
+            rod_preview[stat] = 0
+        rod_hold_stat = None
+        rod_hold_dir = 0
+        rod_hold_ticks = 0
+        rod_hold_mouse_down = False
+        rod_hold_block_feedback_played = False
     call screen rod_screen
 default rod_lines = [
     {
@@ -331,100 +340,160 @@ default upgrade_cost = 50
 default rod_level = 0
 default rod_level_preview = 0
 default rod_sessions_presses = 0
+default rod_hold_stat = None
+default rod_hold_dir = 0
+default rod_hold_ticks = 0
+default rod_hold_mouse_down = False
+default rod_hold_block_feedback_played = False
 
 init python:
+    ROD_STAT_CAP = 250
+
+    def _rod_upgrade_cost_for_level(level):
+        return int(1 + level * 0.6)
+
+    def rod_preview_total_points():
+        return sum(rod_preview.values())
+
+    def rod_get_preview_stat_value(stat_name):
+        return rod[stat_name] + rod_preview[stat_name]
+
+    def rod_start_hold(stat_name, direction):
+        global rod_hold_stat, rod_hold_dir, rod_hold_ticks, rod_hold_block_feedback_played
+        rod_hold_stat = stat_name
+        rod_hold_dir = direction
+        rod_hold_ticks = 0
+        rod_hold_block_feedback_played = False
+
+    def rod_stop_hold():
+        global rod_hold_stat, rod_hold_dir, rod_hold_ticks, rod_hold_block_feedback_played
+        rod_hold_stat = None
+        rod_hold_dir = 0
+        rod_hold_ticks = 0
+        rod_hold_block_feedback_played = False
+
+    def rod_set_mouse_down(is_down):
+        global rod_hold_mouse_down
+        rod_hold_mouse_down = is_down
+        if not is_down:
+            rod_stop_hold()
+
+    def rod_start_hold_if_mouse_down(stat_name, direction):
+        if rod_hold_mouse_down:
+            rod_start_hold(stat_name, direction)
+
+    def rod_process_hold_tick():
+        global rod_hold_ticks
+
+        if rod_hold_stat is None or rod_hold_dir == 0:
+            return
+
+        rod_hold_ticks += 1
+
+        # 0.5s delay before auto-repeat starts (timer runs every 0.02s => 25 ticks)
+        if rod_hold_ticks < 25:
+            return
+
+        # For the next 2 seconds, apply 1 level every 5 ticks (0.1s).
+        # 2 seconds at 0.02s/tick = 100 ticks, so this stage ends at tick 124.
+        if rod_hold_ticks < 125 and ((rod_hold_ticks - 25) % 5 != 0):
+            return
+
+        if rod_hold_dir > 0:
+            rod_preview_increase(rod_hold_stat, is_hold_repeat=True)
+        else:
+            rod_preview_decrease(rod_hold_stat, is_hold_repeat=True)
+
     def rod_get_upgrade_cost():
-        global rod_level, rod_level_preview
-        
         cost = 0
-        
-        # sum all base values from real level up to preview level
-        for lvl in range(rod_level, rod_level_preview):
-            cost += int(1 + (lvl+1) * 0.6)
-
-        return cost
-
+        for lvl in range(rod_level + 1, rod_level_preview + 1):
+            cost += _rod_upgrade_cost_for_level(lvl)
+        return max(cost, 0)
 
     def rod_get_level_preview():
         global rod_level, rod_level_preview
         return rod_level_preview
 
     def rod_can_increase(stat_name):
-        cost = rod_get_upgrade_cost()
-        return sol >= cost
+        next_preview_level = rod_level_preview + 1
+        next_total_cost = rod_get_upgrade_cost() + _rod_upgrade_cost_for_level(next_preview_level)
+        return sol >= next_total_cost
 
-    def rod_preview_increase(stat_name):
-        global rod_level_preview, sol
-        # hard cap check BEFORE doing anything
-        # preview level cannot exceed 250 either
-        new_preview = rod_level_preview + 1
-        base = rod[stat_name]
-        preview = rod_preview[stat_name]
-        final_val = base + preview
-        if final_val >= 250:
+    def rod_preview_increase(stat_name, is_hold_repeat=False):
+        global rod_level_preview, rod_hold_block_feedback_played
+
+        def _deny_once_per_hold(message=None):
+            global rod_hold_block_feedback_played
+            if is_hold_repeat and rod_hold_block_feedback_played:
+                return
             renpy.play("sfx/bet_denied.mp3")
-            renpy.notify("MAX LEVEL REACHED!")
-            return
-        
-        # compute cost AFTER increasing preview
-        cost = 0
-        for lvl in range(rod_level, new_preview):
-            cost += int(1 + (lvl+1) * 0.6)
-        
-        # money check
-        if sol < cost:
-            renpy.play("sfx/bet_denied.mp3")
-            renpy.notify("Not enough sol!")
+            if message:
+                renpy.notify(message)
+            if is_hold_repeat:
+                rod_hold_block_feedback_played = True
+
+        if rod_get_preview_stat_value(stat_name) >= ROD_STAT_CAP:
+            _deny_once_per_hold("MAX LEVEL REACHED!")
             return
 
-        # everything okay → commit preview
-        rod_level_preview = new_preview
+        if not rod_can_increase(stat_name):
+            _deny_once_per_hold("Not enough sol!")
+            return
 
-        # increase stat, but clamp to 250 hard cap
-        rod_preview[stat_name] = min(rod_preview[stat_name] + 1, 250)
+        rod_preview[stat_name] += 1
+        rod_level_preview += 1
+        rod_hold_block_feedback_played = False
 
         renpy.play("sfx/bet_select.mp3")
 
 
 
-    def rod_preview_decrease(stat_name):
-        global sol, rod_level_preview, rod_sessions_presses, rod_level
-        rod_level_preview -= 1
-        rod_sessions_presses -= 1
-        if rod_level_preview <rod_level:
-            rod_level_preview = rod_level
-        if rod_preview[stat_name] > 0:
-            rod_preview[stat_name] -= 1
-            renpy.play("sfx/bet_select.mp3")
+    def rod_preview_decrease(stat_name, is_hold_repeat=False):
+        global rod_level_preview, rod_hold_block_feedback_played
+
+        if rod_preview[stat_name] <= 0:
+            if (not is_hold_repeat) or (not rod_hold_block_feedback_played):
+                renpy.play("sfx/bet_denied.mp3")
+                if is_hold_repeat:
+                    rod_hold_block_feedback_played = True
+            return
+
+        rod_preview[stat_name] -= 1
+        rod_level_preview = max(rod_level, rod_level_preview - 1)
+        rod_hold_block_feedback_played = False
+        renpy.play("sfx/bet_select.mp3")
 
 
     def rod_confirm_upgrades():
-        global sol, rod_level
+        global sol, rod_level, rod_level_preview
 
-        total_temp = sum(rod_preview.values())
-        if total_temp == 0:
+        total_selected = rod_preview_total_points()
+        if total_selected == 0:
             renpy.notify("No upgrades selected.")
             return
 
-        for stat in rod_preview:
-            for i in range(rod_preview[stat]):
-                cost = rod_get_upgrade_cost()
-                if sol < cost:
-                    renpy.notify("Not enough sol to finalize all upgrades!")
-                    return
-                sol -= cost
-                rod_level = rod_level_preview
-                rod[stat] += 1
+        total_cost = rod_get_upgrade_cost()
+        if sol < total_cost:
+            renpy.play("sfx/bet_denied.mp3")
+            renpy.notify("Not enough sol!")
+            return
 
-        # Reset preview
+        for stat, amount in rod_preview.items():
+            rod[stat] = min(rod[stat] + amount, ROD_STAT_CAP)
+
+        sol -= total_cost
+        rod_level = rod_level_preview
+
         for stat in rod_preview:
             rod_preview[stat] = 0
 
+        renpy.play("sfx/rod_upgrade.mp3")
         renpy.notify("Upgrades applied!")
 
 screen rod_screen():
-
-    $ rod_level_preview = rod_level
+    timer 0.02 repeat True action Function(rod_process_hold_tick)
+    key "mousedown_1" action Function(rod_set_mouse_down, True)
+    key "mouseup_1" action Function(rod_set_mouse_down, False)
     timer 0.1 action [SetScreenVariable("nemu_talking", True)]
     fixed:
         xsize 600
@@ -453,9 +522,9 @@ screen rod_screen():
                         ysize 40
                         yalign 0.46
                         background Solid("#ffffff00")
-                        action Function(rod_preview_decrease, name)
-                        hovered SetScreenVariable("nemu_talking_line", line)
-                        unhovered SetScreenVariable("nemu_talking_line", None)
+                        action [Function(rod_preview_decrease, name), Function(rod_stop_hold)]
+                        hovered [Function(rod_start_hold_if_mouse_down, name, -1), SetScreenVariable("nemu_talking_line", line)]
+                        unhovered [Function(rod_stop_hold), SetScreenVariable("nemu_talking_line", None)]
                         text "<":
                             yalign 0.5
                             size 55
@@ -482,9 +551,9 @@ screen rod_screen():
                         ysize 40
                         yalign 0.43
                         background Solid("#ffffff00")
-                        action Function(rod_preview_increase, name)
-                        hovered SetScreenVariable("nemu_talking_line", line)
-                        unhovered SetScreenVariable("nemu_talking_line", None)
+                        action [Function(rod_preview_increase, name), Function(rod_stop_hold)]
+                        hovered [Function(rod_start_hold_if_mouse_down, name, 1), SetScreenVariable("nemu_talking_line", line)]
+                        unhovered [Function(rod_stop_hold), SetScreenVariable("nemu_talking_line", None)]
                         text ">":
                             yalign 0.5
                             size 55
@@ -537,6 +606,7 @@ screen rod_screen():
                 font "Nemu.ttf"
     if nemu_talking_bye:
 
+        timer 0.01 action Function(rod_stop_hold)
         timer 0.01 action [SetScreenVariable("nemu_talking", False)]
         timer 1 action [Jump("lane")]
         # The mouth animation
@@ -585,4 +655,3 @@ label _exit_rod_shop:
     $ renpy.pause(2.5)    # wait for goodbye to finish
     hide screen rod_screen
     return
-
