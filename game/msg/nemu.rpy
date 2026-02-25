@@ -302,6 +302,9 @@ label nemu_shop:
     python:
         for stat in rod_preview:
             rod_preview[stat] = 0
+        rod_hold_stat = None
+        rod_hold_dir = 0
+        rod_hold_ticks = 0
     call screen rod_screen
 default rod_lines = [
     {
@@ -335,9 +338,13 @@ default upgrade_cost = 50
 default rod_level = 0
 default rod_level_preview = 0
 default rod_sessions_presses = 0
+default rod_hold_stat = None
+default rod_hold_dir = 0
+default rod_hold_ticks = 0
 
 init python:
     ROD_STAT_CAP = 250
+
     def _rod_upgrade_cost_for_level(level):
         return int(1 + level * 0.6)
 
@@ -347,12 +354,45 @@ init python:
     def rod_get_preview_stat_value(stat_name):
         return rod[stat_name] + rod_preview[stat_name]
 
+    def rod_start_hold(stat_name, direction):
+        global rod_hold_stat, rod_hold_dir, rod_hold_ticks
+        rod_hold_stat = stat_name
+        rod_hold_dir = direction
+        rod_hold_ticks = 0
+
+    def rod_stop_hold():
+        global rod_hold_stat, rod_hold_dir, rod_hold_ticks
+        rod_hold_stat = None
+        rod_hold_dir = 0
+        rod_hold_ticks = 0
+
+    def rod_process_hold_tick():
+        global rod_hold_ticks
+
+        if rod_hold_stat is None or rod_hold_dir == 0:
+            return
+
+        rod_hold_ticks += 1
+
+        # 0.5s delay before auto-repeat starts (timer runs every 0.02s => 25 ticks)
+        if rod_hold_ticks < 25:
+            return
+
+        # For the next 2 seconds, apply 1 level every 5 ticks (0.1s).
+        # 2 seconds at 0.02s/tick = 100 ticks, so this stage ends at tick 124.
+        if rod_hold_ticks < 125 and ((rod_hold_ticks - 25) % 5 != 0):
+            return
+
+        if rod_hold_dir > 0:
+            rod_preview_increase(rod_hold_stat)
+        else:
+            rod_preview_decrease(rod_hold_stat)
+
     def rod_get_upgrade_cost():
         cost = 0
         for lvl in range(rod_level + 1, rod_level_preview + 1):
             cost += _rod_upgrade_cost_for_level(lvl)
         return max(cost, 0)
-
 
     def rod_get_level_preview():
         global rod_level, rod_level_preview
@@ -370,7 +410,7 @@ init python:
             renpy.play("sfx/bet_denied.mp3")
             renpy.notify("MAX LEVEL REACHED!")
             return
-        
+
         if not rod_can_increase(stat_name):
             renpy.play("sfx/bet_denied.mp3")
             renpy.notify("Not enough sol!")
@@ -422,7 +462,7 @@ init python:
         renpy.notify("Upgrades applied!")
 
 screen rod_screen():
-
+    timer 0.02 repeat True action Function(rod_process_hold_tick)
     timer 0.1 action [SetScreenVariable("nemu_talking", True)]
     fixed:
         xsize 600
@@ -452,8 +492,8 @@ screen rod_screen():
                         yalign 0.46
                         background Solid("#ffffff00")
                         action Function(rod_preview_decrease, name)
-                        hovered SetScreenVariable("nemu_talking_line", line)
-                        unhovered SetScreenVariable("nemu_talking_line", None)
+                        hovered [Function(rod_start_hold, name, -1), SetScreenVariable("nemu_talking_line", line)]
+                        unhovered [Function(rod_stop_hold), SetScreenVariable("nemu_talking_line", None)]
                         text "<":
                             yalign 0.5
                             size 55
@@ -481,8 +521,8 @@ screen rod_screen():
                         yalign 0.43
                         background Solid("#ffffff00")
                         action Function(rod_preview_increase, name)
-                        hovered SetScreenVariable("nemu_talking_line", line)
-                        unhovered SetScreenVariable("nemu_talking_line", None)
+                        hovered [Function(rod_start_hold, name, 1), SetScreenVariable("nemu_talking_line", line)]
+                        unhovered [Function(rod_stop_hold), SetScreenVariable("nemu_talking_line", None)]
                         text ">":
                             yalign 0.5
                             size 55
@@ -535,6 +575,7 @@ screen rod_screen():
                 font "Nemu.ttf"
     if nemu_talking_bye:
 
+        timer 0.01 action Function(rod_stop_hold)
         timer 0.01 action [SetScreenVariable("nemu_talking", False)]
         timer 1 action [Jump("lane")]
         # The mouth animation
@@ -583,4 +624,3 @@ label _exit_rod_shop:
     $ renpy.pause(2.5)    # wait for goodbye to finish
     hide screen rod_screen
     return
-
