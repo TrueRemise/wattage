@@ -305,8 +305,6 @@ label nemu_shop:
         rod_hold_stat = None
         rod_hold_dir = 0
         rod_hold_ticks = 0
-        rod_hold_mouse_down = False
-        rod_hold_block_feedback_played = False
     call screen rod_screen
 default rod_lines = [
     {
@@ -343,8 +341,6 @@ default rod_sessions_presses = 0
 default rod_hold_stat = None
 default rod_hold_dir = 0
 default rod_hold_ticks = 0
-default rod_hold_mouse_down = False
-default rod_hold_block_feedback_played = False
 
 init python:
     ROD_STAT_CAP = 250
@@ -359,28 +355,16 @@ init python:
         return rod[stat_name] + rod_preview[stat_name]
 
     def rod_start_hold(stat_name, direction):
-        global rod_hold_stat, rod_hold_dir, rod_hold_ticks, rod_hold_block_feedback_played
+        global rod_hold_stat, rod_hold_dir, rod_hold_ticks
         rod_hold_stat = stat_name
         rod_hold_dir = direction
         rod_hold_ticks = 0
-        rod_hold_block_feedback_played = False
 
     def rod_stop_hold():
-        global rod_hold_stat, rod_hold_dir, rod_hold_ticks, rod_hold_block_feedback_played
+        global rod_hold_stat, rod_hold_dir, rod_hold_ticks
         rod_hold_stat = None
         rod_hold_dir = 0
         rod_hold_ticks = 0
-        rod_hold_block_feedback_played = False
-
-    def rod_set_mouse_down(is_down):
-        global rod_hold_mouse_down
-        rod_hold_mouse_down = is_down
-        if not is_down:
-            rod_stop_hold()
-
-    def rod_start_hold_if_mouse_down(stat_name, direction):
-        if rod_hold_mouse_down:
-            rod_start_hold(stat_name, direction)
 
     def rod_process_hold_tick():
         global rod_hold_ticks
@@ -400,9 +384,9 @@ init python:
             return
 
         if rod_hold_dir > 0:
-            rod_preview_increase(rod_hold_stat, is_hold_repeat=True)
+            rod_preview_increase(rod_hold_stat)
         else:
-            rod_preview_decrease(rod_hold_stat, is_hold_repeat=True)
+            rod_preview_decrease(rod_hold_stat)
 
     def rod_get_upgrade_cost():
         cost = 0
@@ -419,13 +403,15 @@ init python:
         next_total_cost = rod_get_upgrade_cost() + _rod_upgrade_cost_for_level(next_preview_level)
         return sol >= next_total_cost
 
-    def rod_preview_increase(stat_name, is_hold_repeat=False):
-        global rod_level_preview, rod_hold_block_feedback_played
+    def rod_preview_increase(stat_name):
+        global rod_level_preview
 
-        def _deny_once_per_hold(message=None):
-            global rod_hold_block_feedback_played
-            if is_hold_repeat and rod_hold_block_feedback_played:
-                return
+        if rod_get_preview_stat_value(stat_name) >= ROD_STAT_CAP:
+            renpy.play("sfx/bet_denied.mp3")
+            renpy.notify("MAX LEVEL REACHED!")
+            return
+
+        if not rod_can_increase(stat_name):
             renpy.play("sfx/bet_denied.mp3")
             if message:
                 renpy.notify(message)
@@ -436,31 +422,22 @@ init python:
             _deny_once_per_hold("MAX LEVEL REACHED!")
             return
 
-        if not rod_can_increase(stat_name):
-            _deny_once_per_hold("Not enough sol!")
-            return
-
         rod_preview[stat_name] += 1
         rod_level_preview += 1
-        rod_hold_block_feedback_played = False
 
         renpy.play("sfx/bet_select.mp3")
 
 
 
-    def rod_preview_decrease(stat_name, is_hold_repeat=False):
-        global rod_level_preview, rod_hold_block_feedback_played
+    def rod_preview_decrease(stat_name):
+        global rod_level_preview
 
         if rod_preview[stat_name] <= 0:
-            if (not is_hold_repeat) or (not rod_hold_block_feedback_played):
-                renpy.play("sfx/bet_denied.mp3")
-                if is_hold_repeat:
-                    rod_hold_block_feedback_played = True
+            renpy.play("sfx/bet_denied.mp3")
             return
 
         rod_preview[stat_name] -= 1
         rod_level_preview = max(rod_level, rod_level_preview - 1)
-        rod_hold_block_feedback_played = False
         renpy.play("sfx/bet_select.mp3")
 
 
@@ -492,8 +469,6 @@ init python:
 
 screen rod_screen():
     timer 0.02 repeat True action Function(rod_process_hold_tick)
-    key "mousedown_1" action Function(rod_set_mouse_down, True)
-    key "mouseup_1" action Function(rod_set_mouse_down, False)
     timer 0.1 action [SetScreenVariable("nemu_talking", True)]
     fixed:
         xsize 600
@@ -522,8 +497,8 @@ screen rod_screen():
                         ysize 40
                         yalign 0.46
                         background Solid("#ffffff00")
-                        action [Function(rod_preview_decrease, name), Function(rod_stop_hold)]
-                        hovered [Function(rod_start_hold_if_mouse_down, name, -1), SetScreenVariable("nemu_talking_line", line)]
+                        action Function(rod_preview_decrease, name)
+                        hovered [Function(rod_start_hold, name, -1), SetScreenVariable("nemu_talking_line", line)]
                         unhovered [Function(rod_stop_hold), SetScreenVariable("nemu_talking_line", None)]
                         text "<":
                             yalign 0.5
@@ -551,8 +526,8 @@ screen rod_screen():
                         ysize 40
                         yalign 0.43
                         background Solid("#ffffff00")
-                        action [Function(rod_preview_increase, name), Function(rod_stop_hold)]
-                        hovered [Function(rod_start_hold_if_mouse_down, name, 1), SetScreenVariable("nemu_talking_line", line)]
+                        action Function(rod_preview_increase, name)
+                        hovered [Function(rod_start_hold, name, 1), SetScreenVariable("nemu_talking_line", line)]
                         unhovered [Function(rod_stop_hold), SetScreenVariable("nemu_talking_line", None)]
                         text ">":
                             yalign 0.5
