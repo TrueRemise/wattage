@@ -362,12 +362,12 @@ init python:
         rod_hold_ticks += 1
 
         # 0.5s delay before auto-repeat starts (timer runs every 0.02s => 25 ticks)
-        if rod_hold_ticks < 25:
+        if rod_hold_ticks < 50:
             return
 
         # For the next 2 seconds, apply 1 level every 5 ticks (0.1s).
         # 2 seconds at 0.02s/tick = 100 ticks, so this stage ends at tick 124.
-        if rod_hold_ticks < 125 and ((rod_hold_ticks - 25) % 5 != 0):
+        if rod_hold_ticks < 150 and ((rod_hold_ticks - 25) % 5 != 0):
             return
 
         if rod_hold_dir > 0:
