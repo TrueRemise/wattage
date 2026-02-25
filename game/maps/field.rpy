@@ -40,9 +40,10 @@ label fielddef:
         if ruins_first_woogie:
             wo "If yaa remember that maze around the district last time, It leads to Spiralia also."
             wo "Better go check it out!"
+            w "Oh the one near where I work."
         else:
             wo "There is some path that lead to it through the district."
-            wo "Better go check it out!"
+            w "Oh the one near where I work."
         hide woogie
         hide watta
         $ sanco_spiralia_location_woogie_help_toggle = False
@@ -210,7 +211,7 @@ label eastgate_test:
         wo "It is said the queen sealed this off with her strongest barrier, preventing everyone from accessing the lake."
         show woogie default
         wo "As for the reason? It was kept a secret, so I don't really know what led to it"
-        wo "Just know that you can't get past it so easily..."
+        wo "Just know that you can't get pass it so easily..."
         show woogie laugh at bounce
         wo "For now!"
         wo "Find a way to get rid of them won't ya!"

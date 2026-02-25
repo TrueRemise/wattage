@@ -162,6 +162,8 @@ label owl_quest_check:
             show screen task_aquired("OWL'S QUEST COMPLETED", "QUALITY: GOOD", "images/task/taskowl.png")
             pause 3.0
             $ owl_quest_done = True
+            o "But first, give me back the camera"
+            $ item_remove("Image Capturer")
             o "Now go ahead, ask me any question."
             $ quest_end("owl")
             $ option_add("owl","Swan Lake","owl_about_swan_lake", pos=0)

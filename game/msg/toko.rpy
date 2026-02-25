@@ -20,6 +20,7 @@ default toko_quest_acquired = False
 default archeste_open = True
 default toko_bad_end = False
 default toko_about_remi = False
+default toko_jumbo = False
 
 label toko_test:
     if the_knower == 2 and not toko_about_remi:
@@ -373,8 +374,14 @@ label toko_quest:
             extend " check."
         else:
             extend " uncheck"
-        tk "Tomatoes... uncheck"
-        tk "Fishes... uncheck"
+        if is_item_get("Homegrown Tomatoes"):
+            tk "Tomatoes... check"
+        else:
+            tk "Tomatoes... uncheck"
+        if toko_jumbo:
+            tk "Fishes... check"
+        else:
+            tk "Fishes... uncheck"
         tk "Lettuces... uncheck"
         tk "Mushrooms... uncheck"
     jump toko_talk_skip

@@ -183,6 +183,8 @@ label chii_first_talk:
     $ stone_add()
     
     hide screen task_aquired
+    $ key_item_add("Twisted Stone","Mystery stone found across Spiralia, having them in my bag boosts my energy for some reasons.", "twisted stone")
+    $ key_items_add("Twisted Stone")
     c "Wait really? How can you tell?"
     show screen action_display
     play music "bgm_floral.mp3" fadein 1.0 volume 0.5
