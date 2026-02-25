@@ -336,10 +336,10 @@ screen notebook_key_item_screen():
 
         grid 4 4 spacing 1:
 
-            for item in notebook_key_items:
+            for item_id in notebook_key_items:
 
-                $ item = notebook_key_item_data[item]
-                $ count = notebook_key_item_counts[item]
+                $ item = notebook_key_item_data[item_id]
+                $ count = notebook_key_item_counts.get(item_id, 0)
 
                 button:
                     xsize 140

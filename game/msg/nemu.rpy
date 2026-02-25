@@ -302,9 +302,6 @@ label nemu_shop:
     python:
         for stat in rod_preview:
             rod_preview[stat] = 0
-        rod_hold_stat = None
-        rod_hold_dir = 0
-        rod_hold_ticks = 0
     call screen rod_screen
 default rod_lines = [
     {
@@ -344,7 +341,6 @@ default rod_hold_ticks = 0
 
 init python:
     ROD_STAT_CAP = 250
-
     def _rod_upgrade_cost_for_level(level):
         return int(1 + level * 0.6)
 
@@ -354,20 +350,11 @@ init python:
     def rod_get_preview_stat_value(stat_name):
         return rod[stat_name] + rod_preview[stat_name]
 
-    def rod_start_hold(stat_name, direction):
-        global rod_hold_stat, rod_hold_dir, rod_hold_ticks
-        rod_hold_stat = stat_name
-        rod_hold_dir = direction
-        rod_hold_ticks = 0
-
-    def rod_stop_hold():
-        global rod_hold_stat, rod_hold_dir, rod_hold_ticks
-        rod_hold_stat = None
-        rod_hold_dir = 0
-        rod_hold_ticks = 0
-
-    def rod_process_hold_tick():
-        global rod_hold_ticks
+    def rod_get_upgrade_cost():
+        cost = 0
+        for lvl in range(rod_level + 1, rod_level_preview + 1):
+            cost += _rod_upgrade_cost_for_level(lvl)
+        return max(cost, 0)
 
         if rod_hold_stat is None or rod_hold_dir == 0:
             return
@@ -410,17 +397,13 @@ init python:
             renpy.play("sfx/bet_denied.mp3")
             renpy.notify("MAX LEVEL REACHED!")
             return
-
+        
         if not rod_can_increase(stat_name):
             renpy.play("sfx/bet_denied.mp3")
             if message:
                 renpy.notify(message)
             if is_hold_repeat:
                 rod_hold_block_feedback_played = True
-
-        if rod_get_preview_stat_value(stat_name) >= ROD_STAT_CAP:
-            _deny_once_per_hold("MAX LEVEL REACHED!")
-            return
 
         rod_preview[stat_name] += 1
         rod_level_preview += 1
@@ -468,7 +451,6 @@ init python:
         renpy.notify("Upgrades applied!")
 
 screen rod_screen():
-    timer 0.02 repeat True action Function(rod_process_hold_tick)
     timer 0.1 action [SetScreenVariable("nemu_talking", True)]
     fixed:
         xsize 600
