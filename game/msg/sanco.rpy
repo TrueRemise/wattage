@@ -9,7 +9,7 @@ label msg_sanco_early:
     sc "Watta I need some help!"
     sc "I need to speak to you before I forget."
     sc "Come to my house when you are free."
-    w "I need you to deliver a package."
+    sc "I need you to deliver a package."
     menu:
         "Can you remind me where it is?":
             jump you_dont_know_where_sanco_house_is
@@ -26,7 +26,7 @@ label you_know_where_sanco_house_is:
     return
 
 label msg_sanco_daheo_tsu_doin:
-    w "I'm uhh at Northgate now... But there is this one person that keeps blocking the path."
+    w "I'm uhh I was at the Northgate... But there is this one person that keeps blocking the path."
     sc "Uhh can you remind who that is again?"
     w "The one with white everything."
     sc "Oh Tsuyu, don't mind him too much. If you have something to cheer him up then he'll let you through."

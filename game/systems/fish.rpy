@@ -21,6 +21,7 @@ default fish_list = [
     {"name":"South Fish", "rarity":2, "toughness":6, "weight":36, "effect":"effect_sari", "desc":"Can be made into good sauce"},
     {"name":"Dollar Chums", "rarity":2, "toughness":8, "weight":36, "effect":"effect_1_luck", "desc":"A little taste to your baits"},
     {"name":"Jumbo Fish", "rarity":3, "toughness":15, "weight":50, "effect":"effect_toko_1", "desc":"I think his fish looks delicious"},
+    {"name":"Dried Fish", "rarity":3, "toughness":22, "weight":44, "effect":"nothing", "desc":"Caught this in a Pool, What?"},
     {"name":"Hallucirenia", "rarity":3, "toughness":8, "weight":75, "effect":"effect_1_resilience", "desc":"I sure don't want to get in troubles"},
     {"name":"Stone Fish", "rarity":4, "toughness":30, "weight":150, "effect":"effect_stone", "desc":"You wouldn't want this in your kidney"},
     {"name":"FISCP-169", "rarity":4, "toughness":50, "weight":225, "effect":"effect_10_size", "desc":"You have offishially become the legendary fisher"},
@@ -96,6 +97,11 @@ init python:
         if eff == "effect_nemu_1":
             nemu_manhake = True
             fish_effect = "NO EFFECT"
+            return
+        
+        if eff == "effect_toko_1":
+            toko_jumbo = True
+            fish_effect = "CAN BE USED FOR TOKO'S COOKING"
             return
 
         # --- fallback ---
