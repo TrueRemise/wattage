@@ -206,10 +206,11 @@ label lane_to_spira:
         $ renpy.pause(7, hard=True)
         show screen action_display
         $ loc_unlock("spira")
-        $ lane_to_spira_first = True
         $ adjacent_unlock("monument", "spira") 
+        $ lane_to_spira_first = True
         jump spira
     else:
+        $ lane_to_spira_first = True
         jump spira
 
 
