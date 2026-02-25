@@ -349,6 +349,7 @@ label stonecave_stone_cutscene:
     $ renpy.pause(11, hard=True)
 
     $ stone_add()
+    $ key_item_add("Twisted Stone")
     
     hide screen task_aquired
     $ stonecave_stone_found = True

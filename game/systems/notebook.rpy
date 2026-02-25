@@ -174,7 +174,34 @@ default notebook_chars = [
     },
 ]
 default notebook_key_items = []          # ordered list of item IDs
-default notebook_key_item_data = {}      # item_id → data
+default notebook_key_item_data = {
+    "Twisted Stone": {
+        "name": "Twisted Stone",
+        "desc": "Mystery stone found across Spiralia, having them in my bag boosts my energy for some reasons."
+        "image": "twisted stone"
+    },
+    "Memorizing Sheet": {
+        "name": "Memorizing Sheet",
+        "desc": "This notebook.",
+        "image": "memorizing sheet"
+    },
+    "Hydrophobic Lubricant": {
+        "name": "Hydrophobic Lubricant",
+        "desc": "Help you ride a bike on water.",
+        "image": "hydrophobic lub"
+    },
+    "Bloomfield's Charm": {
+        "name": "Bloomfield's Charm",
+        "desc": "The aura of Bloomfieldian.",
+        "image": "bloomfield charm"
+    },
+    "Corrupted Charm": {
+        "name": "Corrupted Charm",
+        "desc": "The aura of the corrupted.",
+        "image": "corrupted charm"
+    },
+
+}
 default notebook_key_item_counts = {}    # item_id → quantity
 
 
@@ -187,6 +214,7 @@ screen notebook_screen():
     add "gui/notebook_ui.png"
     # SCREEN SCOPE VARIABLES
     default hovered_char = None
+    default hovered_item = None
     use notebook_tab_screen
     if current_tab == "People":
         add "images/notebook/tab_selector.png": 
@@ -227,10 +255,32 @@ screen notebook_screen():
                     font "Iskra.ttf"
                     xpos 22
                     ypos 140
+    if hovered_item:
+        frame:
+            background None
+            xpos 900
+            ypos 80
+            xsize 690
+            ysize 890
+
+            fixed:
+                text hovered_item["name"]:
+                    size 100
+                    color "#000000"
+                    font "Iskra.ttf"
+                    xpos 10
+                    ypos 10
+
+                text hovered_item["desc"]:
+                    size 60
+                    color "#000000"
+                    font "Iskra.ttf"
+                    xpos 22
+                    ypos 140
     imagebutton:
         auto "images/notebook/cancel_%s.png"
-        xalign 0.01
-        yalign 0.01
+        xalign 0.005
+        yalign 0.005
         action [Hide("notebook_screen")]
     key "K_ESCAPE" action [Hide("notebook_screen")]
     key "K_j" action [Hide("notebook_screen")]
@@ -328,13 +378,13 @@ screen notebook_char_screen():
 
 screen notebook_key_item_screen():
 
-    add "images/notebook/friends.png"
+    add "images/notebook/questline.png"
     frame:
         xalign 0.08
-        yalign 0.16
+        yalign 0.25
         background None
 
-        grid 4 4 spacing 1:
+        grid 4 4 spacing 24:
 
             for item_id in notebook_key_items:
 
@@ -342,24 +392,25 @@ screen notebook_key_item_screen():
                 $ count = notebook_key_item_counts.get(item_id, 0)
 
                 button:
-                    xsize 140
+                    xsize 160
                     ysize 160
-                    background "#ffffffff"
+                    background "#5cff3c00"
                     focus_mask True
                     add "images/notebook/%s.png" % item["image"]:
                         anchor (0.5, 0.5)
-                        xpos 50
+                        xpos 75
                         ypos 70
                         at hover_fade
-                    action SetScreenVariable("hovered_char", item)
+                    action SetScreenVariable("hovered_item", item)
                     hovered [
-                        SetScreenVariable("hovered_char", item),
+                        SetScreenVariable("hovered_item", item),
                     ]
                     if count > 1:
                         text str(count):
-                            size 30
-                            xalign 0.95
-                            yalign 0.95
+                            color "#000000"
+                            size 55
+                            xalign 0.9
+                            yalign 0.99
 init python:
     def notebook_unlock(char_name):
         for char in notebook_chars:
@@ -380,22 +431,21 @@ init python:
         return False
 
 
-    def key_item_add(name, desc, image):
+    def key_item_add(item_id):
 
-        # If item is new
-        if name not in notebook_key_item_data:
+        if item_id not in notebook_key_item_data:
+            renpy.notify(f"Item '{item_id}' not found.")
+            return
 
-            notebook_key_items.append(name)
-
-            notebook_key_item_data[name] = {
-                "name": name,
-                "desc": desc,
-                "image": image
-            }
-
-            notebook_key_item_counts[name] = 1
-
+        if item_id not in key_items:
+            notebook_key_items.append(item_id)
+            notebook_key_item_counts[item_id] = 1
         else:
-            notebook_key_item_counts[name] += 1
-    def key_items_add(name):
-        notebook_key_item_counts[name] += 1
+            notebook_key_item_counts[item_id] += 1
+
+        renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
+    def key_item_remove(name):
+        global notebook_key_item_data
+        notebook_key_item_data = [i for i in notebook_key_item_data if i["name"] != name]
+
+        notebook_key_item_counts[item_id] -= 1
