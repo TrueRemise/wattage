@@ -261,7 +261,7 @@ init python:
         x = max(0.0, min(1.0, x))  # safety clamp
 
         # Exponential ease-out curve
-        reduction = 0.999 * (1 - math.exp(-6 * x))
+        reduction = 0.99 * (1 - math.exp(-6 * x))
 
         return 1.0 - reduction
 

@@ -226,7 +226,6 @@ screen mainhall:
         auto "images/int/right_%s.png"
         action Jump("diningroom")
 
-default sleep_flag = False
 label bed:
     default bed=0
     if phases[phase] == "Midn":
@@ -257,7 +256,6 @@ label bed:
             "Sleep til next day":
                 show watta sweat at right
                 w "Well, time to sleep"
-                $ sleep_flag = True
                 $ action_done()
                 hide watta
                 if phase == 0:

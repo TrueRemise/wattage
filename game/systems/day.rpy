@@ -46,6 +46,7 @@ init python:
         actions_left = max(actions_left, 0)  # safety
 
         if actions_left <= 0:
+            renpy.notify(f"{phase}")
             next_phase()
 
     def action_fill():
@@ -99,7 +100,7 @@ init python:
     # Phase Transition System
     # ------------------------------------------------------------
     def next_phase():
-        global actions_left, phase, day, actions_locked
+        global actions_left, phase, day, actions_locked, current_location
         if phase == 0:
             phase += 1
             actions_left = max_actions
@@ -117,7 +118,7 @@ init python:
             actions_left = min(1, max_actions)
             actions_locked = True
             hide_everything()
-            if sleep_flag == False:
+            if current_location not in ["mainhall", "diningroom", "workspace", "bedroom"]:
                 renpy.jump("force_home_midn")
         elif phase == 4:
             # Optional: ensure player ends up home
