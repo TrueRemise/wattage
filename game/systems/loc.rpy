@@ -263,9 +263,13 @@ init python:
             and not (first_work and loc == "district" and loc == "outhome")):
             pass
 
-        # update world state BEFORE jump
+        if (travel_upgrade == 2
+            and not (first_work and loc == "district" and loc == "outhome")):
+            current_location = loc
+            update_world_bg()
+            renpy.jump(loc)
+
         current_location = loc
-        # update global bg for next area
         update_world_bg()
         action_done()
 

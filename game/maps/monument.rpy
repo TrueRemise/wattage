@@ -764,16 +764,34 @@ screen jail_box_code_input():
                         color "#000000"
                         hover_color "#8da417"
 
-
 default rsa_n_input = 0
 default rsa_c_input = 0
 default rsa_d_input = 0
 init python:
-    def rsa_m_calculating():
+    import random
 
-        c = renpy.store.rsa_c_input
-        d = renpy.store.rsa_d_input
-        n = renpy.store.rsa_n_input
+    def _get_valid_rsa_input(value, min_value, max_value):
+        if isinstance(value, (list, tuple)):
+            value = value[0] if len(value) == 1 else None
+
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            value = None
+
+        if value is None or value < min_value or value > max_value:
+            return random.randint(min_value, max_value)
+
+        return value
+
+    def rsa_m_calculating():
+        c = _get_valid_rsa_input(renpy.store.rsa_c_input, 20, 50)
+        d = _get_valid_rsa_input(renpy.store.rsa_d_input, 20, 50)
+        n = _get_valid_rsa_input(renpy.store.rsa_n_input, 100, 999)
+
+        renpy.store.rsa_c_input = c
+        renpy.store.rsa_d_input = d
+        renpy.store.rsa_n_input = n
 
         result = 1
 
@@ -781,11 +799,13 @@ init python:
             result = (result * c) % n
 
         return result
-    import random
+
     def generate_rsa_n():
         renpy.store.rsa_n_input = random.randint(100, 999)
+
     def generate_rsa_c():
         renpy.store.rsa_c_input = random.randint(20, 50)
+
     def generate_rsa_d():
         renpy.store.rsa_d_input = random.randint(20, 50)
 
@@ -798,13 +818,13 @@ init python:
             renpy.notify("Please enter a number.")
             return None
 
-        
         try:
             jail_code = int(jail_code_raw)
         except ValueError:
             renpy.notify("Please enter a valid number.")
             return None
 
+        
         jail_right_code = rsa_m_calculating()
         if jail_code == jail_right_code:
             renpy.notify("Code is correct.")
