@@ -177,7 +177,7 @@ default notebook_key_items = []          # ordered list of item IDs
 default notebook_key_item_data = {
     "Twisted Stone": {
         "name": "Twisted Stone",
-        "desc": "Mystery stone found across Spiralia, having them in my bag boosts my energy for some reasons."
+        "desc": "Mystery stone found across Spiralia, having them in my bag boosts my energy for some reasons.",
         "image": "twisted stone"
     },
     "Memorizing Sheet": {
@@ -200,7 +200,17 @@ default notebook_key_item_data = {
         "desc": "The aura of the corrupted.",
         "image": "corrupted charm"
     },
+    "Hot Dog": {
+        "name": "Hot Dog",
+        "desc": "Gives 3 actions.",
+        "image": "hot dog"
+    },
 
+    "Hot Puppy": {
+        "name": "Hot Puppy",
+        "desc": "Gives 1 action, i drew 3 but mean just 1.",
+        "image": "hot puppy"
+    },
 }
 default notebook_key_item_counts = {}    # item_id → quantity
 
@@ -388,29 +398,30 @@ screen notebook_key_item_screen():
 
             for item_id in notebook_key_items:
 
-                $ item = notebook_key_item_data[item_id]
+                $ item = notebook_key_item_data.get(item_id)
                 $ count = notebook_key_item_counts.get(item_id, 0)
 
-                button:
-                    xsize 160
-                    ysize 160
-                    background "#5cff3c00"
-                    focus_mask True
-                    add "images/notebook/%s.png" % item["image"]:
-                        anchor (0.5, 0.5)
-                        xpos 75
-                        ypos 70
-                        at hover_fade
-                    action SetScreenVariable("hovered_item", item)
-                    hovered [
-                        SetScreenVariable("hovered_item", item),
-                    ]
-                    if count > 1:
-                        text str(count):
-                            color "#000000"
-                            size 55
-                            xalign 0.9
-                            yalign 0.99
+                if item:
+                    button:
+                        xsize 160
+                        ysize 160
+                        background "#5cff3c00"
+                        focus_mask True
+                        add "images/notebook/%s.png" % item["image"]:
+                            anchor (0.5, 0.5)
+                            xpos 75
+                            ypos 70
+                            at hover_fade
+                        action SetScreenVariable("hovered_item", item)
+                        hovered [
+                            SetScreenVariable("hovered_item", item),
+                        ]
+                        if count > 1:
+                            text str(count):
+                                color "#000000"
+                                size 55
+                                xalign 0.9
+                                yalign 0.99
 init python:
     def notebook_unlock(char_name):
         for char in notebook_chars:
@@ -433,19 +444,40 @@ init python:
 
     def key_item_add(item_id):
 
-        if item_id not in notebook_key_item_data:
+        if item_id not in notebook_key_items:
             renpy.notify(f"Item '{item_id}' not found.")
             return
 
         if item_id not in key_items:
             notebook_key_items.append(item_id)
-            notebook_key_item_counts[item_id] = 1
-        else:
-            notebook_key_item_counts[item_id] += 1
+        notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 0) + 1
 
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
-    def key_item_remove(name):
-        global notebook_key_item_data
-        notebook_key_item_data = [i for i in notebook_key_item_data if i["name"] != name]
+    def key_item_remove(item_name):
+        item_id = None
 
-        notebook_key_item_counts[item_id] -= 1
+        if item_name in notebook_key_item_data:
+            item_id = item_name
+        else:
+            for candidate_id, candidate in notebook_key_item_data.items():
+                if candidate.get("name") == item_name:
+                    item_id = candidate_id
+                    break
+
+        if item_id is None:
+            renpy.notify(f"Item '{item_name}' not found.")
+            return
+
+        count = notebook_key_item_counts.get(item_id, 0)
+        if count <= 0:
+            renpy.notify(f"You don't have {notebook_key_item_data[item_id]['name']}.")
+            return
+
+        notebook_key_item_counts[item_id] = count - 1
+
+        if notebook_key_item_counts[item_id] <= 0:
+            notebook_key_item_counts.pop(item_id, None)
+            if item_id in notebook_key_items:
+                notebook_key_items.remove(item_id)
+
+        renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")
