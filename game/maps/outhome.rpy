@@ -28,6 +28,7 @@ define outhome_events = {
     ("Mon", "Dawn"): "opening",
     ("Tue", "Dawn"): "opening_2",
     ("Wed", "Dawn"): "opening_3",
+    ("Thu", "Dawn"): "opening_4",
 }
 
 label outhomedef:
@@ -214,5 +215,31 @@ label opening1_3:
     hide screen day_trans
     "they moved"
     $ prologue_done_3 = True
+    $ cutscene_on = False
+    jump outhome
+
+
+default prologue_done_4 = False
+label opening_4:
+    if prologue_done_4 == True:
+        jump opening2
+    else:
+        jump opening1_4
+
+label opening1_4:
+    $ cutscene_on = True
+    show watta default
+    w "Ugh"
+    w "Which day is it again?"
+    scene bg black with Fade(0.1,0,0.5)
+    hide watta
+    show screen day_trans("Day 4")
+    $ renpy.pause(9.0, hard=True)
+    show bg outhome with dissolve
+    hide screen day_trans
+    if reni_phone_intro_done:
+        $ set_message_phase("Renia", "aloy_back", one_time=True, notify=True)
+    $ prologue_done_4 = True
+    $ aloy_unlock = True
     $ cutscene_on = False
     jump outhome

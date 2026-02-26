@@ -88,6 +88,7 @@ label tsuyu_first_talk:
     if sanco_talked_through_phone_before == True:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         $ set_message_phase("Sanco", "daheo_tsu_doin", one_time=True, notify=False)
 =======
         $ set_message_phase("Sanco", "daheo_tsu_doin", one_time=False, notify=False)
@@ -95,6 +96,9 @@ label tsuyu_first_talk:
 =======
         $ set_message_phase("Sanco", "daheo_tsu_doin", one_time=False, notify=True)
 >>>>>>> 9ef29ac (a)
+=======
+        $ set_message_phase("Sanco", "daheo_tsu_doin", one_time=False, notify=False)
+>>>>>>> 70afc25 (a)
     $ tsuyu_go_sane_at_two = 1
     jump northgate
 

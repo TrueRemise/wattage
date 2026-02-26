@@ -91,6 +91,7 @@ default item_descriptions = {"Knife" : "the roaring knife",
     "Homegrown Tomatoes" : "Speaking of planting...",
     "Crime Note" : "Contains all the criminal activities Remi did within his childhood",
     "Oil Tank" : "Basic fluid tank, contains 20mb of oil but is surprisingly light.",
+    "Red Letters" : "Farewell Party held Next Monday, 6pm.",
     }
 default inventory_items = []
 default item_description = ""

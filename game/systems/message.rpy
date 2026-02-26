@@ -7,12 +7,12 @@ default msg_data = {
     "Toko": {"phase": "0", "temp_phase": None},
     "Sari": {"phase": "0", "temp_phase": None},
     "Aloy": {"phase": "0", "temp_phase": None},
-    "Reni": {"phase": "0", "temp_phase": None},
+    "Renia": {"phase": "0", "temp_phase": None},
+    "John Phone Number": {"phase": "0", "temp_phase": None},
 }
 default msg_popup = {"visible": False, "title": "", "body": ""}
 default number_to_name = {
-    "9171434321": "Reni",
-    "9504371562": "John Phone Number",
+    "9171434321": "Renia",
     "93127548": "Jamal",
     "9359490308": "Aloy",
     "9785183": "HRLAF",
@@ -154,7 +154,7 @@ label open_messages:
     hide screen phone_screen
 
     scene bg phone with fade
-    if already_write_reni_number and not "Reni" in unlocked_msg:
+    if already_write_reni_number and not "Renia" in unlocked_msg:
         call already_write_reni_number from _call_already_write_reni_number
         
     w "Who should I check today?"
@@ -382,6 +382,9 @@ init python:
         if num == "911":
             renpy.hide("message_screen")
             renpy.call("whats_your_emergency")
+        if num == "9504371562":
+            renpy.hide("message_screen")
+            renpy.call("john_phone_number")
 
         # lookup name
         name = number_to_name.get(num)
@@ -421,5 +424,56 @@ label whats_your_emergency:
     "Jeremy" "Cool- Oh wai-"
     "The call hung up"
     w "okay?"
+    call screen message_screen
     return
     
+default john_phone_number_talk_1 = False
+default john_phone_number_talk_2 = False
+label john_phone_number:
+    if not john_phone_number_talk_1:
+        show bg phone
+        unknown "Hello?"
+        w "Hello?"
+        unknown "Oh damn, not another..."
+        unknown "Did you call me because of a random number on the wall?"
+        w "Oh...{w=1}ye I did"
+        unknown "A random kid decided to mess with me by drawing my number on the wall."
+        unknown "Could be a coincidence, but that led to many people calling me for no reason."
+        unknown "I don't even know where it was written on."
+        unknown "This sucks so bad"
+        w "I'm sorry"
+        unknown "It's fine, it's been a while since i had someone calling me."
+        unknown "The name's John, John Phone Number."
+        unknown "Yes that's my actual full name, yes it's funny please don't judge it."
+        w "Nice to meet you John"
+        w "I'm Watta"
+        john "Great to see you responding back."
+        john "Hello Watta"
+        john "Most of the callers just call me as a prank, they never meant to actually communicate."
+        john "And that annoys me."
+        john "One like you is rare, I could consider you a friend just for talking back to me."
+        john "We should definitely hangout"
+        $ john_phone_number_talk_1 = True
+        call screen message_screen
+        return
+    elif not john_phone_number_talk_2:
+        show bg phone
+        john "Oh you actually called me back."
+        john "You see me hanging up suddenly is just a test Watta."
+        john "To see if you actually care enough to call me back."
+        john "And you DID!"
+        john "You are a caring person Watta, you might also be a really good friend."
+        john "I might thank that kid later for finding me an actual gem."
+        john "I guess you are living in Sidurina right now huh?"
+        w "Ye"
+        john "I don't live in Sidurina as you all callers do, so we can't meet just yet."
+        john "But, soonly enough, I'll be moving to Irvilan."
+        john "Not too far from there isn't it."
+        john "Hope to meet you there."
+        $ john_phone_number_talk_2 = True
+        call screen message_screen
+        return
+    else:
+        "No new message from John Phone Number"
+        call screen message_screen
+        return
