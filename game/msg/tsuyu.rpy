@@ -86,7 +86,7 @@ label tsuyu_first_talk:
     $ notebook_unlock("Tsuyu")
     $ tsuyu_first_talk_done_stage = 1
     if sanco_talked_through_phone_before == True:
-        $ add_surprise("Sanco", "daheo_tsu_doin")
+        $ set_message_phase("Sanco", "daheo_tsu_doin", one_time=True, notify=False)
     $ tsuyu_go_sane_at_two = 1
     jump northgate
 
