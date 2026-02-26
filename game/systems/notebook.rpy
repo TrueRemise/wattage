@@ -200,7 +200,17 @@ default notebook_key_item_data = {
         "desc": "The aura of the corrupted.",
         "image": "corrupted charm"
     },
+    "Hot Dog": {
+        "name": "Hot Dog",
+        "desc": "Gives 3 actions.",
+        "image": "hot dog"
+    },
 
+    "Hot Puppy": {
+        "name": "Hot Puppy",
+        "desc": "Gives 1 action, i drew 3 but mean just 1.",
+        "image": "hot puppy"
+    },
 }
 default notebook_key_item_counts = {}    # item_id → quantity
 
@@ -432,6 +442,23 @@ init python:
                 return True
         return False
 
+    def _sync_key_item_inventory():
+        """Keep runtime key-item inventory structures coherent without mutating item metadata."""
+        valid_ids = set(notebook_key_item_data.keys())
+
+        notebook_key_items[:] = [
+            item_id for item_id in notebook_key_items
+            if item_id in valid_ids and notebook_key_item_counts.get(item_id, 0) > 0
+        ]
+
+        for item_id in list(notebook_key_item_counts.keys()):
+            if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
+                notebook_key_item_counts.pop(item_id, None)
+
+        for item_id in notebook_key_items:
+            if item_id not in notebook_key_item_counts:
+                notebook_key_item_counts[item_id] = 1
+
 
     def _sync_key_item_inventory():
         """Keep runtime key-item inventory structures coherent without mutating item metadata."""
@@ -496,6 +523,8 @@ init python:
         notebook_key_item_counts[item_id] += 1
         _sync_key_item_inventory()
 
+        notebook_key_item_counts[item_id] += 1
+        _sync_key_item_inventory()
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
 
     def key_item_remove(item_id):

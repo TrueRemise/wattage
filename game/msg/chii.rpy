@@ -184,7 +184,8 @@ label chii_first_talk:
     $ key_item_add("Twisted Stone")
     
     hide screen task_aquired
-    $ key_item_remove("Corrupted Charm")
+    $ key_item_add("Corrupted Charm")
+    $ key_item_add("Hydrophobic Lubricant")
     c "Wait really? How can you tell?"
     show screen action_display
     play music "bgm_floral.mp3" fadein 1.0 volume 0.5
