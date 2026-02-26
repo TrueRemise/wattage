@@ -1,11 +1,13 @@
 ﻿# File: game/systems/remi.rpy
 label msg_sanco_0:
+    show bg phone
     "No new messages from Sanco."
     call screen message_screen
     return
 
 
 label msg_sanco_early:
+    show bg phone
     sc "Watta I need some help!"
     sc "I need to speak to you before I forget."
     sc "Come to my house when you are free."
@@ -26,6 +28,7 @@ label you_know_where_sanco_house_is:
     return
 
 label msg_sanco_daheo_tsu_doin:
+    show bg phone
     w "I'm uhh I was at the Northgate... But there is this one person that keeps blocking the path."
     sc "Uhh can you remind who that is again?"
     w "The one with white everything."
@@ -36,6 +39,7 @@ label msg_sanco_daheo_tsu_doin:
     return
 
 label msg_sanco_early1:
+    show bg phone
     sc "Hi Watta, do you need anything?"
     menu:
         "Can you remind me where it is again?":
@@ -50,6 +54,7 @@ label msg_sanco_ruins_lost:
     "No response."
     show bg phone mad
     w "What the hell?"
+    $ update_msg_phase("Sanco", "0")
     call screen message_screen
     return
 

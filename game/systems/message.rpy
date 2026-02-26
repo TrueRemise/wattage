@@ -2,12 +2,12 @@
 default msg_active_context = False
 default phone_number = ""
 default msg_data = {
-    "Remi": {"phase": "0", "temp_phase": None, "set_phase": None},
-    "Sanco": {"phase": "0", "temp_phase": None, "set_phase": None},
-    "Toko": {"phase": "0", "temp_phase": None, "set_phase": None},
-    "Sari": {"phase": "0", "temp_phase": None, "set_phase": None},
-    "Aloy": {"phase": "0", "temp_phase": None, "set_phase": None},
-    "Reni": {"phase": "0", "temp_phase": None, "set_phase": None},
+    "Remi": {"phase": "0", "temp_phase": None},
+    "Sanco": {"phase": "0", "temp_phase": None},
+    "Toko": {"phase": "0", "temp_phase": None},
+    "Sari": {"phase": "0", "temp_phase": None},
+    "Aloy": {"phase": "0", "temp_phase": None},
+    "Reni": {"phase": "0", "temp_phase": None},
 }
 default msg_popup = {"visible": False, "title": "", "body": ""}
 default number_to_name = {
@@ -24,32 +24,22 @@ init python:
     def _get_or_init_msg_entry(name):
         info = msg_data.get(name)
         if not info:
-            info = {"phase": "0", "temp_phase": None, "set_phase": None}
+            info = {"phase": "0", "temp_phase": None}
             msg_data[name] = info
         info.setdefault("phase", "0")
         info.setdefault("temp_phase", None)
-        info.setdefault("set_phase", None)
         return info
 
     def get_msg_phase(name):
         """Return the active phase for a character (temporary override first)."""
         info = _get_or_init_msg_entry(name)
-        return info["temp_phase"] or info["set_phase"] or info["phase"]
+        return info["temp_phase"] or info["phase"]
 
-    def update_msg_phase(name, new_phase, one_time=False, notify=False, note=None):
-        """Update a person's phase; base update by default, temporary when one_time=True."""
+    def update_msg_phase(name, new_phase):
+        """Set the default phase for a person and clear temporary overrides."""
         info = _get_or_init_msg_entry(name)
-        phase = str(new_phase)
-
-        if one_time:
-            info["temp_phase"] = phase
-        else:
-            info["phase"] = phase
-            info["temp_phase"] = None
-            info["set_phase"] = None
-
-        if notify:
-            show_msg_notification(name, note or "New message.")
+        info["phase"] = str(new_phase)
+        info["temp_phase"] = None
 
     def show_msg_notification(name, body="1 new message"):
         """Show a dedicated slide-in message notification."""
@@ -58,7 +48,7 @@ init python:
         msg_popup["visible"] = True
         renpy.show_screen("message_popup_screen")
 
-    def set_message_phase(name, phase, one_time=False, notify=False, note=None):
+    def set_message_phase(name, phase, one_time=False, notify=True, note=None):
         """
         Update a person's message phase.
 
@@ -71,8 +61,6 @@ init python:
         if one_time:
             info["temp_phase"] = phase
         else:
-            # Persistent override until update_msg_phase changes the base phase.
-            info["set_phase"] = phase
             info["phase"] = phase
             info["temp_phase"] = None
 
