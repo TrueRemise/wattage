@@ -11,6 +11,7 @@ define c = Character("Chii", what_font="fonts/Chiko.ttf", who_font="fonts/Chiko.
 define n = Character("Nemu", what_font="fonts/Nemu.ttf", who_font="fonts/Nemu.ttf", size = 55, who_xpos = 10, who_ypos = 25, what_size=55, what_ypos = 5, what_xpos =350, color="#8c8c8c")
 define ts = Character("Tsuyu", what_font="fonts/Tsuyu.ttf", who_font="fonts/Tsuyu.ttf", size = 48, who_xpos = 10, who_ypos = 20, what_size=45, what_ypos = -20, what_xpos =340, color="#ddba21")
 define iog = Character("Iog", what_font="fonts/Iog.ttf", who_font="fonts/Iog.ttf", size = 45, who_xpos = 12, who_ypos = 25, color="#000000")
+define john = Character("John", what_font="fonts/Iog.ttf", who_font="fonts/Terraria.ttf", size = 45, who_xpos = 12, who_ypos = 25, color="#000000")
 define rn = Character("Renia", what_font="fonts/Reni.ttf", who_font="fonts/Reni.ttf", size = 48, who_xpos = 25, who_ypos = 24, what_size=55, what_ypos = -0, what_xpos =350, color="#f94886")
 define nk = Character("Neko", what_font="fonts/Reni.ttf", who_font="fonts/Reni.ttf", size = 48, who_xpos = 25, who_ypos = 24, what_size=55, what_ypos = -0, what_xpos =350, color="#f49e4d")
 define sc = Character("Sanco", what_font="fonts/Sanco.ttf", who_font="fonts/Sanco.ttf", size = 55, who_xpos = 10, who_ypos = 25, what_size=55, what_ypos = -11, what_xpos =350, color="#c6892d")
@@ -24,6 +25,7 @@ define o = Character("Owl", what_font="fonts/Owl.ttf", who_font="fonts/Owl.ttf",
 define tkn = Character("Tsukino", what_font="fonts/Tsukino.ttf", who_font="fonts/Tsukino.ttf", size = 45, who_xpos = -10, who_ypos = 30, what_size=45, what_ypos = 10, what_xpos =350, color="#a75028")
 define sn = Character("Snowie", what_font="fonts/Snowie.ttf", who_font="fonts/Snowie.ttf", size = 50, who_xpos = -10, who_ypos = 25, what_size=50, what_ypos = 15, what_xpos =340, color="#212d7b")
 define vv = Character("Vivi", what_font="fonts/Vivi.ttf", who_font="fonts/Vivi.ttf", size = 65, who_xpos = 5, who_ypos = 35, what_size=50, what_ypos = 15, what_xpos =340, color="#23899d")
+define al = Character("Aloy", what_font="fonts/Aloy.ttf", who_font="fonts/Aloy.ttf", size = 45, who_xpos = 10, who_ypos = 30, what_size=38, what_ypos = 15, what_xpos =340, color="#8a1313")
 default inv_check = False
 default current_location = "home"
 default food_prepared = False

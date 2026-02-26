@@ -1,8 +1,21 @@
 ﻿# File: game/systems/reni.rpy
 
-label msg_reni_0:
+label msg_renia_aloy_back:
+    show bg phone
+    rn "Hello Watta"
+    rn "Aloy got back to his house"
+    rn "He might have something to tell you"
+    w "I see, thank you"
+    call screen message_screen
+    return
+    
+
+label msg_renia_0:
     if phase == 0 or phase == 1:
-        call reni_calling_0 from _call_reni_calling_0
+        if not reni_phone_intro_done:
+            call reni_calling_0 from _call_reni_calling_0
+        else:
+            call msg_renia_1
     else:
         "(voicemail) I am currently occupied, please avoid calling from 5pm to 10pm"
     call screen message_screen
@@ -11,7 +24,7 @@ label msg_reni_0:
 label already_write_reni_number:
     w "Let me type in Reni's number real quick!"
     w "Andddd... "
-    $ msg_unlock("Reni")
+    $ msg_unlock("Renia")
     extend "Done!"
     w "So..."
     return
@@ -20,6 +33,7 @@ default timer_minutes = 0
 default timer_seconds = 0
 default reni_thought_it_was_a_scam_call = False
 default reni_first_time_counter = 0
+default reni_phone_intro_done = False
 
 init python:
     def update_timer_counter():
@@ -49,9 +63,9 @@ label reni_calling_0:
     stop music fadeout 0.5
     scene bg ongoingcall with Fade(0.1,0,0.1)
     play sound "sfx/outgoing_call.mp3" loop
-    "Calling Reni{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
-    "Calling Reni{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
-    "Calling Reni{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
+    "Calling Reniacc{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
+    "Calling Reniacc{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
+    "Calling Reniacc{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
     play sound "sfx/join.mp3"
     $ timer_minutes =0
     $ timer_seconds=0
@@ -91,7 +105,8 @@ label reni_calling_0:
         rn "Nevermind about that..."
         rn "I'm free at the moment, so if you have anything to talk about you can ask me."
     w "Of course!"
-    $ update_msg_phase("Reni", "1")
+    $ reni_phone_intro_done = True
+    $ update_msg_phase("Reni", "0")
     jump reni_talk_skip
 
 label reni_thought_it_was_a_scam_call:
@@ -103,13 +118,13 @@ label reni_thought_it_was_a_scam_call:
     jump reni_ask_1
 
 
-label msg_reni_1:
+label msg_renia_1:
     stop music fadeout 0.5
     scene bg ongoingcall with Fade(0.1,0,0.1)
     play sound "sfx/outgoing_call.mp3" loop
-    "Calling Reni{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
-    "Calling Reni{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
-    "Calling Reni{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
+    "Calling Reniacc{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
+    "Calling Reniacc{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
+    "Calling Reniacc{fast}{w=0.5}.{w=0.5}.{w=0.5}.{nw}"
     play sound "sfx/join.mp3"
     $ timer_minutes =0
     $ timer_seconds=0
@@ -120,7 +135,7 @@ label msg_reni_1:
     rn "Hello Watta, what do you want to talk about?"
 label reni_talk_skip:
     if neko_first_talk_done_stage >= 1:
-        $option_add("reni", "About Neko", "reni_about_neko") 
+        $option_add("reni", "About Neko", "reni_about_neko", pos=0) 
     call screen reni_screen
 default reni_options = {
     "Why did you leave your house?": "reni_why_did_you_leave",
@@ -136,7 +151,7 @@ screen reni_screen():
     zorder 195
 
     vbox:
-        spacing 50
+        spacing 20
         xalign 0.5
         yalign 0.5
 
@@ -184,7 +199,10 @@ label reni_why_did_you_leave:
     $ reni_first_time_counter += 1
     jump reni_talk_skip
 label reni_about_aloy:
-    rn "He left his house for the same reason as I, but I believe he will be back home sooner than I would be."
+    if not prologue_done_4:
+        rn "He left his house for the same reason as I, but I believe he will be back home sooner than I would be."
+    else:
+        rn "He left his house for the same reason as I, but he's back now."
     $ option_remove("reni", "About Aloy")
     $ reni_first_time_counter += 1
     jump reni_talk_skip

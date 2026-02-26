@@ -4,19 +4,22 @@ label monument:
 
     # Update and store correct background for this phase
     $ bg_image = update_world_bg()
+    if phase != 3:
+        scene bg monument with Fade(0.1, 0, 0.1)
+    else:
+        scene bg monumentn with Fade(0.1, 0, 0.1)
 
     # Music setup
-    stop music fadeout 0.5
-    play music "bgm_monument.mp3" fadein 1.0
     jump monumentskip
 
 label monumentskip:
     # Automatically load background with a smooth transition
     $ current_location = "monument"
     if phase != 3:
-        scene bg monument with Fade(0.1, 0, 0.1)
+        scene bg monument 
     else:
-        scene bg monumentn with Fade(0.1, 0, 0.1)
+        scene bg monumentn 
+    play music "bgm_monument.mp3" fadein 1.0 if_changed
     # --- Event jump logic ---
     if (current_weekday, current_phase) in monument_events:
         jump expression monument_events[(current_weekday, current_phase)]
@@ -48,7 +51,7 @@ screen monument:
         xpos 1483
         ypos 450
         auto "images/int/mon_left_%s.png"
-        action Jump("dustwynd")
+        action Jump("dustwynd_outside")
     imagebutton:
         xpos 1528
         ypos 244
@@ -67,20 +70,20 @@ default dustwynd_first = False
 label dustwynd_first:
     w "This should be Aloy's house, judging by the smell."
     $ dustwynd_first = True
-    jump dustwyndskip
-label dustwynd:
+    jump dustwynd_outsideskip
+label dustwynd_outside:
     $ current_location = "dustwynd"
-    play music "bgm_monument.mp3" fadein 1.0 if_changed
+    play music "bgm_aloy.mp3" fadein 1.0 if_changed
     if aloy_unlock == True:
-        scene bg dustwyndl with Fade(0.1, 0, 0.1)
+        scene bg aloyl with Fade(0.1, 0, 0.1)
     else:
-        scene bg dustwynd with Fade(0.1, 0, 0.1)
+        scene bg aloy with Fade(0.1, 0, 0.1)
     if dustwynd_first == False:
         jump dustwynd_first
-    jump dustwyndskip
-label dustwyndskip:
-    call screen dustwynd
-screen dustwynd:
+    jump dustwynd_outsideskip
+label dustwynd_outsideskip:
+    call screen dustwynd_outside
+screen dustwynd_outside:
     imagebutton:
         xpos 1233
         ypos 323
@@ -96,7 +99,30 @@ label aloy:
     if aloy_unlock == False:
         "The door is locked"
         jump dustwyndskip
+    else:
+        jump dustwynd
     jump dustwyndskip
+
+label dustwynd:
+    $ current_location = "dustwynd"
+    scene bg dustwynd with Fade(0.1, 0, 0.1)
+    play music "bgm_dustwynd.mp3" fadein 1.0 if_changed
+    jump dustwyndskip
+label dustwyndskip:
+    scene bg dustwynd
+    call screen dustwynd
+
+screen dustwynd:
+    imagebutton:
+        xpos 27
+        ypos 400
+        auto "images/int/left_%s.png"
+        action Jump("dustwynd_outside")
+    imagebutton:
+        xpos 1310
+        ypos 265
+        auto "images/char_int/aloy_dustwynd_%s.png"
+        action Jump("aloy_test")
 
 default nekopia_first = False
 default lane_to_monument_first = 0
@@ -1005,6 +1031,7 @@ default monument_to_cavern_unlock = False
 default to_monument_from_cavern_first = False
 label to_monument_from_cavern:
     if not to_monument_from_cavern_first:
+        $ cutscene_on = True
         w "Let's see..."
         w "Ohh it's shut from inside."
         w "So this is a path for evacuation"
@@ -1061,6 +1088,11 @@ label to_monument_from_cavern:
             show watta frown
             w "Whatever.."
         hide watta
+        if reni_phone_intro_done:
+            $ set_message_phase("Renia", "aloy_back", one_time=True, notify=True)
+        $ prologue_done_4 = True
+        $ aloy_unlock = True
+        $ cutscene_on = False
         $ actions_locked = False
         $ to_monument_from_cavern_first = True
         $ monument_to_cavern_unlock = True
