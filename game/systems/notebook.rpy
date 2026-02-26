@@ -479,43 +479,6 @@ init python:
         for item_id in notebook_key_items:
             notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 1)
 
-    def _sync_key_item_inventory():
-        """Keep runtime key-item inventory structures coherent without mutating item metadata."""
-        valid_ids = set(notebook_key_item_data.keys())
-
-        try:
-            string_types = (basestring,)
-        except NameError:
-            string_types = (str,)
-
-        migrated_items = []
-        for entry in list(notebook_key_items):
-            item_id = None
-
-            if isinstance(entry, string_types):
-                item_id = entry if entry in valid_ids else None
-            elif isinstance(entry, dict):
-                candidate_name = entry.get("name")
-                if candidate_name in valid_ids:
-                    item_id = candidate_name
-                else:
-                    for candidate_id, candidate in notebook_key_item_data.items():
-                        if candidate.get("name") == candidate_name:
-                            item_id = candidate_id
-                            break
-
-            if item_id is not None and item_id not in migrated_items:
-                migrated_items.append(item_id)
-
-        notebook_key_items[:] = migrated_items
-
-        for item_id in list(notebook_key_item_counts.keys()):
-            if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
-                notebook_key_item_counts.pop(item_id, None)
-
-        for item_id in notebook_key_items:
-            notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 1)
-
     def refresh_key_item_inventory(clear_all=False):
         """Manual refresh helper for old saves.
 
@@ -530,6 +493,7 @@ init python:
         renpy.notify("Notebook key-item inventory refreshed.")
 
     def key_item_add(item_id):
+        item_id = _resolve_key_item_id(item_id)
 
         if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
@@ -541,12 +505,10 @@ init python:
 
         notebook_key_item_counts[item_id] += 1
         _sync_key_item_inventory()
-
-        notebook_key_item_counts[item_id] += 1
-        _sync_key_item_inventory()
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
 
     def key_item_remove(item_id):
+        item_id = _resolve_key_item_id(item_id)
 
         if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
@@ -561,3 +523,17 @@ init python:
         _sync_key_item_inventory()
 
         renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")
+
+    def _resolve_key_item_id(item_id):
+        """Accept item IDs, display names, and old dict entries."""
+        if item_id in notebook_key_item_data:
+            return item_id
+
+        if isinstance(item_id, dict):
+            item_id = item_id.get("name")
+
+        for candidate_id, candidate in notebook_key_item_data.items():
+            if candidate.get("name") == item_id:
+                return candidate_id
+
+        return item_id
