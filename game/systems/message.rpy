@@ -51,6 +51,16 @@ init python:
         if notify:
             show_msg_notification(name, note or "New message.")
 
+        if one_time:
+            info["temp_phase"] = phase
+        else:
+            info["phase"] = phase
+            info["temp_phase"] = None
+            info["set_phase"] = None
+
+        if notify:
+            show_msg_notification(name, note or "New message.")
+
     def show_msg_notification(name, body="New message."):
         """Show a dedicated slide-in message notification."""
         msg_popup["title"] = name
