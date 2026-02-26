@@ -2,8 +2,8 @@
 default job_upgrade = 0
 
 # base values
-define work = 100
-define work_remote = 25
+define work = 200
+define work_remote = 50
 
 init python:
     def sol_add(amount):
