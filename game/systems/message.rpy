@@ -73,6 +73,7 @@ init python:
         else:
             # Persistent override until update_msg_phase changes the base phase.
             info["set_phase"] = phase
+            info["phase"] = phase
             info["temp_phase"] = None
 
         if notify:
