@@ -163,7 +163,7 @@ label ruinsskip:
         w "Well this should be the path to Spiralia."
         w "I don't wanna be lost... so..."
         w "I should ask Sanco again for the map."
-        $ update_msg_phase("Sanco","ruins_lost")
+        $ set_message_phase("Sanco", "ruins_lost", one_time=True, notify=False)
         $ ruins_first_sanco = True
     if spiralia_direction_noted_noted == False:
         if spiralia_direction_noted == True:
