@@ -446,24 +446,6 @@ init python:
         """Keep runtime key-item inventory structures coherent without mutating item metadata."""
         valid_ids = set(notebook_key_item_data.keys())
 
-        notebook_key_items[:] = [
-            item_id for item_id in notebook_key_items
-            if item_id in valid_ids and notebook_key_item_counts.get(item_id, 0) > 0
-        ]
-
-        for item_id in list(notebook_key_item_counts.keys()):
-            if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
-                notebook_key_item_counts.pop(item_id, None)
-
-        for item_id in notebook_key_items:
-            if item_id not in notebook_key_item_counts:
-                notebook_key_item_counts[item_id] = 1
-
-
-    def _sync_key_item_inventory():
-        """Keep runtime key-item inventory structures coherent without mutating item metadata."""
-        valid_ids = set(notebook_key_item_data.keys())
-
         try:
             string_types = (basestring,)
         except NameError:
@@ -511,6 +493,7 @@ init python:
         renpy.notify("Notebook key-item inventory refreshed.")
 
     def key_item_add(item_id):
+        item_id = _resolve_key_item_id(item_id)
 
         if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
@@ -522,12 +505,10 @@ init python:
 
         notebook_key_item_counts[item_id] += 1
         _sync_key_item_inventory()
-
-        notebook_key_item_counts[item_id] += 1
-        _sync_key_item_inventory()
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
 
     def key_item_remove(item_id):
+        item_id = _resolve_key_item_id(item_id)
 
         if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
@@ -542,3 +523,17 @@ init python:
         _sync_key_item_inventory()
 
         renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")
+
+    def _resolve_key_item_id(item_id):
+        """Accept item IDs, display names, and old dict entries."""
+        if item_id in notebook_key_item_data:
+            return item_id
+
+        if isinstance(item_id, dict):
+            item_id = item_id.get("name")
+
+        for candidate_id, candidate in notebook_key_item_data.items():
+            if candidate.get("name") == item_id:
+                return candidate_id
+
+        return item_id
