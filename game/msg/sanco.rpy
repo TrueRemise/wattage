@@ -32,6 +32,7 @@ label msg_sanco_daheo_tsu_doin:
     sc "Oh Tsuyu, don't mind him too much. If you have something to cheer him up then he'll let you through."
     sc "Oh and alternatively, you can check that place after they switch the guard."
     w "Thanks for the info."
+    call screen message_screen
     return
 
 label msg_sanco_early1:
