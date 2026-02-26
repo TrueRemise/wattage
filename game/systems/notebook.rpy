@@ -396,10 +396,12 @@ screen notebook_key_item_screen():
 
         grid 4 4 spacing 24:
 
+            $ _sync_key_item_inventory()
+
             for item_id in notebook_key_items:
 
-                $ item = notebook_key_item_data.get(item_id)
-                $ count = notebook_key_item_counts.get(item_id, 0)
+                $ item = notebook_key_item_data[item_id]
+                $ count = notebook_key_item_counts[item_id]
 
                 if item:
                     button:
@@ -441,31 +443,41 @@ init python:
                 return True
         return False
 
+    def _sync_key_item_inventory():
+        """Keep runtime key-item inventory structures coherent without mutating item metadata."""
+        valid_ids = set(notebook_key_item_data.keys())
+
+        notebook_key_items[:] = [
+            item_id for item_id in notebook_key_items
+            if item_id in valid_ids and notebook_key_item_counts.get(item_id, 0) > 0
+        ]
+
+        for item_id in list(notebook_key_item_counts.keys()):
+            if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
+                notebook_key_item_counts.pop(item_id, None)
+
+        for item_id in notebook_key_items:
+            if item_id not in notebook_key_item_counts:
+                notebook_key_item_counts[item_id] = 1
+
 
     def key_item_add(item_id):
 
         if item_id not in notebook_key_items:
-            renpy.notify(f"Item '{item_id}' not found.")
+            renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
             return
 
-        if item_id not in key_items:
+        if item_id not in notebook_key_items:
             notebook_key_items.append(item_id)
-        notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 0) + 1
+            notebook_key_item_counts[item_id] = 0
 
+        notebook_key_item_counts[item_id] += 1
+        _sync_key_item_inventory()
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
-    def key_item_remove(item_name):
-        item_id = None
+    def key_item_remove(item_id):
 
-        if item_name in notebook_key_item_data:
-            item_id = item_name
-        else:
-            for candidate_id, candidate in notebook_key_item_data.items():
-                if candidate.get("name") == item_name:
-                    item_id = candidate_id
-                    break
-
-        if item_id is None:
-            renpy.notify(f"Item '{item_name}' not found.")
+        if item_id not in notebook_key_item_data:
+            renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
             return
 
         count = notebook_key_item_counts.get(item_id, 0)
@@ -474,10 +486,6 @@ init python:
             return
 
         notebook_key_item_counts[item_id] = count - 1
-
-        if notebook_key_item_counts[item_id] <= 0:
-            notebook_key_item_counts.pop(item_id, None)
-            if item_id in notebook_key_items:
-                notebook_key_items.remove(item_id)
+        _sync_key_item_inventory()
 
         renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")
