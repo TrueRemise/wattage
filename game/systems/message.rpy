@@ -1,14 +1,15 @@
 ﻿default unlocked_msg = ["Remi", "Sanco", "Toko", "Sari"]
 default msg_active_context = False
-default phone_number = ""     
+default phone_number = ""
 default msg_data = {
-    "Remi": {"phase": "0", "surprises": []},
-    "Sanco": {"phase": "0", "surprises": []},
-    "Toko": {"phase": "0", "surprises": []},
-    "Sari": {"phase": "0", "surprises": []},
-    "Aloy": {"phase": "0", "surprises": []},
-    "Reni": {"phase": "0", "surprises": []},
+    "Remi": {"phase": "0", "temp_phase": None},
+    "Sanco": {"phase": "0", "temp_phase": None},
+    "Toko": {"phase": "0", "temp_phase": None},
+    "Sari": {"phase": "0", "temp_phase": None},
+    "Aloy": {"phase": "0", "temp_phase": None},
+    "Reni": {"phase": "0", "temp_phase": None},
 }
+default msg_popup = {"visible": False, "title": "", "body": ""}
 default number_to_name = {
     "9171434321": "Reni",
     "9504371562": "John Phone Number",
@@ -20,29 +21,54 @@ default number_to_name = {
 }
 
 init python:
-    def get_msg_phase(name):
-        """Return the current phase for a character."""
+    def _get_or_init_msg_entry(name):
         info = msg_data.get(name)
         if not info:
-            return "0"
-        if info["surprises"]:
-            s = info["surprises"][-1]
-            return s
-        return info["phase"]
+            info = {"phase": "0", "temp_phase": None}
+            msg_data[name] = info
+        info.setdefault("phase", "0")
+        info.setdefault("temp_phase", None)
+        return info
+
+    def get_msg_phase(name):
+        """Return the active phase for a character (temporary override first)."""
+        info = _get_or_init_msg_entry(name)
+        return info["temp_phase"] or info["phase"]
 
     def update_msg_phase(name, new_phase):
-        """Update story/surprise phase for a person."""
-        if name in msg_data:
-            msg_data[name]["phase"] = str(new_phase)
-        else:
-            msg_data[name] = {"phase": str(new_phase), "surprises": []}
+        """Set the default phase for a person."""
+        info = _get_or_init_msg_entry(name)
+        info["phase"] = str(new_phase)
 
-    def add_surprise(name, tag):
-        """Add a surprise phase (prioritized)."""
-        if name in msg_data:
-            msg_data[name]["surprises"].append(tag)
+    def show_msg_notification(name, body="New message."):
+        """Show a dedicated slide-in message notification."""
+        msg_popup["title"] = name
+        msg_popup["body"] = body
+        msg_popup["visible"] = True
+        renpy.show_screen("message_popup_screen")
+
+    def set_message_phase(name, phase, one_time=False, notify=True, note=None):
+        """
+        Update a person's message phase.
+
+        one_time=True: phase is temporary and consumed on open, then returns to base phase.
+        notify=False: update silently (use when the player is already in direct conversation/cutscene).
+        """
+        info = _get_or_init_msg_entry(name)
+        phase = str(phase)
+
+        if one_time:
+            info["temp_phase"] = phase
         else:
-            msg_data[name] = {"phase": "0", "surprises": [tag]}
+            info["phase"] = phase
+            info["temp_phase"] = None
+
+        if notify:
+            show_msg_notification(name, note or "New message.")
+
+    # Backward-compatible helper for old calls.
+    def add_surprise(name, tag):
+        set_message_phase(name, tag, one_time=True, notify=True)
 
     def msg_unlock(name):
         """Unlock new person for messaging."""
@@ -51,12 +77,18 @@ init python:
             renpy.notify(f"New contact unlocked: {name}")
 
     def open_message_convo(name):
-        """Open a character’s message conversation."""
+        """Open a character's message conversation."""
+        info = _get_or_init_msg_entry(name)
         phase = get_msg_phase(name)
         label_name = f"msg_{name.lower()}_{phase}"
+
         if renpy.has_label(label_name):
             renpy.call(label_name)
-            # After message, reopen the message list automatically
+
+            # Consume one-time phase after opening so it falls back to default message.
+            if info["temp_phase"] == phase:
+                info["temp_phase"] = None
+
             renpy.call_screen("message_screen")
         else:
             renpy.notify(f"No messages for {name}")
@@ -170,6 +202,37 @@ screen message_screen():
                     yalign 0.5
         else:
             text "No contacts yet." size 40 xalign 0.5 color "#000000"
+
+
+screen message_popup_screen():
+    zorder 210
+
+    if msg_popup["visible"]:
+        frame at msg_popup_slide:
+            xalign 1.0
+            yalign 0.18
+            xmaximum 580
+            background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
+            padding (24, 16)
+
+            vbox:
+                spacing 4
+                text "[msg_popup['title']]" size 38 color "#000"
+                text "[msg_popup['body']]" size 28 color "#111"
+
+        timer 2.75 action [
+            SetDict(msg_popup, "visible", False),
+            Hide("message_popup_screen")
+        ]
+
+
+transform msg_popup_slide:
+    on show:
+        xoffset 700
+        alpha 0.0
+        easein 0.25 xoffset 0 alpha 1.0
+        pause 1.9
+        easeout 0.35 xoffset 700 alpha 0.0
 
 
 transform hover_fade:
