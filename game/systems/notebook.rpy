@@ -177,7 +177,7 @@ default notebook_key_items = []          # ordered list of item IDs
 default notebook_key_item_data = {
     "Twisted Stone": {
         "name": "Twisted Stone",
-        "desc": "Mystery stone found across Spiralia, having them in my bag boosts my energy for some reasons."
+        "desc": "Mystery stone found across Spiralia, having them in my bag boosts my energy for some reasons.",
         "image": "twisted stone"
     },
     "Memorizing Sheet": {
@@ -386,10 +386,12 @@ screen notebook_key_item_screen():
 
         grid 4 4 spacing 24:
 
+            $ _sync_key_item_inventory()
+
             for item_id in notebook_key_items:
 
                 $ item = notebook_key_item_data[item_id]
-                $ count = notebook_key_item_counts.get(item_id, 0)
+                $ count = notebook_key_item_counts[item_id]
 
                 button:
                     xsize 160
@@ -431,21 +433,83 @@ init python:
         return False
 
 
+    def _sync_key_item_inventory():
+        """Keep runtime key-item inventory structures coherent without mutating item metadata."""
+        valid_ids = set(notebook_key_item_data.keys())
+
+        try:
+            string_types = (basestring,)
+        except NameError:
+            string_types = (str,)
+
+        migrated_items = []
+        for entry in list(notebook_key_items):
+            item_id = None
+
+            if isinstance(entry, string_types):
+                item_id = entry if entry in valid_ids else None
+            elif isinstance(entry, dict):
+                candidate_name = entry.get("name")
+                if candidate_name in valid_ids:
+                    item_id = candidate_name
+                else:
+                    for candidate_id, candidate in notebook_key_item_data.items():
+                        if candidate.get("name") == candidate_name:
+                            item_id = candidate_id
+                            break
+
+            if item_id is not None and item_id not in migrated_items:
+                migrated_items.append(item_id)
+
+        notebook_key_items[:] = migrated_items
+
+        for item_id in list(notebook_key_item_counts.keys()):
+            if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
+                notebook_key_item_counts.pop(item_id, None)
+
+        for item_id in notebook_key_items:
+            notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 1)
+
+    def refresh_key_item_inventory(clear_all=False):
+        """Manual refresh helper for old saves.
+
+        Set clear_all=True to wipe current key-item inventory and start clean.
+        """
+        if clear_all:
+            notebook_key_items[:] = []
+            notebook_key_item_counts.clear()
+        else:
+            _sync_key_item_inventory()
+
+        renpy.notify("Notebook key-item inventory refreshed.")
+
     def key_item_add(item_id):
 
         if item_id not in notebook_key_item_data:
-            renpy.notify(f"Item '{item_id}' not found.")
+            renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
             return
 
-        if item_id not in key_items:
+        if item_id not in notebook_key_items:
             notebook_key_items.append(item_id)
-            notebook_key_item_counts[item_id] = 1
-        else:
-            notebook_key_item_counts[item_id] += 1
+            notebook_key_item_counts[item_id] = 0
+
+        notebook_key_item_counts[item_id] += 1
+        _sync_key_item_inventory()
 
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
-    def key_item_remove(name):
-        global notebook_key_item_data
-        notebook_key_item_data = [i for i in notebook_key_item_data if i["name"] != name]
 
-        notebook_key_item_counts[item_id] -= 1
+    def key_item_remove(item_id):
+
+        if item_id not in notebook_key_item_data:
+            renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
+            return
+
+        count = notebook_key_item_counts.get(item_id, 0)
+        if count <= 0:
+            renpy.notify(f"You don't have {notebook_key_item_data[item_id]['name']}.")
+            return
+
+        notebook_key_item_counts[item_id] = count - 1
+        _sync_key_item_inventory()
+
+        renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")
