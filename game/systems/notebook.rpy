@@ -447,23 +447,42 @@ init python:
         """Keep runtime key-item inventory structures coherent without mutating item metadata."""
         valid_ids = set(notebook_key_item_data.keys())
 
-        notebook_key_items[:] = [
-            item_id for item_id in notebook_key_items
-            if item_id in valid_ids and notebook_key_item_counts.get(item_id, 0) > 0
-        ]
+        try:
+            string_types = (basestring,)
+        except NameError:
+            string_types = (str,)
+
+        migrated_items = []
+        for entry in list(notebook_key_items):
+            item_id = None
+
+            if isinstance(entry, string_types):
+                item_id = entry if entry in valid_ids else None
+            elif isinstance(entry, dict):
+                candidate_name = entry.get("name")
+                if candidate_name in valid_ids:
+                    item_id = candidate_name
+                else:
+                    for candidate_id, candidate in notebook_key_item_data.items():
+                        if candidate.get("name") == candidate_name:
+                            item_id = candidate_id
+                            break
+
+            if item_id is not None and item_id not in migrated_items:
+                migrated_items.append(item_id)
+
+        notebook_key_items[:] = migrated_items
 
         for item_id in list(notebook_key_item_counts.keys()):
             if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
                 notebook_key_item_counts.pop(item_id, None)
 
         for item_id in notebook_key_items:
-            if item_id not in notebook_key_item_counts:
-                notebook_key_item_counts[item_id] = 1
-
+            notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 1)
 
     def key_item_add(item_id):
 
-        if item_id not in notebook_key_items:
+        if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
             return
 
@@ -485,6 +504,9 @@ init python:
             renpy.notify(f"You don't have {notebook_key_item_data[item_id]['name']}.")
             return
 
+        if item_id in notebook_key_items:
+            notebook_key_items.remove(item_id)
+        
         notebook_key_item_counts[item_id] = count - 1
         _sync_key_item_inventory()
 
