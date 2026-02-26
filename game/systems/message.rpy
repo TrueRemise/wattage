@@ -40,6 +40,19 @@ init python:
         """Update a person's phase; base update by default, temporary when one_time=True."""
         info = _get_or_init_msg_entry(name)
         phase = str(new_phase)
+<<<<<<< HEAD
+=======
+
+        if one_time:
+            info["temp_phase"] = phase
+        else:
+            info["phase"] = phase
+            info["temp_phase"] = None
+            info["set_phase"] = None
+
+        if notify:
+            show_msg_notification(name, note or "New message.")
+>>>>>>> edb8f7b (Add notify/one-time options to update_msg_phase defaults)
 
         if one_time:
             info["temp_phase"] = phase
@@ -83,7 +96,6 @@ init python:
         else:
             # Persistent override until update_msg_phase changes the base phase.
             info["set_phase"] = phase
-            info["phase"] = phase
             info["temp_phase"] = None
 
         if notify:
