@@ -604,9 +604,11 @@ label sanco_about_burning:
     sc "Remembrance is the amber, light is the root, genesis is the blood."
     sc "O Elena, I seek assurance, grand me thine allowing, we shall be liberated."
     $ soul_of_corruption = True
+    $ key_item_remove("Bloomfield's Charm")
+    $ key_item_add("Corrupted Charm")
     show sanco sad2
     sc "Please, Watta"
-    sc "Please take this seriously and go save the day,"
+    sc "Please take this seriously and save the city,"
     sc "Stay safe out there!"
     $ option_remove("sanco", "Burn the thorns")
     $ option_remove("sanco", "Chii")

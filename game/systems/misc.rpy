@@ -262,7 +262,6 @@ label horror_message:
 
 label after_load:
     $ preferences.text_cps = 50
-    $ _sync_key_item_inventory()
     if persistent.horror_crash:
         show screen horror_timer
     return

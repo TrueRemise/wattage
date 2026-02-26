@@ -54,13 +54,20 @@ init python:
         if name == "Flower Charm":
             soul_of_bloomfield = True
             renpy.notify(f"You became one with Bloomfield!")
+            key_item_add("Bloomfield's Charm")
         elif name == "Twisted Stone":
             renpy.call_in_new_context("stone_bought")
+            key_item_add("Twisted Stone")
         elif name == "Memorizing Sheet":
             item_add(name)
+            key_item_add("Memorizing Sheet")
             renpy.notify(f"Bought {name}!")
             renpy.show_screen("notebook_toggle")
             renpy.call_in_new_context("notebook_bought")
+        elif name == "Hydrophobic Lubricant":
+            item_add(name)
+            key_item_add("Hydrophobic Lubricant")
+            renpy.notify(f"Bought {name}!")
         else:
             item_add(name)
             renpy.notify(f"Bought {name}!")

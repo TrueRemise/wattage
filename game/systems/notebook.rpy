@@ -1,4 +1,4 @@
-﻿# Toggle button for opening/closing notebook
+﻿
 screen notebook_toggle():
     zorder 94
     imagebutton auto "gui/jrn_%s.png" xpos 0.959 ypos 0.142:
@@ -187,7 +187,7 @@ default notebook_key_item_data = {
     },
     "Hydrophobic Lubricant": {
         "name": "Hydrophobic Lubricant",
-        "desc": "Help you ride a bike on water.",
+        "desc": "Help you ride your bike on water.",
         "image": "hydrophobic lub"
     },
     "Bloomfield's Charm": {
@@ -212,7 +212,7 @@ default notebook_key_item_data = {
         "image": "hot puppy"
     },
 }
-default notebook_key_item_counts = {}    # item_id → quantity
+default notebook_key_item_count = {}   
 
 
 default current_tab = "People"
@@ -222,7 +222,6 @@ screen notebook_screen():
     tag notebook
     add "images/bg/bg white.png"
     add "gui/notebook_ui.png"
-    # SCREEN SCOPE VARIABLES
     default hovered_char = None
     default hovered_item = None
     use notebook_tab_screen
@@ -396,34 +395,31 @@ screen notebook_key_item_screen():
 
         grid 4 4 spacing 24:
 
-            $ _sync_key_item_inventory()
-
             for item_id in notebook_key_items:
 
                 $ item = notebook_key_item_data[item_id]
-                $ count = notebook_key_item_counts[item_id]
+                $ count = notebook_key_item_count[item_id]
 
-                if item:
-                    button:
-                        xsize 160
-                        ysize 160
-                        background "#5cff3c00"
-                        focus_mask True
-                        add "images/notebook/%s.png" % item["image"]:
-                            anchor (0.5, 0.5)
-                            xpos 75
-                            ypos 70
-                            at hover_fade
-                        action SetScreenVariable("hovered_item", item)
-                        hovered [
-                            SetScreenVariable("hovered_item", item),
-                        ]
-                        if count > 1:
-                            text str(count):
-                                color "#000000"
-                                size 55
-                                xalign 0.9
-                                yalign 0.99
+                button:
+                    xsize 160
+                    ysize 160
+                    background "#5cff3c00"
+                    focus_mask True
+                    add "images/notebook/%s.png" % item["image"]:
+                        anchor (0.5, 0.5)
+                        xpos 75
+                        ypos 70
+                        at hover_fade
+                    action SetScreenVariable("hovered_item", item)
+                    hovered [
+                        SetScreenVariable("hovered_item", item),
+                    ]
+                    if count > 1:
+                        text str(count):
+                            color "#000000"
+                            size 55
+                            xalign 0.9
+                            yalign 0.99
 init python:
     def notebook_unlock(char_name):
         for char in notebook_chars:
@@ -443,71 +439,41 @@ init python:
                 return True
         return False
 
-    def _sync_key_item_inventory():
-        """Keep runtime key-item inventory structures coherent without mutating item metadata."""
-        valid_ids = set(notebook_key_item_data.keys())
+    def refresh_key_item_inventory(clear_all=False):
+        if clear_all:
+            notebook_key_items[:] = []
+            notebook_key_item_count.clear()
 
-        try:
-            string_types = (basestring,)
-        except NameError:
-            string_types = (str,)
-
-        migrated_items = []
-        for entry in list(notebook_key_items):
-            item_id = None
-
-            if isinstance(entry, string_types):
-                item_id = entry if entry in valid_ids else None
-            elif isinstance(entry, dict):
-                candidate_name = entry.get("name")
-                if candidate_name in valid_ids:
-                    item_id = candidate_name
-                else:
-                    for candidate_id, candidate in notebook_key_item_data.items():
-                        if candidate.get("name") == candidate_name:
-                            item_id = candidate_id
-                            break
-
-            if item_id is not None and item_id not in migrated_items:
-                migrated_items.append(item_id)
-
-        notebook_key_items[:] = migrated_items
-
-        for item_id in list(notebook_key_item_counts.keys()):
-            if item_id not in valid_ids or notebook_key_item_counts[item_id] <= 0:
-                notebook_key_item_counts.pop(item_id, None)
-
-        for item_id in notebook_key_items:
-            notebook_key_item_counts[item_id] = notebook_key_item_counts.get(item_id, 1)
+        renpy.notify("Notebook key-item inventory refreshed.")
 
     def key_item_add(item_id):
-
         if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
             return
 
         if item_id not in notebook_key_items:
             notebook_key_items.append(item_id)
-            notebook_key_item_counts[item_id] = 0
+            notebook_key_item_count[item_id] = 1
+        else:
+            notebook_key_item_count[item_id] = notebook_key_item_count.get(item_id, 0) + 1
 
-        notebook_key_item_counts[item_id] += 1
-        _sync_key_item_inventory()
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
-    def key_item_remove(item_id):
 
+    def key_item_remove(item_id):
         if item_id not in notebook_key_item_data:
             renpy.notify(f"Item '{item_id}' not found in notebook_key_item_data.")
             return
 
-        count = notebook_key_item_counts.get(item_id, 0)
+        count = notebook_key_item_count.get(item_id, 0)
         if count <= 0:
             renpy.notify(f"You don't have {notebook_key_item_data[item_id]['name']}.")
             return
 
-        if item_id in notebook_key_items:
-            notebook_key_items.remove(item_id)
-        
-        notebook_key_item_counts[item_id] = count - 1
-        _sync_key_item_inventory()
-
+        if count > 1:
+            notebook_key_item_count[item_id] = count - 1
+        else:
+            notebook_key_item_count.pop(item_id, None)
+            if item_id in notebook_key_items:
+                notebook_key_items.remove(item_id)
+ 
         renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")

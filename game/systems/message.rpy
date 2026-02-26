@@ -40,7 +40,7 @@ init python:
         info = _get_or_init_msg_entry(name)
         info["phase"] = str(new_phase)
 
-    def show_msg_notification(name, body="New message."):
+    def show_msg_notification(name, body="1 new message"):
         """Show a dedicated slide-in message notification."""
         msg_popup["title"] = name
         msg_popup["body"] = body
@@ -209,16 +209,19 @@ screen message_popup_screen():
 
     if msg_popup["visible"]:
         frame at msg_popup_slide:
-            xalign 1.0
-            yalign 0.18
-            xmaximum 580
-            background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
-            padding (24, 16)
+            add "images/misc/new_message.png"
+            xalign 0.0
+            yalign 0.1
+            background "#0000"
+            ysize 200
+            xsize 500
 
             vbox:
-                spacing 4
-                text "[msg_popup['title']]" size 38 color "#000"
-                text "[msg_popup['body']]" size 28 color "#111"
+                yalign 0.39
+                xalign 0.6
+                spacing -8
+                text "New messages" size 52 color "#000000" xalign 0.4 font "Iskra.ttf"
+                text "[msg_popup['title']]" size 68 color "#000" xalign 0.4 font "Chiko.ttf"
 
         timer 2.75 action [
             SetDict(msg_popup, "visible", False),
@@ -228,11 +231,11 @@ screen message_popup_screen():
 
 transform msg_popup_slide:
     on show:
-        xoffset 700
+        xoffset -700
         alpha 0.0
-        easein 0.25 xoffset 0 alpha 1.0
+        easein 0.25 xoffset -10 alpha 1.0
         pause 1.9
-        easeout 0.35 xoffset 700 alpha 0.0
+        easeout 0.35 xoffset -700 alpha 1.0
 
 
 transform hover_fade:
