@@ -35,9 +35,10 @@ init python:
         info = _get_or_init_msg_entry(name)
         return info["temp_phase"] or info["phase"]
 
-    def update_msg_phase(name, new_phase):
+    def update_msg_phase(name, new_phase, one_time=False, notify=False, note=None):
         """Set the default phase for a person and clear temporary overrides."""
         info = _get_or_init_msg_entry(name)
+<<<<<<< HEAD
 <<<<<<< HEAD
         phase = str(new_phase)
 <<<<<<< HEAD
@@ -68,12 +69,17 @@ init python:
         if notify:
             show_msg_notification(name, note or "New message.")
 
+=======
+>>>>>>> ae236bb (a)
         if one_time:
             info["temp_phase"] = phase
         else:
             info["phase"] = phase
             info["temp_phase"] = None
+<<<<<<< HEAD
             info["set_phase"] = None
+=======
+>>>>>>> ae236bb (a)
 
         if notify:
             show_msg_notification(name, note or "New message.")

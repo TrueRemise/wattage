@@ -209,6 +209,8 @@ label things_that_change_when_you_sleep:
         $ remi_first_talk_done_stage = 2
     elif remi_first_talk_done_stage == 3:
         $ remi_first_talk_done_stage = 4
+    elif remi_first_talk_done_stage == 5:
+        $ remi_first_talk_done_stage = 6
     if nemu_first_talk_done_stage == 2:
         $ nemu_first_talk_done_stage = 3
     if tato_first_talk_done_stage == 1:
