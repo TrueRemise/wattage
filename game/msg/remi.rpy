@@ -22,7 +22,7 @@ label msg_remi_early:
 
 
 label remi_test:
-    $ renpy.notify(f"{remi_first_talk_done_stage}")
+    #$ renpy.notify(f"{remi_first_talk_done_stage}")
     stop music fadeout 0.5
     play music "bgm_remi.mp3" fadein 1.0 
     if remi_first_talk_done_stage == 0:
@@ -39,6 +39,8 @@ label remi_test:
         jump remi_fourth_talk
     elif remi_first_talk_done_stage == 6:
         jump remi_fifth_talk
+    elif remi_first_talk_done_stage == 7:
+        jump remi_talk
 
 label remi_first_talk:
     $ cutscene_on = True
@@ -72,7 +74,7 @@ label remi_first_talk:
     play music "bgm_wave.mp3" fadein 1.0 
     r "The sound of people arguing, the business of the centre, the chattering that should be everywhere..."
     r "They are not here"
-    r "Instead what we get are just waves clapping, and maybe the wind noises"
+    r "Instead what we get are just waves crashing, and maybe the wind noises"
     r "... there is nothing else."
     pause 1.5
     r "And that's good."
@@ -788,18 +790,137 @@ label remi_third_talk:
 label remi_fourth_talk:
     "This talk should not exist"
 
+default remi_crime_note_read = False
 label remi_fifth_talk:
     $ cutscene_on = True
-    show bg lighthouse at whiten
     show remi default at right
     show watta default at left
     r "Let's go, shall we?"
     $ lighthouse_unlock = True
     scene bg lighthouse with Fade(1,1,1)
+    show bg lighthouse at whiten
     show remi default at right
     r "Sorry if it's a little bit messy"
     r "Not like I ever expect a guest"
     show watta default at left
     w "It's okay"
+    r "So"
+    extend ", did you read the note?"
+    if not remi_crime_note_read:
+        w "The what? The crime note?"
+        r "Sound like you havent read it then"
+        r "That's fine"
+    else:
+        w "Ye I did"
+        r "What do you think of me now Watta?"
+        w "Nothing about you are changed for me Remi, you are still you"
+        r "I see, that's nice then"
+    r "You see"
+    r "I'm planning to go back"
+    r "You know, with everyone"
+    w "Thats great to hear"
+    r "But i do wonder if things gonna"
+    extend " repeat themself"
+    w "They all know who you are Remi"
+    w "You just need to be open to more people"
+    w "Letting what troubling you out"
+    r "That time when you came over, like{w=0.5} months ago"
+    r "Before the mess that is happening rn"
+    r "We were... what is it"
+    w "Was it the beach?"
+    r "Yes the beach, I missed that time watta."
+    r "That was exactly, the first and only time all of us were captured on the same picture"
+    r "I tried finding it again, but to no avail, i think it's lost media now"
+    w "Oh"
+    r "Im sorry"
+    w "Don't be, i dont think any of them mind by now"
+    r "I really missed everyone Watta, i wished to relive some of the moments, sadly it's all in my head now"
+    r "In the end"
+    r "Thank you for spending time with me"
+    r "I felt much better now, gotta work my way back soon."
+    r "Thanks Watta"
+    show screen task_aquired("REMI'S QUEST COMPLETED", "QUALITY: GOOD", "images/task/taskremi.png")
+    $ quest_end("remi")
+    
+    pause 3.0
+    r "While at it, ask me any question."
+    $ remi_first_talk_done_stage = 7
+    menu:
+        r "While at it, ask me any question.{fast}"
+        "Ask him any question":
+            hide watta
+            call screen remi_screen    
+            jump remi_talk
+        "Nothing for now":
+            hide watta
+            hide remi
+            jump lighthouseskip
     jump lighthouseskip
     
+label remi_talk:
+    show bg lighthouse at whiten
+    show remi smile at fade_in_right
+    r "A"
+label remi_talk_skip:
+    call screen remi_screen
+
+default remi_options = {
+    "Leave": "remi_byebye",
+}
+transform hover_sway_stronger:
+    alpha 0.0
+    xpos 40
+    parallel:
+        linear 0.3 alpha 1.0
+    parallel:
+        easein 0.5 xpos 0
+    on hover:
+        easein_cubic 0.30 xoffset 25
+        pause 2
+        easeout_cubic 5 xoffset 0
+        repeat
+    on idle:
+        easeout 0.3 xoffset 0
+screen remi_screen():
+    tag remi_sub
+    modal True
+    zorder 95
+
+    vbox:
+        spacing 60
+        xalign 0.7
+        yalign 0.25
+
+        if remi_options:
+            $ shift = 0
+            for name, target_label in remi_options.items():
+
+                # shift value normalized 0..1 (adjust divisor to control gradient)
+                $ t = min(1.0, shift / 100.0)
+                $ hover_color = lerp_color("#a1ffb8", "#3cf16f", t)
+                button:
+                    at hover_sway_stronger
+                    xsize 820
+                    ysize 70
+                    xalign 0
+                    xoffset -shift
+                    background Solid("#FFFFFF00")
+                    hover_background Solid("#FFFFFF00")
+                    action Jump(target_label)
+
+                    text name:
+                        size 110
+                        xalign 0
+                        yalign 0.5
+                        color "#ffffff"
+                        hover_color hover_color
+                        outlines [(13, "#000000", 0, 0)]  # thickness, color, x-offset, y-offset
+                        font "Remi.ttf"
+
+                $ shift += 0
+
+label remi_byebye:
+    r "Adios."
+    hide remi
+    scene bg archeste
+    jump lighthouseskip

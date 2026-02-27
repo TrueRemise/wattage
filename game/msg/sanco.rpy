@@ -87,7 +87,7 @@ label sanco_first_talk:
     sc "Watta, is that you? Welcome to Floralia!"
     show watta default at fade_in_right
     w "Hello Sanco"
-    w "We finally meet in person."
+    w "It's great to see see you again."
     show sanco smile2
     sc "How have you been doin'?"
     w "Pretty good so far..."

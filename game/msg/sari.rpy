@@ -37,7 +37,7 @@ label sari_first_talk_real:
     sr "Hol' on..."
     show sari smile at bounced
     sr "All done!"
-    sr "We finally meet in person Watta..."
+    sr "Finally seeing your ass again"
     show watta happy
     sr "Come take a seat!"
     show watta happy at bounced

@@ -43,11 +43,17 @@ label owl_first_talk:
     show owl default
     show watta upset
     w "{i}why didn't he also tell everyone else?"
+    o "Normally opening the gate is not allowed"
+    o "But as I've been here for quite a long"
+    o "These corruption doesn't seems like spreading to a considerable extend."
+    o "I think the gate being opened for now is fine"
+    o "Just need to resolve the problem quickly before something bad happens"
     show watta deter
     w "Oh right, uhh"
     extend " so what should I do?"
     show owl speak
-    o "Before starting the actual thing..."
+    o "I'll share you some essential information"
+    o "But before doing so..."
     o "Do you mind if I ask for something?"
     show owl default
     show watta smile

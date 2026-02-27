@@ -76,7 +76,7 @@ label work:
             show watta sweat
             w "Least I got to charge my phone!"
             $ charged = True
-        "You got 100 sol"
+        "You got {work} sol"
         $ sol_add(work)
         if work_first_time == False:
             "You only need to work once in the morning right after waking up, the first shift of the day won't cost you actions and it's mandatory."
