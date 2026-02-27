@@ -243,7 +243,7 @@ screen notebook_screen():
             xalign 0.9775
             yalign 0.723
         use notebook_key_item_screen
-    if hovered_char:
+    if hovered_char or hovered_item:
         frame:
             background None
             xpos 900
@@ -252,36 +252,22 @@ screen notebook_screen():
             ysize 890
 
             fixed:
-                text hovered_char["name"]:
-                    size 160
-                    color "#000000"
-                    font "Iskra.ttf"
-                    xpos 10
-                    ypos -10
+                if hovered_char:
+                    text hovered_char["name"]:
+                        size 160
+                        color "#000000"
+                        font "Iskra.ttf"
+                        xpos 10
+                        ypos -10
+                elif hovered_item:
+                    text hovered_item["name"]:
+                        size 100
+                        color "#000000"
+                        font "Iskra.ttf"
+                        xpos 10
+                        ypos 10
 
-                text hovered_char["desc"]:
-                    size 60
-                    color "#000000"
-                    font "Iskra.ttf"
-                    xpos 22
-                    ypos 140
-    if hovered_item:
-        frame:
-            background None
-            xpos 900
-            ypos 80
-            xsize 690
-            ysize 890
-
-            fixed:
-                text hovered_item["name"]:
-                    size 100
-                    color "#000000"
-                    font "Iskra.ttf"
-                    xpos 10
-                    ypos 10
-
-                text hovered_item["desc"]:
+                text (hovered_char["desc"] if hovered_char else hovered_item["desc"]):
                     size 60
                     color "#000000"
                     font "Iskra.ttf"
@@ -341,9 +327,13 @@ screen notebook_char_friend_screen():
                             xpos 50
                             ypos 70
                             at hover_fade
-                        action SetScreenVariable("hovered_char", char)
+                        action [
+                            SetScreenVariable("hovered_char", char),
+                            SetScreenVariable("hovered_item", None),
+                        ]
                         hovered [
                             SetScreenVariable("hovered_char", char),
+                            SetScreenVariable("hovered_item", None),
                         ]
                 else:
                     button:
@@ -375,9 +365,13 @@ screen notebook_char_screen():
                             xpos 50
                             ypos 70
                             at hover_fade
-                        action SetScreenVariable("hovered_char", char)
+                        action [
+                            SetScreenVariable("hovered_char", char),
+                            SetScreenVariable("hovered_item", None),
+                        ]
                         hovered [
                             SetScreenVariable("hovered_char", char),
+                            SetScreenVariable("hovered_item", None),
                         ]
                 else:
                     button:
@@ -411,9 +405,13 @@ screen notebook_key_item_screen():
                         xpos 75
                         ypos 70
                         at hover_fade
-                    action SetScreenVariable("hovered_item", item)
+                    action [
+                        SetScreenVariable("hovered_item", item),
+                        SetScreenVariable("hovered_char", None),
+                    ]
                     hovered [
                         SetScreenVariable("hovered_item", item),
+                        SetScreenVariable("hovered_char", None),
                     ]
                     if count > 1:
                         text str(count):

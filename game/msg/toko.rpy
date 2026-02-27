@@ -43,7 +43,7 @@ label toko_first_talk:
     show toko close
     tk "No it isn't important..."
     show toko smile
-    tk "What important is that we finally met Watta."
+    tk "What important is that we finally met again Watta."
     tk "What can I help you with?"
     if is_item_get("Glass Daisy"):
         show watta smile at bounced
@@ -51,10 +51,10 @@ label toko_first_talk:
         extend " flowers from Sanco."
         show toko default
         tk "Wait..."
-        tk "You met Sanco."
+        tk "You met Sanco first."
         show toko smile
         tk "Nice."
-        tk "How is she?"
+        tk "How was she?"
         w "Well she's-{nw}"
         tk "Is it the Glass bouquet?"
         show watta frown
@@ -72,10 +72,10 @@ label toko_first_talk:
         extend " flowers from Sanco."
         show toko default
         tk "Wait..."
-        tk "You met Sanco."
+        tk "You met Sanco first."
         show toko smile
         tk "Nice."
-        tk "How is she?"
+        tk "How was she?"
         w "Well she's-{nw}"
         tk "Is it the Glass bouquet?"
         show watta sad
@@ -96,10 +96,10 @@ label toko_first_talk:
         extend " flowers from Sanco."
         show toko default
         tk "Wait..."
-        tk "You met Sanco."
+        tk "You met Sanco first."
         show toko smile
         tk "Nice."
-        tk "How is she?"
+        tk "How was she?"
         w "Well she's-{nw}"
         tk "Is it the Glass bouquet?"
         show watta sad
@@ -171,8 +171,7 @@ label toko_first_talk:
     menu:
         "Talk":
             hide watta
-            call screen toko_screen    
-            jump toko_talk
+            call screen toko_screen   
         "Nothing for now":
             hide watta
             hide toko
@@ -277,10 +276,10 @@ label toko_quest:
             extend " flowers from Sanco."
             show toko default
             tk "Wait..."
-            tk "You met Sanco."
+            tk "You met Sanco first."
             show toko smile
             tk "Nice."
-            tk "How is she?"
+            tk "How was she?"
             w "Well she is-{nw}"
             tk "Is it the Glass bouquet?"
             show watta frown
@@ -302,10 +301,10 @@ label toko_quest:
             extend " flowers from Sanco."
             show toko default
             tk "Wait..."
-            tk "You met Sanco."
+            tk "You met Sanco first."
             show toko smile
             tk "Nice."
-            tk "How is she?"
+            tk "How was she?"
             w "Well she's-{nw}"
             tk "Is it the Glass bouquet?"
             show watta frown
@@ -327,10 +326,10 @@ label toko_quest:
             extend " flowers from Sanco."
             show toko default
             tk "Wait..."
-            tk "You met Sanco."
+            tk "You met Sanco first."
             show toko smile
             tk "Nice."
-            tk "How is she?"
+            tk "How was she?"
             w "Well she's-{nw}"
             tk "Is it the Glass bouquet?"
             show watta huh

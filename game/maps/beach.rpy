@@ -39,17 +39,17 @@ screen beach:
     use camera_on
     if lighthouse_unlock:
         imagebutton:
-            xpos 302
+            xpos 376
             ypos 0
             auto "images/int/lighthouse_%s.png"
-            action Jump("remi_test")
+            action Jump("lightfloor")
     if not remi_first_talk_done_stage > 1 and phase == 2:
         imagebutton:
             xpos 1102
             ypos 506
             auto "images/char_int/remi_beach_%s.png"
             action Jump("remi_test")
-    if remi_first_talk_done_stage == 6 and phase != 3:
+    if remi_first_talk_done_stage == 6 and phase != 3 and not lighthouse_unlock:
         imagebutton:
             xpos 1032
             ypos 717
@@ -170,10 +170,10 @@ screen lightfloor:
         auto "images/int/lighthouse_stairs_%s.png"
         action Jump("lighthouse")
     imagebutton:
-        xpos 1752
-        ypos 400
+        xpos 878
+        ypos 378
         auto "images/int/lighthouse_secret_%s.png"
-        action Jump("beach")
+        action Jump("remi_secret_door")
 
 
 label lighthouse:
@@ -195,4 +195,9 @@ screen lighthouse:
         xpos 1185
         ypos 49
         auto "images/char_int/remi_lighthouse_%s.png"
-        action Jump("aloy_test")
+        action Jump("remi_test")
+
+label remi_secret_door:
+    "A door with 5 set of locks stack on top of each other"
+    "What can be so hidden"
+    jump lightfloorskip
