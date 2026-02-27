@@ -38,10 +38,12 @@ init python:
     def update_msg_phase(name, new_phase, one_time=False, notify=False, note=None):
         """Set the default phase for a person and clear temporary overrides."""
         info = _get_or_init_msg_entry(name)
+        new_phase = str(new_phase)
+
         if one_time:
-            info["temp_phase"] = phase
+            info["temp_phase"] = new_phase
         else:
-            info["phase"] = phase
+            info["phase"] = new_phase
             info["temp_phase"] = None
 
         if notify:

@@ -35,6 +35,10 @@ label remi_test:
         jump remi_second_talk_2
     elif remi_first_talk_done_stage == 4 and remi_opinion >= 3:
         jump remi_third_talk
+    elif remi_first_talk_done_stage == 5:
+        jump remi_fourth_talk
+    elif remi_first_talk_done_stage == 6:
+        jump remi_fifth_talk
 
 label remi_first_talk:
     $ cutscene_on = True
@@ -779,3 +783,23 @@ label remi_third_talk:
     $ cutscene_on = False
     $ action_done()
     jump parkskip
+
+
+label remi_fourth_talk:
+    "This talk should not exist"
+
+label remi_fifth_talk:
+    $ cutscene_on = True
+    show bg lighthouse at whiten
+    show remi default at right
+    show watta default at left
+    r "Let's go, shall we?"
+    $ lighthouse_unlock = True
+    scene bg lighthouse with Fade(1,1,1)
+    show remi default at right
+    r "Sorry if it's a little bit messy"
+    r "Not like I ever expect a guest"
+    show watta default at left
+    w "It's okay"
+    jump lighthouseskip
+    
