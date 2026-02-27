@@ -98,10 +98,10 @@ screen dustwynd_outside:
 label aloy:
     if aloy_unlock == False:
         "The door is locked"
-        jump dustwyndskip
+        jump dustwynd_outsideskip
     else:
         jump dustwynd
-    jump dustwyndskip
+    jump dustwynd_outsideskip
 
 label dustwynd:
     $ current_location = "dustwynd"
