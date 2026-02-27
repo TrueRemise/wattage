@@ -5,7 +5,6 @@ label msg_sanco_0:
     call screen message_screen
     return
 
-
 label msg_sanco_early:
     show bg phone
     sc "Watta I need some help!"

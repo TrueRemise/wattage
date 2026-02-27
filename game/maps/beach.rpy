@@ -6,7 +6,6 @@ label beach:
     $ bg_image = update_world_bg()
 
     # Music setup
-    play music "bgm_beach.mp3" fadein 1.0 if_changed
     if phase != 3:
         scene bg beach with Fade(0.1, 0, 0.1)
     else:
@@ -21,6 +20,7 @@ label beachskip:
     else:
         scene bg beachn
     # --- Event jump logic ---
+    play music "bgm_beach.mp3" fadein 1.0 if_changed
     jump beachdef
 
 
@@ -34,13 +34,26 @@ label beach_ft:
     $ beach_first = True
     jump beachdef
 
+default lighthouse_unlock = False
 screen beach:
     use camera_on
+    if lighthouse_unlock:
+        imagebutton:
+            xpos 302
+            ypos 0
+            auto "images/int/lighthouse_%s.png"
+            action Jump("remi_test")
     if not remi_first_talk_done_stage > 1 and phase == 2:
         imagebutton:
             xpos 1102
             ypos 506
             auto "images/char_int/remi_beach_%s.png"
+            action Jump("remi_test")
+    if remi_first_talk_done_stage == 6 and phase != 3:
+        imagebutton:
+            xpos 1032
+            ypos 717
+            auto "images/char_int/remi_beach_2_%s.png"
             action Jump("remi_test")
     if tato_first_talk_done_stage == 0 and phase != 3:
         imagebutton:
@@ -134,3 +147,52 @@ label woogie_fishonthebeach:
     show woogie laugh3 at slide_out_right
     wo "OMG I CAN'T"
     jump beach
+
+
+label lightfloor:
+    $ current_location = "lighthouse"
+    scene bg lightfloor with Fade(0.1, 0, 0.1)
+    jump lightfloorskip
+label lightfloorskip:
+    scene bg lightfloor
+    play music "bgm_lighthouse.mp3" fadein 1.0 if_changed
+    call screen lightfloor
+
+screen lightfloor:
+    imagebutton:
+        xpos 1752
+        ypos 400
+        auto "images/int/right_%s.png"
+        action Jump("beach")
+    imagebutton:
+        xpos 168
+        ypos 0
+        auto "images/int/lighthouse_stairs_%s.png"
+        action Jump("lighthouse")
+    imagebutton:
+        xpos 1752
+        ypos 400
+        auto "images/int/lighthouse_secret_%s.png"
+        action Jump("beach")
+
+
+label lighthouse:
+    $ current_location = "lighthouse"
+    scene bg lighthouse with Fade(0.1, 0, 0.1)
+    play music "bgm_lighthouse.mp3" fadein 1.0 if_changed
+    jump lighthouseskip
+label lighthouseskip:
+    scene bg lighthouse
+    call screen lighthouse
+
+screen lighthouse:
+    imagebutton:
+        xpos 27
+        ypos 400
+        auto "images/int/left_%s.png"
+        action Jump("lightfloor")
+    imagebutton:
+        xpos 1185
+        ypos 49
+        auto "images/char_int/remi_lighthouse_%s.png"
+        action Jump("aloy_test")

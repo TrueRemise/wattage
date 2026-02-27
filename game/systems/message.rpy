@@ -40,6 +40,7 @@ init python:
         info = _get_or_init_msg_entry(name)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         phase = str(new_phase)
 <<<<<<< HEAD
 =======
@@ -71,10 +72,14 @@ init python:
 
 =======
 >>>>>>> ae236bb (a)
+=======
+        new_phase = str(new_phase)
+
+>>>>>>> dcb7797 (a)
         if one_time:
-            info["temp_phase"] = phase
+            info["temp_phase"] = new_phase
         else:
-            info["phase"] = phase
+            info["phase"] = new_phase
             info["temp_phase"] = None
 <<<<<<< HEAD
             info["set_phase"] = None
