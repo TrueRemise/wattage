@@ -66,22 +66,21 @@ label work:
         w "Let's get this over with."
         hide watta
         scene bg work with Fade(0.1,0,0.1)
-        $ renpy.pause(2, hard=True)
-        $ renpy.pause()  
+        $ renpy.pause(3, hard=True)
         scene expression bg_image with Fade(0.1, 0, 0.1)
         show watta cry
         w "Sheesh..."
         hide watta
-        if charged == False:
+        if not charged:
             show watta sweat
             w "Least I got to charge my phone!"
             $ charged = True
-        "You got {work} sol"
+        "You got 200 sol"
         $ sol_add(work)
-        if work_first_time == False:
+        if not work_first_time:
             "You only need to work once in the morning right after waking up, the first shift of the day won't cost you actions and it's mandatory."
             "You can work again to get more money (sol), however it takes 3 actions every time you do, so use your time carefully."
-            "Alternately you can work remotely through your phone, though it will only give you {work_remote} sol. Costs 1 action as a tradeoff"
+            "Alternately you can work remotely through your phone, though it will only give you 50 sol. Costs 1 action as a tradeoff"
             $ work_first_time = True
             $ update_msg_phase("Sanco", "0")
         if first_work == True:

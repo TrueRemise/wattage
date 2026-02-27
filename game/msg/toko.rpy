@@ -146,7 +146,7 @@ label toko_first_talk:
     tk "I have them all on a list here, take this."
     show watta default at bounced
     w "Kay"
-    if is_item_get("Glass Daisy"):
+    if is_item_get("Glass Daisy") or is_item_get("Exquisite Daisy"):
         tk "Glass Daisy, the hardest one to find, which you already gave me"
     else:
         tk "Glass Daisy, the hardest one to gather, I already asked Sanco to prepare that for me, so you can ask her to deliver it to me."
