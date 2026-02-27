@@ -35,11 +35,17 @@ init python:
         info = _get_or_init_msg_entry(name)
         return info["temp_phase"] or info["phase"]
 
-    def update_msg_phase(name, new_phase):
+    def update_msg_phase(name, new_phase, one_time=False, notify=False, note=None):
         """Set the default phase for a person and clear temporary overrides."""
         info = _get_or_init_msg_entry(name)
-        info["phase"] = str(new_phase)
-        info["temp_phase"] = None
+        if one_time:
+            info["temp_phase"] = phase
+        else:
+            info["phase"] = phase
+            info["temp_phase"] = None
+
+        if notify:
+            show_msg_notification(name, note or "New message.")
 
     def show_msg_notification(name, body="1 new message"):
         """Show a dedicated slide-in message notification."""

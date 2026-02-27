@@ -484,9 +484,11 @@ label drawer:
         show watta default
         w "Whatever"
         w "I can instantly charge my phone now."
+        if phone_found:
+            "You charged your phone"
+            $ update_msg_phase("Sanco", "early", notify=True)
         $ charged = True
         $ update_msg_phase("Remi", "early")
-        $ update_msg_phase("Sanco", "early")
         hide watta
         jump diningroomskip
     elif charged ==True:
@@ -562,7 +564,7 @@ label out:
 default phone_found = False
 label phone:
     $ update_msg_phase("Toko", "map")
-    if charged == False:
+    if not charged:
         show watta huh at right
         w "It's not turning on?"
         show watta upset
@@ -581,6 +583,8 @@ label phone:
         hide watta
     "You have acquired your phone"
     "You can toggle it by pressing Q or clicking on the icon on the top right."
+    if charged:
+        $ update_msg_phase("Sanco", "early", notify=True)
     $ phone_found = True
     $ phone_vis = 0
     jump workspaceskip
