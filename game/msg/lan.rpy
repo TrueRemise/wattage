@@ -93,7 +93,7 @@ label lan_test:
         #$ save_lock = False
         jump centre
 
-    $ lan_currency_checkpoint()
+    $ lan_sync_currency_last_save()
 
     if rng_from_bj == True:
         jump lan_bj
@@ -609,6 +609,7 @@ init python:
                 pass
         if name == "Nrg Cocktail":
             action_add()
+        lan_sync_currency_last_save()
         renpy.block_rollback()
     def bar_item_not_enough(name, price):
         global bar_buy_text, bar_buy_color
@@ -645,6 +646,7 @@ label lan_neko_bracelet:
             lan "Pleasure doing business with you."
             hide lan_bar
             $ sol_add(1000)
+            $ lan_sync_currency_last_save()
             $ item_remove("Neko's Bracelet")
         "Nuh uh":
             show lan_bar
