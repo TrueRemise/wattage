@@ -184,9 +184,6 @@ label chii_first_talk:
     $ key_item_add("Twisted Stone")
     
     hide screen task_aquired
-    $ key_item_add("Corrupted Charm")
-    $ key_item_add("Hydrophobic Lubricant")
-    $ key_item_add("Hot Dog")
     c "Wait really? How can you tell?"
     show screen action_display
     play music "bgm_floral.mp3" fadein 1.0 volume 0.5
@@ -259,7 +256,6 @@ label chii_second_talk:
         hide chii_shop
     else:  
         pass
-    $ key_item_remove("Hot Dog")
     call screen shop_screen
 
 default shop_chat_options = {                                                               #THIS IS THE OPTION PANEL

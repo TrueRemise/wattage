@@ -3,12 +3,12 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 define unknown = Character("???", color="#000000", what_size=50, what_ypos = 15, what_xpos =340,)
-define w = Character("Watta", what_font="fonts/Watta.ttf",who_font="fonts/Watta.ttf", size = 50, what_size=50, what_xpos =350, color="#fcba03")
-define r = Character("Remi", what_font="fonts/Remi.ttf", who_font="fonts/Remi.ttf", size = 55, who_xpos = 10, who_ypos = 30, what_size=50, what_ypos = 15, what_xpos =350, color="#656565")
-define sr = Character("Sari", what_font="fonts/Sari.ttf", who_font="fonts/Sari.ttf", size = 55, who_xpos = 20, who_ypos = 30, what_size=55, color="#1cb8c6")
+define w = Character("Watta", what_font="fonts/Watta.ttf",who_font="fonts/Watta.ttf", size = 50, what_size=50, what_xpos =350, color="#fcba03", callback=watta_talk_callback)
+define r = Character("Remi", what_font="fonts/Remi.ttf", who_font="fonts/Remi.ttf", size = 55, who_xpos = 10, who_ypos = 30, what_size=50, what_ypos = 15, what_xpos =350, color="#656565", callback=remi_talk_callback)
+define sr = Character("Sari", what_font="fonts/Sari.ttf", who_font="fonts/Sari.ttf", size = 55, who_xpos = 20, who_ypos = 30, what_size=55, color="#1cb8c6", callback=sari_talk_callback)
 define lan = Character("Flan", what_font="fonts/Lan.ttf", who_font="fonts/Lan.ttf", size = 55, who_xpos = 15, who_ypos = 29, what_size=47, what_ypos = 0, what_xpos =350, color="#583ddd")
 define c = Character("Chii", what_font="fonts/Chiko.ttf", who_font="fonts/Chiko.ttf", size = 75, who_xpos = 10, who_ypos = 25, what_size=75, what_ypos = -5, what_xpos =350, color="#4dc31f")
-define n = Character("Nemu", what_font="fonts/Nemu.ttf", who_font="fonts/Nemu.ttf", size = 55, who_xpos = 10, who_ypos = 25, what_size=55, what_ypos = 5, what_xpos =350, color="#8c8c8c")
+define n = Character("Nemu", what_font="fonts/Nemu.ttf", who_font="fonts/Nemu.ttf", size = 55, who_xpos = 10, who_ypos = 25, what_size=55, what_ypos = 5, what_xpos =350, color="#8c8c8c", callback=nemu_talk_callback)
 define ts = Character("Tsuyu", what_font="fonts/Tsuyu.ttf", who_font="fonts/Tsuyu.ttf", size = 48, who_xpos = 10, who_ypos = 20, what_size=45, what_ypos = -20, what_xpos =340, color="#ddba21")
 define iog = Character("Iog", what_font="fonts/Iog.ttf", who_font="fonts/Iog.ttf", size = 45, who_xpos = 12, who_ypos = 25, color="#000000")
 define john = Character("John", what_font="fonts/Iog.ttf", who_font="fonts/Terraria.ttf", size = 45, who_xpos = 12, who_ypos = 25, color="#000000")
@@ -17,7 +17,7 @@ define nk = Character("Neko", what_font="fonts/Reni.ttf", who_font="fonts/Reni.t
 define sc = Character("Sanco", what_font="fonts/Sanco.ttf", who_font="fonts/Sanco.ttf", size = 55, who_xpos = 10, who_ypos = 25, what_size=55, what_ypos = -11, what_xpos =350, color="#c6892d")
 define tt = Character("Tato", what_font="fonts/Tato.ttf", who_font="fonts/Tato.ttf", size = 74, who_xpos = 25, who_ypos = 27, what_size=75, what_ypos = -0, what_xpos =350, color="#48ca37")
 define kr = Character("Kuro", what_font="fonts/Kuro.ttf", who_font="fonts/Kuro.ttf", size = 65, who_xpos = 10, who_ypos = 25, what_size=65, what_ypos = -11, what_xpos =350, color="#c62d2d")
-define wo = Character("Woogie", what_font="fonts/Woogie.ttf", who_font="fonts/Woogie.ttf", size = 45, who_xpos = -5, who_ypos = 25, what_size=45, what_ypos = 15, what_xpos =350, color="#2db4c6")
+define wo = Character("Woogie", what_font="fonts/Woogie.ttf", who_font="fonts/Woogie.ttf", size = 45, who_xpos = -5, who_ypos = 25, what_size=45, what_ypos = 15, what_xpos =350, color="#2db4c6", callback=woogie_talk_callback)
 define tk = Character("Toko", what_font="fonts/Toko.ttf", who_font="fonts/Toko.ttf", size =60, who_xpos = 13, who_ypos = 30, what_size=55, what_ypos = 10, what_xpos =380, color="#c7c757")
 define i = Character("Iskra", what_font="fonts/Iskra.ttf", who_font="fonts/Iskra.ttf", size = 85, who_xpos = -5, who_ypos = 25, what_size=45, what_ypos = 15, what_xpos =380, color="#c770b8")
 define b = Character("Bailey", what_font="fonts/Bailey.ttf", who_font="fonts/Bailey.ttf", size = 75, who_xpos = 0, who_ypos = 25, what_size=65, what_ypos = 10, what_xpos =350, color="#57bcc7")
@@ -600,7 +600,7 @@ label home_midn:
         "It feels uncomfortable..."
         $ next_phase()
     else:
-        "It's always quite at midnight."
+        "It's always quiet at midnight."
         $ next_phase()
 
     return

@@ -38,58 +38,18 @@ init python:
     def update_msg_phase(name, new_phase, one_time=False, notify=False, note=None):
         """Set the default phase for a person and clear temporary overrides."""
         info = _get_or_init_msg_entry(name)
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        phase = str(new_phase)
-<<<<<<< HEAD
-=======
-
-        if one_time:
-            info["temp_phase"] = phase
-        else:
-            info["phase"] = phase
-            info["temp_phase"] = None
-            info["set_phase"] = None
-
-        if notify:
-            show_msg_notification(name, note or "New message.")
->>>>>>> edb8f7b (Add notify/one-time options to update_msg_phase defaults)
-=======
-        info["phase"] = str(new_phase)
-        info["temp_phase"] = None
->>>>>>> 9ef29ac (a)
-
-        if one_time:
-            info["temp_phase"] = phase
-        else:
-            info["phase"] = phase
-            info["temp_phase"] = None
-            info["set_phase"] = None
-
-        if notify:
-            show_msg_notification(name, note or "New message.")
-
-=======
->>>>>>> ae236bb (a)
-=======
         new_phase = str(new_phase)
 
->>>>>>> dcb7797 (a)
         if one_time:
             info["temp_phase"] = new_phase
         else:
             info["phase"] = new_phase
             info["temp_phase"] = None
-<<<<<<< HEAD
-            info["set_phase"] = None
-=======
->>>>>>> ae236bb (a)
 
         if notify:
             show_msg_notification(name, note or "New message.")
 
-    def show_msg_notification(name, body="New message."):
+    def show_msg_notification(name, body="1 new message"):
         """Show a dedicated slide-in message notification."""
         msg_popup["title"] = name
         msg_popup["body"] = body
@@ -109,12 +69,7 @@ init python:
         if one_time:
             info["temp_phase"] = phase
         else:
-<<<<<<< HEAD
-            # Persistent override until update_msg_phase changes the base phase.
-            info["set_phase"] = phase
-=======
             info["phase"] = phase
->>>>>>> 9ef29ac (a)
             info["temp_phase"] = None
 
         if notify:
@@ -262,16 +217,19 @@ screen message_popup_screen():
 
     if msg_popup["visible"]:
         frame at msg_popup_slide:
-            xalign 1.0
-            yalign 0.18
-            xmaximum 580
-            background Frame("gui/notify.png", gui.notify_frame_borders, tile=gui.frame_tile)
-            padding (24, 16)
+            add "images/misc/new_message.png"
+            xalign 0.0
+            yalign 0.1
+            background "#0000"
+            ysize 200
+            xsize 500
 
             vbox:
-                spacing 4
-                text "[msg_popup['title']]" size 38 color "#000"
-                text "[msg_popup['body']]" size 28 color "#111"
+                yalign 0.39
+                xalign 0.6
+                spacing -8
+                text "New messages" size 52 color "#000000" xalign 0.4 font "Iskra.ttf"
+                text "[msg_popup['title']]" size 68 color "#000" xalign 0.4 font "Chiko.ttf"
 
         timer 2.75 action [
             SetDict(msg_popup, "visible", False),
@@ -281,11 +239,11 @@ screen message_popup_screen():
 
 transform msg_popup_slide:
     on show:
-        xoffset 700
+        xoffset -700
         alpha 0.0
-        easein 0.25 xoffset 0 alpha 1.0
+        easein 0.25 xoffset -10 alpha 1.0
         pause 1.9
-        easeout 0.35 xoffset 700 alpha 0.0
+        easeout 0.35 xoffset -700 alpha 1.0
 
 
 transform hover_fade:

@@ -1,4 +1,4 @@
-﻿# Toggle button for opening/closing notebook
+﻿
 screen notebook_toggle():
     zorder 94
     imagebutton auto "gui/jrn_%s.png" xpos 0.959 ypos 0.142:
@@ -187,7 +187,7 @@ default notebook_key_item_data = {
     },
     "Hydrophobic Lubricant": {
         "name": "Hydrophobic Lubricant",
-        "desc": "Help you ride a bike on water.",
+        "desc": "Help you ride your bike on water.",
         "image": "hydrophobic lub"
     },
     "Bloomfield's Charm": {
@@ -212,7 +212,7 @@ default notebook_key_item_data = {
         "image": "hot puppy"
     },
 }
-default notebook_key_item_count = {}     # item_id → quantity
+default notebook_key_item_count = {}   
 
 
 default current_tab = "People"
@@ -222,7 +222,6 @@ screen notebook_screen():
     tag notebook
     add "images/bg/bg white.png"
     add "gui/notebook_ui.png"
-    # SCREEN SCOPE VARIABLES
     default hovered_char = None
     default hovered_item = None
     use notebook_tab_screen
@@ -474,5 +473,5 @@ init python:
             notebook_key_item_count.pop(item_id, None)
             if item_id in notebook_key_items:
                 notebook_key_items.remove(item_id)
-
+ 
         renpy.notify(f"Removed: {notebook_key_item_data[item_id]['name']}")

@@ -260,7 +260,7 @@ screen monitoring:
 
 label mnt_camera:
     w "There are a lot of camera screens here."
-    w "To think we're being monitored like this..."
+    w "I can see every corner in the Monument from here..."
     w "Kinda scary..."
     jump monitoringskip
 label mnt_chair1:
@@ -295,10 +295,10 @@ label mnt_chair2:
                 w "Hmm"
                 pause 2.0
                 show watta sleepy
-                w "Hmm"
+                w "Hmm..."
                 w "Why do I suddenly feel sleepy,"
                 w "Well a nap won't harm."
-                w "I guess"
+                w "I guess..."
                 scene bg black with Fade(1,2,2)
                 hide watta
                 stop music fadeout 4
@@ -306,7 +306,7 @@ label mnt_chair2:
             "Hold on for about 2 seconds":
                 jump monitoringskip
 label mnt_magazine:
-    w "The secret files..."
+    w "The Remi files..."
     jump monitoringskip
 label mnt_leave:
     "Do you want to leave the house? You cannot turn back."
@@ -382,6 +382,10 @@ label mnt_sign:
     "Encryption: The message M, first turned into an integer m, such that 0 ≤ m < n, then compute the ciphertext c, using public key e, by:\nc{font=Calibri.ttf}≡{/font=Calibri.ttf}m{font=Calibri.ttf}ᵉ{/font=Calibri.ttf}(mod n)."
     "Decryption: m can be recovered from c by using the private key exponent d by computing:\nm{font=Calibri.ttf}≡{/font=Calibri.ttf}c{font=Calibri.ttf}ᵈ{/font=Calibri.ttf}(mod n)."
     "Given m, the original message M can be recovered by reversing the padding scheme, or discarded as corrupted if the padding is invalid."
+    pause 2.0
+    show watta deter
+    w "..."
+    extend "What"
     jump holeskip
 label mnt_hole:
     w "This is a..."
@@ -663,7 +667,7 @@ label jail_hole:
         "A deep hole, there is something inside it..."
         $ jail_hole_checked = True
     elif jail_pipe_broke and not jail_tap_opened:
-        "There is no water running inside you idiot."
+        "The water isn't running you idiot."
     else:
         "You found something."
         "It's a hammer."
@@ -682,7 +686,7 @@ label jail_tap:
     jump cavernskip
 label jail_mirror:
     if not jail_hammer_own:
-        "It's a mirror, you can clearly see yourself without your bag."
+        "You can see your reflection in the mirror, a Watta without a bag might as well be naked."
     elif jail_hammer_own and not jail_mirror_broke:
         "You broke the mirror."
         $ jail_mirror_broke = True

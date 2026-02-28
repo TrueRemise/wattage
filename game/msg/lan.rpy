@@ -89,6 +89,12 @@ image lan_bar:
 default lan_reset = True
 label lan_test:
     $ actions_locked = True
+    if lan_save_scum_handling():
+        #$ save_lock = False
+        jump centre
+
+    $ lan_sync_currency_last_save()
+
     if rng_from_bj == True:
         jump lan_bj
     elif lan_first_talk_done_stage == 0:
@@ -134,7 +140,6 @@ label lan_first_talk:
         lan "We are not really fond of broke people here..."
         lan "So please leave and come back when you are a little bit hmmm richer."
         hide lan_bar
-    "To avoid save scum in any of Flan's games, saving is disabled in this area."
     show watta sweat at slide_out_left
     $ lan_first_talk_done_stage = 1
     call screen bar_screen
@@ -161,11 +166,12 @@ label lan_second_talk:
         call screen bar_screen
 
 label lan_skip_to_bar_screen:
+    $ renpy.block_rollback()
     call screen bar_screen
 
 label lan_byebye:
     $ actions_locked = False
-    $ save_lock = False
+    #$ save_lock = False
     if sol < 10:
         show lan_bar
         lan "Get the hell outta here broker"
@@ -602,6 +608,8 @@ init python:
                 pass
         if name == "Nrg Cocktail":
             action_add()
+        lan_sync_currency_last_save()
+        renpy.block_rollback()
     def bar_item_not_enough(name, price):
         global bar_buy_text, bar_buy_color
         global sol
@@ -637,6 +645,7 @@ label lan_neko_bracelet:
             lan "Pleasure doing business with you."
             hide lan_bar
             $ sol_add(1000)
+            $ lan_sync_currency_last_save()
             $ item_remove("Neko's Bracelet")
         "Nuh uh":
             show lan_bar
@@ -647,3 +656,25 @@ label lan_neko_bracelet:
             hide lan_bar
             $ lan_neko_bracelet_repeat = True
     jump lan_skip_to_bar_screen
+
+
+label lan_save_scum_context:
+    show rng flashing
+    hide watta
+    show lan_bar
+    lan "Hey"
+    lan "I will not tolerate save scumming."
+    hide lan_bar
+    w "But I..."
+    show lan_bar
+    lan "Reloading a save to get better luck? Nice try diddy"
+    lan "If you don't want me to call the cop on you, give me a little bit of bribe won't ya"
+    lan "50 sol would be enough"
+    lan "Now get the hell out"
+    $ sol -= 50
+    $ lan_sync_currency_last_save()
+    $ persistent.lan_currency_last_save = sol
+    $ lan_first_talk_done_stage = 1
+    hide lan_bar
+    $ persistent.save_scum = False
+    jump centre

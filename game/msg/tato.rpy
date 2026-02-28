@@ -70,10 +70,15 @@ label tato_second_talk_2:
     tt "Any foundation?"
     if oil_lake_cavern_found and not oil_lake_cavern_found_talk:
         show watta default at left
-        w "I found this really massive oil pool underground close to the monument do you want to..."
+        w "I found this really massive oil pool underground close to the monument. Do you want to..."
         tt "Maybe, but our main aim here isn't to extract oil."
+        show watta smile
+        show tato close
         tt "It's about proving the forecast, seeing if what predicted is correct."
+        show tato half
         tt "If you want me to help extracting them, I would love to but unfortunately we are lacking the tools."
+        show watta sweat
+        show tato default
         tt "We can't gather them with only some buckets can we?"
         $ oil_lake_cavern_found_talk = True
         jump beachskip

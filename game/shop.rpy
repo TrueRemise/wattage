@@ -17,7 +17,7 @@ default shop_items = [
     {
         "name": "Memorizing Sheet",                 
         "price": "100",                
-        "desc": "An artifact my grandma gave me. At first glance it looks like a pen and notebook but it's said that whatever you write into the notebook will be remembered by you for your entire life. I did wrote a stupid joke in there once and now I'm haunted by its memory so i'm pretty scared of using it any further. Any used papers are scrapped but you can still use the rest.",                   
+        "desc": "An artifact my grandma gave me. At first glance it looks like a pen and notebook but it's said that whatever you'll remember whatever you write down for the rest of your life. I wrote a stupid joke in there once and now I'm haunted by its memory so i'm pretty scared of using it any further. Any used papers are scrapped but you can still use the rest.",                   
         "image": "paper",
     },
     {
@@ -54,13 +54,20 @@ init python:
         if name == "Flower Charm":
             soul_of_bloomfield = True
             renpy.notify(f"You became one with Bloomfield!")
+            key_item_add("Bloomfield's Charm")
         elif name == "Twisted Stone":
             renpy.call_in_new_context("stone_bought")
+            key_item_add("Twisted Stone")
         elif name == "Memorizing Sheet":
             item_add(name)
+            key_item_add("Memorizing Sheet")
             renpy.notify(f"Bought {name}!")
             renpy.show_screen("notebook_toggle")
             renpy.call_in_new_context("notebook_bought")
+        elif name == "Hydrophobic Lubricant":
+            item_add(name)
+            key_item_add("Hydrophobic Lubricant")
+            renpy.notify(f"Bought {name}!")
         else:
             item_add(name)
             renpy.notify(f"Bought {name}!")

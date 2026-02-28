@@ -74,7 +74,7 @@ label rng:
     jump rngskip
 label rngskip:
     show rng flashing
-    $ save_lock = True
+    #$ save_lock = True
     jump lan_test
 
 label floral:

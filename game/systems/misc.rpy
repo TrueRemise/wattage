@@ -260,12 +260,22 @@ label horror_message:
     show screen horror_trap
     return
 
+
+
+
 label after_load:
     $ preferences.text_cps = 50
-    $ _sync_key_item_inventory()
     if persistent.horror_crash:
         show screen horror_timer
+    $ start_lan_reload_guard()
+    $ renpy.notify(f"{persistent.lan_currency_last_save}")
+    if current_location == "lan":
+        $ lan_save_scum_handling()
     return
+
+
+
+
 default persistent.horror_crash = True
 default show_death_png = False
 default show_black_death_png = False
@@ -318,3 +328,30 @@ screen horror_timer():
     # Invisible, non-blocking
     zorder -100
     timer 20.0 action Function(renpy.call, "horror_redirect")
+
+default persistent.save_scum = False
+default persistent.lan_currency_last_save = 0
+default persistent.lan_reload_guard_until = 0.0
+init python:
+    import time
+    def lan_sync_currency_last_save():
+        if getattr(renpy.store, "current_location", None) == "lan":
+            persistent.lan_currency_last_save = sol
+
+    def start_lan_reload_guard():
+        persistent.lan_reload_guard_until = time.time() + 120
+
+    def is_lan_reload_guard_active():
+        return time.time() < persistent.lan_reload_guard_until
+
+    def lan_save_scum_handling():
+        if not is_lan_reload_guard_active():
+            return False
+
+        if sol > persistent.lan_currency_last_save:
+            persistent.save_scum = True
+            persistent.lan_reload_guard_until = 0.0
+            renpy.jump("lan_save_scum_context")
+            return True
+
+        return False
