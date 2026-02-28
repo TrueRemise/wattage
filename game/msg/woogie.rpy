@@ -40,6 +40,8 @@ label woogie_first_talk:
     unknown "{font=Woogie.ttf}{size=+5}Put yer hands behind yer back won't ya?"
     show watta wtf at shake
     w "Wait what did I do??? I didn't do anything???"
+    unknown "{font=Woogie.ttf}{size=+5}{i}What's yer name again?"
+    w "It's Watta, you arrested the wrong person, please let me go."
     unknown "{font=Woogie.ttf}{size=+5}{i}Pff"
     show woogie laugh3 at bounce
     unknown "{font=Woogie.ttf}{size=+5}Gyahahahaha!!"
@@ -90,12 +92,12 @@ label woogie_first_talk:
     show watta frown
     w "None of my business"
     show woogie cry at bounce
-    wo "Please please I've asked literally everyone else and no one agree. Please Watta i need this."
+    wo "Please please I've asked literally everyone else and no one agree. Please Watta I need this."
     show watta upset
     w "hmm"
     menu:
         "Agree":
-            w "Fine, but don't demand anything from me nor am i obligated to do as you say."
+            w "Fine, but don't demand anything from me nor am I obligated to do as you say."
             show woogie proud at bounced
             wo "Gyahaha, that's fine. I can just follow along and solve crimes on my own"
             show woogie laugh2
