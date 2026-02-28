@@ -330,18 +330,16 @@ screen horror_timer():
     timer 20.0 action Function(renpy.call, "horror_redirect")
 
 default persistent.save_scum = False
-default persistent.lan_currency_checkpoint = 0
 default persistent.lan_currency_last_save = 0
 default persistent.lan_reload_guard_until = 0.0
 init python:
     import time
-    def lan_currency_checkpoint():
-        persistent.lan_currency_last_save = sol
-        if sol > persistent.lan_currency_checkpoint:
-            persistent.lan_currency_checkpoint = sol
+    def lan_sync_currency_last_save():
+        if getattr(renpy.store, "current_location", None) == "lan":
+            persistent.lan_currency_last_save = sol
 
     def start_lan_reload_guard():
-        persistent.lan_reload_guard_until = time.time() + 120.0
+        persistent.lan_reload_guard_until = time.time() + 120
 
     def is_lan_reload_guard_active():
         return time.time() < persistent.lan_reload_guard_until
@@ -350,10 +348,10 @@ init python:
         if not is_lan_reload_guard_active():
             return False
 
-        if sol < persistent.lan_currency_last_save:
+        if sol > persistent.lan_currency_last_save:
             persistent.save_scum = True
             persistent.lan_reload_guard_until = 0.0
-            renpy.call_in_new_context("lan_save_scum_context")
+            renpy.jump("lan_save_scum_context")
             return True
 
         return False
