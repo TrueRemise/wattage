@@ -268,7 +268,7 @@ label after_load:
     if persistent.horror_crash:
         show screen horror_timer
     $ start_lan_reload_guard()
-    $ renpy.notify(f"{persistent.lan_currency_checkpoint}")
+    $ renpy.notify(f"{persistent.lan_currency_last_save}")
     if current_location == "lan":
         $ lan_save_scum_handling()
     return
@@ -331,10 +331,12 @@ screen horror_timer():
 
 default persistent.save_scum = False
 default persistent.lan_currency_checkpoint = 0
+default persistent.lan_currency_last_save = 0
 default persistent.lan_reload_guard_until = 0.0
 init python:
     import time
     def lan_currency_checkpoint():
+        persistent.lan_currency_last_save = sol
         if sol > persistent.lan_currency_checkpoint:
             persistent.lan_currency_checkpoint = sol
 
@@ -348,7 +350,7 @@ init python:
         if not is_lan_reload_guard_active():
             return False
 
-        if sol < persistent.lan_currency_checkpoint:
+        if sol < persistent.lan_currency_last_save:
             persistent.save_scum = True
             persistent.lan_reload_guard_until = 0.0
             renpy.call_in_new_context("lan_save_scum_context")
