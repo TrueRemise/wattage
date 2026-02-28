@@ -416,9 +416,9 @@ default bar_items = [
     },
     {
         "name": "Rng Cocktail",                 
-        "price": "30",                
+        "price": "1 Action",                
         "desc": "Can't be rng money changer without rng.",
-        "effect": "50/50 chance of getting nothing or 50 Sol.",
+        "effect": "50/50 chance of getting nothing or 100 Sol.",
         "image": "rng",
     },
     {
@@ -589,15 +589,18 @@ screen bar_item_screen():
 init python:
     import random
     def bar_item_sold(name, price):
-        global bar_buy_text, bar_buy_color
+        global bar_buy_text, bar_buy_color, actions_left
         global sol, action
         bar_buy_text = "Bought"
         bar_buy_color = "#e53eff"
-        sol -= price
+        if name == "Rng Cocktail":
+            action_done()
+        else:
+            sol -= price
         if name == "Rng Cocktail":
             roll = random.randint(1, 2)
             if roll == 1:
-                sol += 50
+                sol += 100
             else:
                 pass
         if name == "Nrg Cocktail":
