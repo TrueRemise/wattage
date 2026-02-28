@@ -89,6 +89,12 @@ image lan_bar:
 default lan_reset = True
 label lan_test:
     $ actions_locked = True
+    if lan_save_scum_handling():
+        #$ save_lock = False
+        jump centre
+
+    $ lan_currency_checkpoint()
+
     if rng_from_bj == True:
         jump lan_bj
     elif lan_first_talk_done_stage == 0:
@@ -161,11 +167,12 @@ label lan_second_talk:
         call screen bar_screen
 
 label lan_skip_to_bar_screen:
+    $ renpy.block_rollback()
     call screen bar_screen
 
 label lan_byebye:
     $ actions_locked = False
-    $ save_lock = False
+    #$ save_lock = False
     if sol < 10:
         show lan_bar
         lan "Get the hell outta here broker"
@@ -416,9 +423,9 @@ default bar_items = [
     },
     {
         "name": "Rng Cocktail",                 
-        "price": "1 Action",                
+        "price": "30",                
         "desc": "Can't be rng money changer without rng.",
-        "effect": "50/50 chance of getting nothing or 100 Sol.",
+        "effect": "50/50 chance of getting nothing or 50 Sol.",
         "image": "rng",
     },
     {
@@ -589,22 +596,20 @@ screen bar_item_screen():
 init python:
     import random
     def bar_item_sold(name, price):
-        global bar_buy_text, bar_buy_color, actions_left
+        global bar_buy_text, bar_buy_color
         global sol, action
         bar_buy_text = "Bought"
         bar_buy_color = "#e53eff"
-        if name == "Rng Cocktail":
-            action_done()
-        else:
-            sol -= price
+        sol -= price
         if name == "Rng Cocktail":
             roll = random.randint(1, 2)
             if roll == 1:
-                sol += 100
+                sol += 50
             else:
                 pass
         if name == "Nrg Cocktail":
             action_add()
+        renpy.block_rollback()
     def bar_item_not_enough(name, price):
         global bar_buy_text, bar_buy_color
         global sol
