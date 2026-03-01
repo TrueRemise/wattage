@@ -18,7 +18,7 @@ label tsukino_meeting_begin:
     "The meeting commenced."
     scene bg meeting with fade
     tkn "Okay are we all here?"
-    tkn "Imma get this straight"
+    tkn "Imma keep it straight"
     stop music
     tkn "Neko is quitting her career."
     scene bg meeting at shake
@@ -31,7 +31,7 @@ label tsukino_meeting_begin:
     show snowie what at slide_out_left
     show tsukino close at slide_in_left
     tkn "Sadly it's the truth."
-    tkn "I've decided it's the best to only let the high-ranked Nekomins know by now."
+    tkn "I've decided it's best to only let the high-ranked Nekomins know for now."
     show tsukino default
     tkn "As I believe there is a way to solve this."
     show bailey mad
@@ -39,11 +39,11 @@ label tsukino_meeting_begin:
     extend "But why tho?"
     show tsukino close
     tkn "She said her mental health is deteriorating,"
-    tkn "Details unheard of."
+    tkn "Unsure on the detailsss."
     tkn "Tried to persuade her into performing abroad, she declined."
-    tkn "Clearly she wants to spend the last few days performing in her homecity before retiring."
+    tkn "Clearly she wants to spend the last few days performing in her home city before retiring."
     show tsukino speak
-    tkn "We can not let this happens."
+    tkn "We cannot let this happens."
     show tsukino default
     show bailey pant
     b "Argghhh"
@@ -52,7 +52,7 @@ label tsukino_meeting_begin:
     show snowie sad at slide_in_left
     sn "Why is it going this way?"
     show tsukino speak
-    tkn "That's why It's being asked."
+    tkn "That's why i'm asking"
     extend " If any of you Nekomins have any ideas."
     tkn "I believe only her biggest fans will get a grasp of her problems and solve them."
     show tsukino default
@@ -61,8 +61,8 @@ label tsukino_meeting_begin:
     sn "Surely if we can promote her more, maybe more people will motivate her?"
     show tsukino default at slide_out_right
     show bailey mad at slide_in_right
-    b "No the problem is what made her like that,"
-    b "What is the source of the mental draining"
+    b "No, the problem is what made her like this,"
+    b "What is the source of her diminishing mental health"
     show bailey pant
     b "Ugh not this again"
     show bailey mad
@@ -75,17 +75,17 @@ label tsukino_meeting_begin:
         "How about letting her retire as she wanted?":
             show bailey mad at slide_out_right
             show watta default at slide_in_right
-            w "What if we just let her retires as she wants to?"
+            w "What if we just let her retire as she wants to?"
             show tsukino angry
             tkn "Are you crazy? Are you even a Nekomin?"
-            tkn "We needs to support her career, we are here to get her to the top of the idols."
-            tkn "Surely this is just a temporary decision on impulse."
-            tkn "There is no space for that, we have to knock the sense back to her mind."
+            tkn "We need to support her career, we are here to get her to the top of the idol rankings."
+            tkn "Surely this is just a rash decision made on impulse."
+            tkn "There is no place for that, we have to knock sense back into her mind."
             tkn "This is her biggest dream after all."
             $ meeting_choice_retire = True
             show tsukino speak
-            tkn "This will need to be discussed on a more private manner."
-            tkn "The chosen people will receive a message on their mail."
+            tkn "This will need to be discussed in a more private manner."
+            tkn "The chosen people will receive a message in their email."
             tkn "The meeting concludes here for now."
             $ bailey_hall_presence = False
             scene bg black with fade
@@ -98,10 +98,10 @@ label tsukino_meeting_begin:
             pause 0.8
             show snowie jealous2
             sn "Oh it's you"
-            sn "You know, what you suggested?"
+            sn "You know what you suggested?"
             show watta deter
             w "Huh?"
-            sn "I know you cared about her mental health."
+            sn "I know you care about her mental health."
             sn "We all do"
             show snowie huh2 at bounced
             sn "But Neko is like that, she sometimes make decisions on impulse."
@@ -123,16 +123,16 @@ label tsukino_meeting_begin:
             tkn "Spying? Really?"
             show watta default at slide_out_right
             show snowie surprised at slide_in_right
-            sn "That's so morally wrong"
+            sn "That's... so morally wrong"
             show tsukino close at bounced
-            tkn "Uhhh... I think that's a good option for the last resort if it comes to this case."
+            tkn "Uhhh... I think that's a good option as a last resort if it comes down to it."
             tkn "But who will spy on her?"
             show snowie surprised at bounce
             sn "OH NOT ME I WOULD NEVER DO THAT!."
             show snowie surprised at slide_out_right
             show bailey mad at slide_in_right
             b "I really don't support this but..."
-            b "Can we really think of a better plan?"
+            b "Is there really a better plan we can think of on such short notice?"
             tkn "We really wish."
             show tsukino speak
             tkn "How about you blonde sheep?"
@@ -140,8 +140,8 @@ label tsukino_meeting_begin:
             show watta default at slide_in_right
             show watta deter
             w "ME???"
-            tkn "Ye, I saw you talking to her yesterday, and you are new also."
-            tkn "Perfect for an expendable."
+            tkn "Ye, I saw you talking to her yesterday, and you are new as well."
+            tkn "Perfect as an expendable."
             show watta upset
             w "Maybe that's not the word but, "
             extend "I can try?"
@@ -158,7 +158,7 @@ label tsukino_meeting_begin:
             pause 0.8
             show snowie jealous2
             sn "Oh it's you"
-            sn "You know, what you suggested?"
+            sn "You know what you suggested?"
             show watta deter
             w "Huh?"
             sn "Nvm"

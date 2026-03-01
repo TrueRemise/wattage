@@ -360,9 +360,9 @@ label sanco_about_toko:
         sc "That's...{w=0.5} wonderful."
         sc "And you brought him the highest quality one as well"
         show sanco smile2
-        sc "I can't think of how much to thank you. Watta."
-        sc "You are a lifesaver"
-        sc "Here, for your troubles, 300 sol"
+        sc "I can't think of how to thank you. Watta."
+        sc "You are a lifesaver!"
+        sc "Here maybe this will do, 300 sol"
         $ sol_add(300)
         sc "And..."
         label sanco_code_gen:
@@ -396,18 +396,18 @@ label sanco_about_toko:
         window hide
         sc "Did you catch all of that?"
         show sanco smile2
-        sc "Goodluck finding it!"
+        sc "Good luck finding it!"
         $ quest_desc_change("sanco", ": Ask Sanco about the condition.")
         $ sanco_end_toko_talk = True
         $ option_remove("sanco","Toko")
         jump sanco_talk_skip
     elif exquisite_daisy_check and not sanco_end_toko_talk:
         show sanco smile
-        sc "Oh you delievered it to him on time. Thank you again!"
+        sc "Oh you delivered it to him on time. Thank you again!"
         show sanco sweat
-        sc "Ye can't really avoid it turning worse after night"
+        sc "Yeah, can't really avoid it turning worse after one night"
         show sanco sad 
-        sc "That's my bad really if only I didn't forget to tell you the direction"
+        sc "That's my bad really, if only I didn't forget to tell you the direction"
         sc "Oh my poor head"
         sc "But either way, "
         jump sanco_code_gen
@@ -432,7 +432,7 @@ label sanco_about_chii:
     show sanco what at bounced
     sc "Oh?"
     sc "You're saying there's a Bloomfield resident that moved to the Metra centre just yesterday?"
-    sc "That's an odd case, it's been so long since someone here decided to move out other than tourists."
+    sc "That's an odd case, it's been so long since someone here decided to move out to the city."
     show sanco sweat
     sc "Well I do want to meet her of course but I can't move out of here for various reasons."
     sc "Can you get me in contact?"
@@ -449,7 +449,7 @@ label sanco_about_chii_arrival:
     jump sanco_talk_skip
 label sanco_about_chii_2:
     show sanco smile
-    sc "Chii was a kind and innocent girl, a really rare kind of person."
+    sc "Chii was a kind and innocent girl, a really rare type of person."
     sc "She welcomed me with a lot of flowers and a gift."
     sc "We spent some time together doing handycraft."
     sc "It was quite delightfully in all honesty!"
@@ -478,13 +478,13 @@ label sanco_about_blood:
     sc "Is that..."
     extend " blood?"
     sc "Get it out please!"
-    sc "No I am, serious. You don't understand how bad things can go with that."
+    sc "No I'm serious! You don't understand how bad things can go with that."
     sc "The reason many people weren't let in is because many of them have the blood of heresy."
     sc "The blood of someone who goes against monarch Monna."
     show sanco sad
     sc "It was defined as the stain that go against all of monarch's nature."
-    sc "And since the entirety of Bloomfield and its people are from her nature, this could cause a corruption."
-    sc "Which is a big disruption of everything, I really can't put it into words."
+    sc "And since the entirety of Bloomfield and its people are from her nature, this could cause corruption."
+    sc "Which is a huge disruption of everything, I really can't put it into words."
     sc "This is why visitors are heavily gatekept to check for their bloods so they don't get in here and produce children with mixed blood"
     sc "We tried to let some in during the incident for shelter and things went so badly we had to really shut it down for good."
     show sanco shock
@@ -500,18 +500,18 @@ label sanco_about_condition:
     show sanco sad
     extend " noticed?"
     sc "Yes I have this condition"
-    sc "Ever since the incident, my memory was only getting worse."
+    sc "Ever since the incident, my memory has only been getting worse."
     sc "I can hardly remember anything for more than a day."
     sc "Leading to a lot of problems"
-    sc "I scared I would forget my way home if I venture outside, that's why I just stayed in one place"
+    sc "I'm scared I'll forget my way home if I venture outside, that's why I just stay in one place"
     if is_item_get("Memorizing Sheet"):
         show sanco what
         sc "Memorizing sheet? I do use them Watta, they are produced here after all."
         show sanco sad
-        sc "But these sheet are only for simple informations, all they will put in you brain are words that you wrote on it."
-        sc "This will help for some trivial tidbits but won't be sufficient for people with severe memory loss, as it requires the brain to intake complex instructions."
-    sc "If only there is a way I can recover from this, I would be able to enjoy many other things..."
-    sc "And not staying in one place idly everyday"
+        sc "But these sheets are only for trivial information, all they will put in you brain are the exact words you wrote on it."
+        sc "This will help for some simple tidbits but won't be sufficient for people with severe memory loss, as it requires the brain to intake complex instructions."
+    sc "If only there was a way I could recover from this, I would be able to enjoy many other things..."
+    sc "Instead of staying in one place idly everyday"
     $ quest_desc_change("sanco", ": Help Sanco getting rid of her memory loss.")
     $ sanco_about_condition = True
     jump sanco_talk_skip
@@ -520,9 +520,9 @@ label sanco_about_remi:
     sc "Remi?"
     show sanco smile
     sc "He's a good person really."
-    sc "Before the incident he moved to the field sometimes for his studies, rated and evaluated the building here, and helped to build a huge network of cabin."
+    sc "Before the incident he often visited the field for his studies, rated and evaluated the buildings here and helped to build a huge network of cabin."
     sc "I did try to help but he told me to stay away as it could be really dangerous"
-    sc "He's really serious with that though, he consider safety really highly."
+    sc "He's really serious with that though, he considers safety as a top priority."
     sc "It's been a while since I heard anything about him, is there anything happening?"
     w "{i}so he did nothing wrong to you then..."
     $ remi_opinion += 1
@@ -535,9 +535,9 @@ label sanco_about_owl:
     show sanco shock
     sc "You want to get to the lake?"
     show sanco what
-    sc "Watta the lake is a restricted area, you are not allowed to get access."
+    sc "Watta, the lake is a restricted area, you are not allowed to get access."
     sc "What? You need Owl's ability..."
-    sc "To gather the proofs of.."
+    sc "To gather the proof of.."
     sc "..."
     show sanco sad
     sc "I see, so Remi asked for this"
@@ -547,7 +547,7 @@ label sanco_about_owl:
     sc "..."
     sc "So he wanted to get rid of the curse, again"
     sc "Does he still believe in it? The curse? Why does he believe in it so firmly?"
-    sc "Does he really believe this would solve everything??"
+    sc "Does he really believe this will solve everything??"
     show sanco sad
     sc "I'm not really all-knowing as him since I spent most of my older days living here."
     sc "Really I don't want to disregard one of my friends, but, is it really the right thing?"
@@ -560,7 +560,7 @@ label sanco_about_owl:
     show sanco close
     sc "{i}sigh"
     sc "It's true, "
-    extend "the city has already reached it's lowest, nothing is as happy as they are years ago, I also believe we should not set foot in one place anymore."
+    extend "the city has already reached it's lowest, nothing is as happy as it was years ago. Although I do believe we should not set foot in that place anymore."
     sc "Even if we are committing sins..."
     extend " sins..."
     menu:
@@ -581,8 +581,8 @@ label sanco_about_owl:
     show sanco sigh at bounced
     sc "{i}phew"
     sc "I'm fine now Watta."
-    sc "I hope Remi is right, I do feel like there were some kinds of curse upon me"
-    sc "I can't enjoy life as much as before, It's tough for things to just going on like this"
+    sc "I hope Remi is right, I do feel like there is some kinds of curse upon me"
+    sc "I can't enjoy life as much as before, It's gettiing harder just going on like this"
     sc "We really...{w=0.5} should do something-"
     show sanco sad2
     sc "Do you have any idea Watta?"
@@ -594,9 +594,9 @@ label sanco_about_burning:
     sc "Burning the thorns using corruption?"
     sc "You can't be serious!"
     show sanco sad
-    sc "But... maybe, it's the right solution,"
+    sc "But... maybe, it's the best solution,"
     show sanco sad2
-    sc "Alright, I will help you with the making of the corrupted charm"
+    sc "Alright, I will help you with making of the corrupted charm"
     sc "Only for the sake of the city though,"
     sc "Give me your charm..."
     scene bg black with Fade(0.5,1,0.5)
@@ -607,7 +607,7 @@ label sanco_about_burning:
     "Acquired the Soul of the Corruption."
     sc "Before you go, Watta. Remember to chant this line."
     sc "Remembrance is the amber, light is the root, genesis is the blood."
-    sc "O Elena, I seek assurance, grand me thine allowing, we shall be liberated."
+    sc "O Elena, I seek assurance, grant me thine allowing, we shall be liberated."
     $ soul_of_corruption = True
     $ key_item_remove("Bloomfield's Charm")
     $ key_item_add("Corrupted Charm")
@@ -630,11 +630,11 @@ label sanco_quest_acquired:
         w "Huh?"
         show sanco wait at bounce
         show watta default
-        sc "One thing I forgot to mention, the flowers are really fragile they would break at the lightest touch so be mindful about it."
-        sc "They will also starts to wear down after some time, so the quicker the better"
+        sc "One thing I forgot to mention, the flowers are really fragile. They'll break at the lightest touch so be mindful about that."
+        sc "They will also start to wear down after some time, so the quicker the better"
         show sanco sweat
         sc "I don't think Toko will mind that, but I will appreciate it if you could help us out"
-        "Glass Daisy will rot and has quality degraded after night, make sure to deliver it before midnight."
+        "Glass Daisy will rot and will degrade in quality after a night, make sure to deliver it before midnight."
         show watta sweat
         w "I will try to do that"
     else:
@@ -646,12 +646,12 @@ label sanco_quest_acquired:
         w "Huh?"
         show sanco wait at bounce
         show watta default
-        sc "The flower are not really at its best stage right now, it was at its best yesterday"
-        sc "I think because of time that rot it down, you gotta be hurry on this one Watta!"
+        sc "The flowers are not really at their best stage right now, it was at its best yesterday"
+        sc "I think because of time it degraded in quality, so you gotta be hurry on this one Watta!"
         show sanco sweat
-        sc "If you continue to leave it like this it will not able to retain the quality.."
+        sc "If you continue to leave it like this... then it won't remain high quality.."
         sc "I don't think Toko will mind that, but I will appreciate it if you could help us out"
-        "Glass Daisy will rot and has quality degraded after night, make sure to deliver it before midnight."
+        "Glass Daisy will rot and will degrade in quality after a night, make sure to deliver it before midnight."
         show watta sweat
         w "I will try to do that"
     show sanco smile2

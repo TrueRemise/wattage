@@ -290,37 +290,61 @@ label neko_invited_intro:
             extend "... so Watta, what do you wanna talk about today?"
     menu:
         "Do you see the endless road?":
+            show bg neko82 with dissolve 
             w "You see the endless road? There is something of mine that is longer than that, and you have to go through the road to find out what it is."
             nk "Oh? What could it be?"
+            show bg neko83 with dissolve 
             w "It's friendship."
         "What weird water wheel":
+            show bg neko83 with dissolve 
             w "What weird water wheel would watta weave whether watta would weave water wheel weirdly"
         "Im Watta atta":
+            show bg neko8 with dissolve 
             w "Im Watta atta batta chatter splatter, data latta rattle that’ll shatter."
         "Airline food":
+            show bg neko84 with dissolve 
             w "...So what's the deal with airline food?"
         "Hole inspector":
+            show bg neko84 with dissolve 
             w "So.. my old job was being a hole inspector-"
             nk "That sounds cool! What'd you do?"
+            show bg neko83 with dissolve 
             w "I had to make sure the hole i inspected daily remained bottomless."
             nk "What? Wait how can it be bottomless?"
+            show bg neko82 with dissolve 
             w "I dunno... but one day it wasn't."
             nk "????????????????"
+            show bg neko83 with dissolve 
             w "I got fired right after for not taking care of my hole"
             nk "Okay????"
         "Hungry":
+            show bg neko84 with dissolve 
             w "Actually, being on stage makes me hungry..."
             nk "Oh you too? Hehe, you know what that means!"
             w "Grass!"
             nk "Fish!"
+            show bg neko83 with dissolve 
             nk "Wait grass????"
         "Vaporeon":
+            show bg neko8 with dissolve 
             w "Did you know that in terms of male human and female pokemon-"
             nk "Nope we're not doing this"
         "Wood":
-            w "How much wood would a wattachuck chuck if a wattachuck could chuck wood?"
-        "A":
-            W "A..."
+            show bg neko8 with dissolve 
+            w "How much wood would a wattachuck chuck if a wattachuck could chuck wood?"    
+        "Love":
+            show bg neko83 with dissolve 
+            w "We're no strangers to love"
+            extend "You know the rules and so do I"
+            show bg neko84 with dissolve 
+            w "A full commitment's what i'm thinking of"
+            extend "You wouldn't get this from any other guy"
+            show bg neko81 with dissolve 
+            nk "I just wanna tell you how i'm feeling"
+            extend "Gotta make you understand"
+            w "Never gonna give you-" #Remi add a cutoff here pls
+            show bg neko8 
+            nk "Wait we don't have time for karaoke, save that for next week!"
     show bg neko62 with dissolve
     pause 0.5
     show bg neko63 at shake

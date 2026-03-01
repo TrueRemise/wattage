@@ -600,7 +600,7 @@ label home_midn:
         "It feels uncomfortable..."
         $ next_phase()
     else:
-        "It's always quite at midnight."
+        "It's always quiet at midnight."
         $ next_phase()
 
     return
