@@ -1,5 +1,4 @@
 init -5 python:
-    # Keep these clips very short for the Undertale-like speech tick effect.
     TALK_VOICE_SFX = {
         "watta": "sfx/voice/watta.mp3",
         "remi": "sfx/voice/remi.mp3",
@@ -8,8 +7,7 @@ init -5 python:
         "nemu": "sfx/voice/nemu.mp3",
     }
 
-    # Seconds between re-triggers while text is rendering.
-    # Lower = faster "blip" cadence.
+    # Seconds between beepings
     TALK_VOICE_INTERVAL = {
         "watta": 0.045,
         "remi": 0.05,
