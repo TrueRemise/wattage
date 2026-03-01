@@ -6,13 +6,16 @@ label snowie_hall_talk:
         if not snowie_first_time_hall:
             sn "Oh! Welcome!"
             sn "Are you new here? Haven't seen you around til today"
+            show snowie smile
             sn "How long have you been one?"
             sn "Oh just recently?"
-            sn "It's fine the duration doesn't matter, it's more about your enthusiasm"
-            sn "That is what truelly define a Nekomin"
+            show snowie happy
+            sn "It's fine, the duration doesn't matter, it's more about your enthusiasm"
+            sn "That is what truly define a Nekomin"
+            show snowie smile
             sn "This meeting is for an important announcement regarding Neko"
             show snowie sad
-            sn "Mhm hope it's not something too bad trough..."
+            sn "Mhm, hope it's not something too bad though..."
             $ snowie_first_time_hall = True
             hide snowie
             jump hallskip
@@ -24,8 +27,9 @@ label snowie_hall_talk:
     else:
         show snowie default
         $ actions_locked = True
-        sn "Oh ye do you want to visit my workshop?"
+        sn "Oh yeah, do you want to visit my workshop?"
         w "Huh? Why so sudden?"
+        show snowie smile
         sn "Oh I share this with all the Nekomin I think you'd wanna see too!"
         w "Oh yes ofc"
         show snowie happy at bounced
@@ -45,8 +49,8 @@ label snowie_monitoring_intro:
     sn "Here we are"
     w "Wao this place is pretty."
     show snowie smile
-    sn "Ye I work as security in this area, so..."
-    sn "You gonna see a lot of screen."
+    sn "Yep! I work as security in this area, so..."
+    sn "You're gonna see a lot of screens."
     show snowie happy at bounced
     sn "Come and sit, make yourself home!"
     w "Alright!"

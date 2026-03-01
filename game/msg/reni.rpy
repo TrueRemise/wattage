@@ -3,7 +3,7 @@
 label msg_renia_aloy_back:
     show bg phone
     rn "Hello Watta"
-    rn "Aloy got back to his house"
+    rn "Aloy's back home now."
     rn "He might have something to tell you"
     w "I see, thank you"
     call screen message_screen
@@ -78,7 +78,7 @@ label reni_calling_0:
     rn "Hello?"
     menu:
         "...":
-            rn "Please don't call me if you just want to mess around, goodbye."
+            rn "Please refrain from calling me if I don't know you, goodbye."
             stop music fadeout 0.5
             play sound "sfx/end_call.mp3"
             hide screen running_timer
@@ -88,31 +88,33 @@ label reni_calling_0:
             $ reni_thought_it_was_a_scam_call = True
             return
         "It's me Watta":
-            rn "Ohh good to see you Watta, I heard you just moved in last week, how are things going on there?"
+            rn "Ohh good to see you Watta! I heard you just moved in last week, how are things going over there?"
     label reni_ask_1:
     w "Is nice, I met lots of nice people already"
-    rn "That's great to hear, glad you enjoyed it, sadly I had to move out for a while..."
+    rn "That's great to hear, glad you're enjoying yourself, sadly I had to move out for a while..."
     rn "Wait..."
     w "Huh?"
     rn "Who gave you my number?"
     if already_write_reni_number or already_read_reni_number:
         w "Huh? Is on your home door."
-        rn "Oh so you were in North Sidurina already? That's quick!"
+        rn "Oh so you visited North Sidurina already? That was pretty quick!"
         w "Well I was travelling around so..."
-        rn "I see, well I'm free at the moment, so if you have anything to talk about you can ask me."
+        rn "I see, well I'm free at the moment, so..."
+        extend "Anything you wanna talk about?"
     else:
         w "Oh well... uhhh..."
         rn "Nevermind about that..."
-        rn "I'm free at the moment, so if you have anything to talk about you can ask me."
+        rn "I'm free at the moment, so..."
+        extend "Anything you wanna talk about?"
     w "Of course!"
     $ reni_phone_intro_done = True
     $ update_msg_phase("Reni", "0")
     jump reni_talk_skip
 
 label reni_thought_it_was_a_scam_call:
-    rn "If you continue to call to mess with me I wil-"
+    rn "As i said, I don't recognize this number. I'm gonna go ahead and block-"
     w "Hold on hold on It's me, Watta!"
-    rn "Oh it's you I thought it was a.. sorry for hanging up on you earlier..."
+    rn "Oh it's you! I thought it was a.. sorry for hanging up on you earlier..."
     w "It's okay, I didn't respond in time."
     rn "It's fine, also I heard you just moved in last week, how are things going on there?"
     jump reni_ask_1
@@ -187,12 +189,12 @@ label reni_about_neko:
     rn "Neko?"
     rn "You met her?"
     rn "Oh. She's totally my favorite, I really like her."
-    rn "I do wish to one day be working for her, that would be really nice."
+    rn "I do wish to work for her one day! That would be really nice."
     $ option_remove("reni", "About Neko")
     $ reni_first_time_counter += 1
     jump reni_talk_skip
 label reni_why_did_you_leave:
-    rn "Sorry, i can't talk about that in detail..."
+    rn "Sorry, I rather not talk about that..."
     rn "Just know it's about the big things of this city,"
     rn "Government and stuff-"
     $ option_remove("reni", "Why did you leave your house?")
@@ -209,7 +211,7 @@ label reni_about_aloy:
 label reni_about_remi:
     rn "Do not mention it"
     w "Huh???"
-    rn "I'm sorry, just,{w=1} we move on.."
+    rn "I'm sorry, just...{w=1} let's move on..."
     $ option_remove("reni", "About Remi")
     $ reni_first_time_counter += 1
     jump reni_talk_skip
@@ -219,7 +221,7 @@ label reni_about_toko:
     $ reni_first_time_counter += 1
     jump reni_talk_skip
 label reni_about_sanco:
-    rn "I feel kind of bad for the situation Sanco finds herself in, I do hope it gets better."
+    rn "Sanco's in a pretty bad spot right now, I do hope it improves.."
     w "What happened to Sanco?"
     rn "Not my business to talk about..."
     $ option_remove("reni", "About Sanco")

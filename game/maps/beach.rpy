@@ -198,6 +198,6 @@ screen lighthouse:
         action Jump("remi_test")
 
 label remi_secret_door:
-    "A door with 5 set of locks stack on top of each other"
-    "What can be so hidden"
+    "A door with a set of 5 locks stacked on top of each other"
+    "What could be so hidden?"
     jump lightfloorskip

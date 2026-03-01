@@ -17,7 +17,7 @@ default shop_items = [
     {
         "name": "Memorizing Sheet",                 
         "price": "100",                
-        "desc": "An artifact my grandma gave me. At first glance it looks like a pen and notebook but it's said that whatever you write into the notebook will be remembered by you for your entire life. I did wrote a stupid joke in there once and now I'm haunted by its memory so i'm pretty scared of using it any further. Any used papers are scrapped but you can still use the rest.",                   
+        "desc": "An artifact my grandma gave me. At first glance it looks like a pen and notebook but it's said that whatever you'll remember whatever you write down for the rest of your life. I wrote a stupid joke in there once and now I'm haunted by its memory so i'm pretty scared of using it any further. Any used papers are scrapped but you can still use the rest.",                   
         "image": "paper",
     },
     {

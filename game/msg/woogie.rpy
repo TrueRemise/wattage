@@ -31,6 +31,8 @@ label woogie_first_talk:
     unknown "{font=Woogie.ttf}{size=+5}Ya the perpetrator aren't ya?"
     w "What are you even talking about?"
     unknown "{font=Woogie.ttf}{size=+5}That's what a criminal would say... Hmm..."
+    unknown "{font=Woogie.ttf}{size=+5}What's yer name hmm?"
+    w "W-Watta??? Who even are you???"
     stop music fadeout 2.5
     show watta huh at slide_to_left
     show woogie black at slide_in_right
