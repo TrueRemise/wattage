@@ -1,26 +1,44 @@
 init -5 python:
     TALK_VOICE_SFX = {
-        "watta": "sfx/voice/watta.mp3",
-        "remi": "sfx/voice/remi.mp3",
-        "woogie": "sfx/voice/woogie.mp3",
-        "sari": "sfx/voice/sari.mp3",
-        "nemu": "sfx/voice/nemu.mp3",
+        "unknown": "sfx/voice/unknown.mp3",
+        "w": "sfx/voice/watta.mp3",
+        "r": "sfx/voice/remi.mp3",
+        "sr": "sfx/voice/sari.mp3",
+        "lan": "sfx/voice/flan.mp3",
+        "c": "sfx/voice/chii.mp3",
+        "n": "sfx/voice/nemu.mp3",
+        "ts": "sfx/voice/tsuyu.mp3",
+        "iog": "sfx/voice/iog.mp3",
+        "john": "sfx/voice/john.mp3",
+        "rn": "sfx/voice/renia.mp3",
+        "nk": "sfx/voice/neko.mp3",
+        "sc": "sfx/voice/sanco.mp3",
+        "tt": "sfx/voice/tato.mp3",
+        "kr": "sfx/voice/kuro.mp3",
+        "wo": "sfx/voice/woogie.mp3",
+        "tk": "sfx/voice/toko.mp3",
+        "ik": "sfx/voice/iskra.mp3",
+        "b": "sfx/voice/bailey.mp3",
+        "o": "sfx/voice/owl.mp3",
+        "tkn": "sfx/voice/tsukino.mp3",
+        "sn": "sfx/voice/snowie.mp3",
+        "vv": "sfx/voice/vivi.mp3",
+        "al": "sfx/voice/aloy.mp3",
+        "dv": "sfx/voice/moff.mp3",
+        "mk": "sfx/voice/mokka.mp3",
     }
 
-    # Seconds between beepings
+    # Seconds between beeping
     TALK_VOICE_INTERVAL = {
-        "watta": 0.045,
-        "remi": 0.05,
-        "woogie": 0.05,
-        "sari": 0.05,
-        "nemu": 0.05,
+        "w": 0.055,
+        "n": 0.05,
+        "wo": 0.06,
     }
     DEFAULT_TALK_VOICE_INTERVAL = 0.05
 
     _active_talk_voice = {}
 
     def _talk_voice_periodic_callback():
-        import time
         now = renpy.display.core.get_time()
 
         for character_key, state in list(_active_talk_voice.items()):
