@@ -68,7 +68,6 @@ screen centre:
 
 label rng:
     $ current_location = "lan"
-    $ lan_on_enter()
     scene bg rng with Fade(0.1, 0, 0.1)
     stop music fadeout 0.5
     play music "bgm_rng.mp3" fadein 1.0

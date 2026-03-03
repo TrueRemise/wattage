@@ -176,17 +176,14 @@ label lan_byebye:
         show lan_bar
         lan "Get the hell outta here broker"
         hide lan_bar
-        $ lan_on_leave()
         jump centre
     elif lan_reset == True:
         show lan_bar
         lan "Cya!"
         hide lan_bar
         $ lan_reset = False
-        $ lan_on_leave()
         jump centre
     else:
-        $ lan_on_leave()
         jump centre
 label technical:
     "In development"
@@ -602,13 +599,16 @@ init python:
         global sol, action
         bar_buy_text = "Bought"
         bar_buy_color = "#e53eff"
-        sol_lose(price)
+        sol -= price
         if name == "Rng Cocktail":
             roll = random.randint(1, 2)
             if roll == 1:
-                sol_add(50)
+                sol += 50
+            else:
+                pass
         if name == "Nrg Cocktail":
             action_add()
+        lan_cd_start()
         lan_sync_currency_last_save()
         renpy.block_rollback()
     def bar_item_not_enough(name, price):
@@ -674,9 +674,10 @@ label lan_save_scum_context:
     lan "If you don't want me to call the cop on you, give me a little bit of bribe won't ya"
     lan "50 sol would be enough"
     lan "Now get the hell out"
-    $ sol_lose(50)
+    $ sol -= 50
+    $ lan_sync_currency_last_save()
+    $ persistent.lan_currency_last_save = sol
     $ lan_first_talk_done_stage = 1
     hide lan_bar
-    $ save_scum = False
-    $ lan_on_leave()
+    $ persistent.save_scum = False
     jump centre
