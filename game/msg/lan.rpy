@@ -662,7 +662,9 @@ label lan_save_scum_context:
     show rng flashing
     hide watta
     show lan_bar
+    $ renpy.block_rollback()
     lan "Hey"
+    $ renpy.block_rollback()
     lan "I will not tolerate save scumming."
     hide lan_bar
     w "But I..."
