@@ -344,7 +344,14 @@ init python:
 
     def lan_sync_currency_last_save():
         if getattr(renpy.store, "current_location", None) == "lan":
-            persistent.lan_currency_last_save = sol
+            renpy.store.lan_currency_last_save = sol
+
+    def lan_start_punishable_period(seconds=30.0):
+        renpy.store.lan_punishable_period = float(seconds)
+        if getattr(renpy.store, "current_location", None) == "lan":
+            renpy.store.lan_punishable_outside_since = 0.0
+        else:
+            renpy.store.lan_punishable_outside_since = time.time()
 
     def lan_start_punishable_period(seconds=30.0):
         persistent.lan_punishable_period = float(seconds)
