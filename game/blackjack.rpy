@@ -349,12 +349,12 @@ label dealer_turn:
     if (p_total > 21 and d_total <= 21) or (p_total < d_total and d_total <= 21):
         $ result_str = "lose"
         play sound "sfx/lose.mp3"
-        $ sol -= bet
+        $ sol_lose(bet)
         $ win_in_a_row = 0
     elif (p_total <= 21 and d_total > 21) or (p_total > d_total and p_total <= 21):
         $ result_str = "win"
         play sound "sfx/win.mp3"
-        $ sol += bet
+        $ sol_add(bet)
         $ win_in_a_row += 1
     else:
         $ result_str = "tie"
