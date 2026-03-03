@@ -267,10 +267,9 @@ label after_load:
     $ preferences.text_cps = 50
     if persistent.horror_crash:
         show screen horror_timer
-    $ start_lan_reload_guard()
-    $ renpy.notify(f"{persistent.lan_currency_last_save}")
-    if current_location == "lan":
-        $ lan_save_scum_handling()
+    $ lan_refresh_punishable_period()
+    $ renpy.notify(f"lan_punishable_period={persistent.lan_punishable_period:.1f}")
+    $ lan_handle_reload()
     return
 
 
@@ -331,27 +330,87 @@ screen horror_timer():
 
 default persistent.save_scum = False
 default persistent.lan_currency_last_save = 0
-default persistent.lan_reload_guard_until = 0.0
+default persistent.lan_punishable_period = 0.0
+default persistent.lan_punishable_last_tick = 0.0
+default persistent.lan_money_on_enter = 0
 init python:
     import time
+
     def lan_sync_currency_last_save():
         if getattr(renpy.store, "current_location", None) == "lan":
             persistent.lan_currency_last_save = sol
 
-    def start_lan_reload_guard():
-        persistent.lan_reload_guard_until = time.time() + 120
+    def lan_refresh_punishable_period():
+        if persistent.lan_punishable_period <= 0:
+            persistent.lan_punishable_period = 0.0
+            return
 
-    def is_lan_reload_guard_active():
-        return time.time() < persistent.lan_reload_guard_until
+        if getattr(renpy.store, "current_location", None) == "lan":
+            return
 
-    def lan_save_scum_handling():
-        if not is_lan_reload_guard_active():
+        now = time.time()
+        if persistent.lan_punishable_last_tick <= 0:
+            persistent.lan_punishable_last_tick = now
+            return
+
+        elapsed = max(0.0, now - persistent.lan_punishable_last_tick)
+        persistent.lan_punishable_period = max(0.0, persistent.lan_punishable_period - elapsed)
+        persistent.lan_punishable_last_tick = now
+
+    def lan_on_enter():
+        lan_refresh_punishable_period()
+        persistent.lan_money_on_enter = sol
+        persistent.lan_currency_last_save = sol
+
+        if persistent.lan_punishable_period > 0:
+            persistent.lan_punishable_period = 30.0
+            persistent.lan_punishable_last_tick = 0.0
+            renpy.notify(f"lan_punishable_period reset to {persistent.lan_punishable_period:.1f}s")
+
+    def lan_on_leave():
+        lan_refresh_punishable_period()
+        if persistent.lan_punishable_period > 0:
+            persistent.lan_punishable_last_tick = time.time()
+
+    def lan_on_sol_changed(previous_sol, current_sol):
+        lan_refresh_punishable_period()
+
+        if getattr(renpy.store, "current_location", None) != "lan":
+            return
+
+        if current_sol < previous_sol:
+            persistent.lan_punishable_period = 30.0
+            persistent.lan_punishable_last_tick = 0.0
+            renpy.notify(f"lan_punishable_period started: {persistent.lan_punishable_period:.1f}s")
+            return
+
+        if persistent.lan_punishable_period > 0 and current_sol > persistent.lan_money_on_enter:
+            persistent.lan_punishable_period = 0.0
+            persistent.lan_punishable_last_tick = 0.0
+            renpy.notify("lan_punishable_period cleared (money recovered)")
+
+    def lan_handle_reload():
+        lan_refresh_punishable_period()
+        if persistent.lan_punishable_period <= 0:
             return False
 
-        if sol > persistent.lan_currency_last_save:
-            persistent.save_scum = True
-            persistent.lan_reload_guard_until = 0.0
-            renpy.jump("lan_save_scum_context")
-            return True
+        persistent.lan_punishable_period = 30.0
+        persistent.lan_punishable_last_tick = 0.0
+        renpy.notify(f"lan_punishable_period reload reset: {persistent.lan_punishable_period:.1f}s")
+        renpy.jump("lan_save_scum_context")
+        return True
 
-        return False
+    def lan_save_scum_handling():
+        lan_refresh_punishable_period()
+        if persistent.lan_punishable_period <= 0:
+            return False
+
+        if sol > persistent.lan_money_on_enter:
+            persistent.lan_punishable_period = 0.0
+            persistent.lan_punishable_last_tick = 0.0
+            renpy.notify("lan_punishable_period cleared (money recovered)")
+            return False
+
+        persistent.save_scum = True
+        renpy.jump("lan_save_scum_context")
+        return True
