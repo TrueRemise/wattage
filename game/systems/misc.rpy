@@ -267,7 +267,15 @@ label after_load:
     $ preferences.text_cps = 50
     if persistent.horror_crash:
         show screen horror_timer
-    $ renpy.notify(f"{persistent.lan_currency_last_save}{lan_punishable_period}")
+    $ lan_load_persistent_state()
+    if lan_punishable_period > 0.0:
+        $ lan_punishable_period = 30.0
+        if current_location == "lan":
+            $ lan_punishable_outside_since = 0.0
+        else:
+            $ lan_punishable_outside_since = renpy.get_game_runtime()
+        $ lan_save_persistent_state()
+    $ renpy.notify(f"Lan save check: last={lan_currency_last_save}, period={lan_punishable_period}")
     if current_location == "lan":
         $ lan_save_scum_handling()
     return
@@ -334,24 +342,70 @@ default lan_punishable_period = 0.0
 default lan_punishable_outside_since = 0.0
 default lan_joined_sol = 0
 init python:
-    import time
+    def _as_int(value, default=0):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return default
+
+    def _as_float(value, default=0.0):
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return default
+
+    def lan_normalize_state_values():
+        """
+        Ensure LAN state is always numeric so comparisons never hit NoneType.
+        """
+        renpy.store.lan_currency_last_save = _as_int(getattr(renpy.store, "lan_currency_last_save", 0), 0)
+        renpy.store.lan_punishable_period = _as_float(getattr(renpy.store, "lan_punishable_period", 0.0), 0.0)
+        renpy.store.lan_punishable_outside_since = _as_float(getattr(renpy.store, "lan_punishable_outside_since", 0.0), 0.0)
+        renpy.store.lan_joined_sol = _as_int(getattr(renpy.store, "lan_joined_sol", 0), 0)
+
+    def lan_load_persistent_state():
+        if not hasattr(persistent, "lan_currency_last_save"):
+            persistent.lan_currency_last_save = 0
+        if not hasattr(persistent, "lan_punishable_period"):
+            persistent.lan_punishable_period = 0.0
+        if not hasattr(persistent, "lan_punishable_outside_since"):
+            persistent.lan_punishable_outside_since = 0.0
+        if not hasattr(persistent, "lan_joined_sol"):
+            persistent.lan_joined_sol = 0
+
+        renpy.store.lan_currency_last_save = persistent.lan_currency_last_save
+        renpy.store.lan_punishable_period = persistent.lan_punishable_period
+        renpy.store.lan_punishable_outside_since = persistent.lan_punishable_outside_since
+        renpy.store.lan_joined_sol = persistent.lan_joined_sol
+        lan_normalize_state_values()
+
+    def lan_save_persistent_state():
+        lan_normalize_state_values()
+        persistent.lan_currency_last_save = renpy.store.lan_currency_last_save
+        persistent.lan_punishable_period = renpy.store.lan_punishable_period
+        persistent.lan_punishable_outside_since = renpy.store.lan_punishable_outside_since
+        persistent.lan_joined_sol = renpy.store.lan_joined_sol
 
     def lan_clear_punishable_period():
         renpy.store.lan_punishable_period = 0.0
         renpy.store.lan_punishable_outside_since = 0.0
+        lan_save_persistent_state()
 
     def lan_sync_currency_last_save():
         if getattr(renpy.store, "current_location", None) == "lan":
             renpy.store.lan_currency_last_save = sol
+            lan_save_persistent_state()
 
     def lan_start_punishable_period(seconds=30.0):
         renpy.store.lan_punishable_period = float(seconds)
         if getattr(renpy.store, "current_location", None) == "lan":
             renpy.store.lan_punishable_outside_since = 0.0
         else:
-            renpy.store.lan_punishable_outside_since = time.time()
+            renpy.store.lan_punishable_outside_since = renpy.get_game_runtime()
+        lan_save_persistent_state()
 
     def lan_refresh_punishable_period():
+        lan_normalize_state_values()
         if renpy.store.lan_punishable_period <= 0.0:
             return
 
@@ -363,11 +417,13 @@ init python:
             if renpy.store.lan_punishable_outside_since > 0.0:
                 renpy.store.lan_punishable_period = 30.0
             renpy.store.lan_punishable_outside_since = 0.0
+            lan_save_persistent_state()
             return
 
-        now = time.time()
+        now = renpy.get_game_runtime()
         if renpy.store.lan_punishable_outside_since <= 0.0:
             renpy.store.lan_punishable_outside_since = now
+            lan_save_persistent_state()
             return
 
         elapsed = now - renpy.store.lan_punishable_outside_since
@@ -376,28 +432,40 @@ init python:
 
         if renpy.store.lan_punishable_period <= 0.0:
             lan_clear_punishable_period()
+            return
+
+        lan_save_persistent_state()
 
     def lan_on_enter():
+        lan_load_persistent_state()
         lan_refresh_punishable_period()
         renpy.store.lan_joined_sol = sol
         if renpy.store.lan_punishable_period > 0.0:
             renpy.store.lan_punishable_period = 30.0
             renpy.store.lan_punishable_outside_since = 0.0
         lan_sync_currency_last_save()
+        lan_save_persistent_state()
 
     def lan_on_leave():
         lan_refresh_punishable_period()
         if renpy.store.lan_punishable_period > 0.0 and renpy.store.lan_punishable_outside_since <= 0.0:
-            renpy.store.lan_punishable_outside_since = time.time()
+            renpy.store.lan_punishable_outside_since = renpy.get_game_runtime()
+        lan_save_persistent_state()
 
     def lan_on_sol_changed(previous_sol, current_sol):
+        previous_sol = _as_int(previous_sol, 0)
+        current_sol = _as_int(current_sol, 0)
         if getattr(renpy.store, "current_location", None) == "lan" and current_sol < previous_sol:
             lan_start_punishable_period(30.0)
 
         if renpy.store.lan_punishable_period > 0.0 and current_sol > renpy.store.lan_joined_sol:
             lan_clear_punishable_period()
+            return
+
+        lan_save_persistent_state()
 
     def lan_save_scum_handling():
+        lan_load_persistent_state()
         lan_refresh_punishable_period()
         if renpy.store.lan_punishable_period <= 0.0:
             return False
