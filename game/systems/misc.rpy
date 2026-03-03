@@ -330,7 +330,7 @@ screen horror_timer():
 
 default save_scum = False
 default lan_currency_last_save = 0
-default persistent.lan_punishable_period = 0.0
+default lan_punishable_period = 0.0
 default lan_punishable_outside_since = 0.0
 default lan_joined_sol = 0
 init python:
