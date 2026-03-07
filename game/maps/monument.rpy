@@ -386,6 +386,7 @@ label mnt_sign:
     show watta deter
     w "..."
     extend "What"
+    hide watta
     jump holeskip
 label mnt_hole:
     w "This is a..."

@@ -597,7 +597,7 @@ label fishing_game_tutorial:
         lan "Why should I not be here fellas?"
         lan "I'm the leading figure of the entertainment industry in Sidurina"
         lan "Of course I would be here."
-        w "But this is a desserted islet, how did you get here?"
+        w "But this is a deserted islet, how did you get here?"
         show flan close at bounced
         lan "Don't mind about that..."
         show flan default

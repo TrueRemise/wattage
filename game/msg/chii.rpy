@@ -341,7 +341,7 @@ label chii_talk1:
     c "Ever heard of Bloomfield? You know, the indoor town with artificial lighting?"
     c "Yeah, that place. Probably the best place to grow plants."
     c "But that's the issue, EVERYONE and their grandmas grow plants"
-    c "So making any real money there is difficult, not to mention no one's interessted in some random dinky artifacts given to a girl as heirlooms"
+    c "So making any real money there is difficult, not to mention no one's interested in some random dinky artifacts given to a girl as heirlooms"
     c "Came over here in hopes of both making money and finding an owner for all these silly trinkets, especially given those in my family forgot what most even do."
     c "Who knows why some are useless now, maybe we're not worthy? Well whatever the case, i'm hoping people like you get a better use outta 'em!"
     $ chii_talked_about_bloomfield = True
@@ -411,7 +411,7 @@ label chii_after_sanco_talk:
     show watta smile at left
     pause 0.3
     show chii happy at bounce
-    c "Thank you for telling Sanco about me Watta."
+    c "Thank you for telling Sanco about me, Watta."
     show chii default
     c "It was... quite a pleasant meeting"
     show chii cry3
@@ -446,7 +446,7 @@ label chii_after_sanco_talk:
     hide chii
     scene bg floral respite with Fade(0.2, 0, 0.2)
     play music "bgm_floral.mp3" fadein 1.0 volume 0.5
-    $shop_item_add("Flower Charm", "250", "An artifact Sanco and I made together! Not really an artifact but moreso a combination of every essence that makes someone a true Bloomfield resident. Having it would help you blend in and even convince people that you are an actual Bloomfieldian... But if you'd rather not be roleplaying as us, It won't be hurt if you take them off so don't worry!.", "charm")
+    $shop_item_add("Flower Charm", "250", "An artifact Sanco and I made together! Not really an artifact but moreso a combination of every essence that makes someone a true Bloomfield resident. Having it would help you blend in and even convince people that you are an actual Bloomfieldian... But if you'd rather not be roleplaying as us, I won't be hurt if you take it off so don't worry!.", "charm")
     $ chii_after_sanco_talk_done = True
     call screen shop_screen
 
@@ -505,7 +505,7 @@ label chii_go_to_lake_talk:
     c "WHAT!?"
     c "You removed the binding on Swan Lake?"
     show chii cry
-    c "Oh my god! I used to visit that area a lot as a kid."
+    c "Oh my god! I used to visit that area a lot as a kid!"
     show chii cry2
     c "There used to be a HUGE amusement park there but I recall it got brought down for whatever reason."
     show chii smile
@@ -513,9 +513,9 @@ label chii_go_to_lake_talk:
     c "And now with it unlocked, it might be the perfect time for me to go visit!"
     show chii sweat
     c "Don't get me wrong... It's probably illegal to go there but-"
-    c "You know its already unlocked and you're not in jail or hurt..."
+    c "It's already unlocked and you're not in jail or hurt..."
     show chii tease
-    extend "...So yeah just a quick trip and back should be fine!"
+    extend "...So yeah just a quick trip and back should be fine!~"
     show chii wink
     c "Alright, like last time buy everything you can before I go. I'll be here a little longer as i prepare."
     $ chii_go_to_lake_timer = 2
