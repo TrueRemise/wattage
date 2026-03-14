@@ -724,10 +724,13 @@ label remi_second_talk_2:
 
 
 label remi_talk_before_second_talk:
+    show remi smile
     r "I saw what you did up there Watta, it was cool."
     r "You got the chance with... Neko herself."
+    show remi erm
     r "I would also have had one if I didn't reject it."
     r "It's just {w=0.5}too stressful for me."
+    show remi default
     r "The crowd can be, it's obvious, but there is also something that is quite terrifying here."
     r "To put it,"
     return
@@ -738,49 +741,87 @@ label remi_third_talk:
     show watta default at left
     play music "bgm_remi.mp3" fadein 1.0 
     r "Do you ever see a car running and wonder how it feels like to have your fingers crushed over by the wheels?"
+    show watta deter
     w "What?"
+    show remi close
     r "Nevermind."
+    show remi look
     r "I have this note... It has all of my past crimes written down."
+    show watta wtf
     w "Wait what?"
     r "Yes I was kind of..." 
+    show remi hah
+    show watta sweat
     extend "well, very... immature back then."
-    r "Do you think that for horrible crimes, ones  not started by poverty."
+    show remi erm
+    r "Do you think that for horrible crimes, ones not started by poverty."
+    show watta upset
     r "Aside from greed being a factor, do you think it's also because of jealousy?"
     w "Huh?"
+    show remi ill
+    show watta huh
     r "I stopped doing them not because I stopped having jealousy, but because it became pretty boring."
     r "I worked my status up because once you're at the top of the world... nothing will mess with your feelings anymore."
+    show watta frown
     r "By being at the top I can believe that nothing is above me. Thus none of the four modern sins, including jealousy, can affect me."
+    show remi mad
     r "Every time I watch someone doing something skillful, I reassure myself \"At least im better than them\" and that helps me defeat the negative feelings."
+    show watta mad
     w "Don't you think that's a little arrogant?" 
+    show watta huh
     extend "Like looking down on everything?"
+    show remi hah
     r "Maybe, but funny enough it is a good self-care technique for me."
+    show watta mad
     w "What's wrong with being humble?"
+    show remi distraught
     r "It can work, but i'm not lowering my self worth. Plus being humble doesn't exactly help my jealousy."
     r "Especially when jealousy is simply caused because I think i'm missing out on something that someone else is experiencing."
+    show remi default
+    show watta sleepy
     r "and the funny thing is that sometimes you CAN achieve the same thing, but more likely than not you won't and you'll just stay jealous."
+    show watta frown
     w "What's the point you're trying to make man?"
+    show remi close
     r "This is what caused me to fear trying to come back."
     r "My jealousy won't let me enjoy peace as my inner self keeps trying to fuel up my rage bar."
-    r "I'll continue to crashs out again and again. It's an endless cycle."
-    w "It's okay Remi, we all do feel that as well, it's just..."
+    show watta sad
+    r "I'll continue to crash out again and again. It's an endless cycle."
+    w "It's okay Remi, we all do feel that as well, it's just...    "
+    show remi hmm
+    show watta mad
     w "You need to share your feeling man. And then we will start working with it over time."
+    show watta sad
     w "Don't expect changes to be sudden."
+    show remi ill
     r "You say that calmly but would you still be when i ramble about the same problem for the hundredth time?"
+    show watta huh
     w "People know you well Remi. They can tolerate you way better when you talk as opposed to when you hide."
-    w "You are smart Remi you can learn. You can totally adapt after a while."
+    w "You are smart Remi, you can learn. You can totally adapt after a while."
+    show remi look
     r "..."
+    show remi hmm
     r "..."
+    show remi up
     r "I don't wanna live like this"
+    show watta smile
     r "But fine, I'll try, just, give me some time."
+    show remi smile
     r "Thank you for gathering people's info on me by the way, even though i didn't ask for it."
     r "Here, take this, a piece of my past."
     $ item_add("Crime Note")
+    show remi erm
+    show watta deter
     r "I want to dispose of my past, and also I think you should be aware of it, I don't wanna be so insecure about myself anymore."
     r "Just don't... share it with anyone."
+    show watta default
     w "Alright"
+    show remi smile
     r "Meet me at the beach tomorrow. I will let you into the lighthouse."
     r "I'm going home now. Also dont let Sari know I was here."
+    show remi default
     r "Bye"
+    show watta smile
     w "Cya"
     $ remi_first_talk_done_stage = 5
     $ cutscene_on = False
@@ -802,52 +843,78 @@ label remi_fifth_talk:
     show bg lighthouse at whiten
     show remi default at right
     r "Sorry if it's a little bit messy"
-    r "Not like I ever expect a guest"
-    show watta default at left
+    r "Not like I ever expected to get a guest"
+    show watta smile at left
     w "It's okay"
     r "So"
     extend ", did you read the note?"
     if not remi_crime_note_read:
+        show watta deter
         w "The what? The crime note?"
-        r "Sound like you havent read it then"
+        show remi distraught
+        r "Sound like you haven't read it then"
         r "That's fine"
     else:
+        show watta default
         w "Ye I did"
-        r "What do you think of me now Watta?"
-        w "Nothing about you are changed for me Remi, you are still you"
+        show remi default
+        r "What do you think of me now, Watta?"
+        show watta happy
+        w "Nothing about you has changed for me Remi, you're still you"
+        show remi hah
         r "I see, that's nice then"
     r "You see"
+    show remi erm
     r "I'm planning to go back"
-    r "You know, with everyone"
-    w "Thats great to hear"
-    r "But i do wonder if things gonna"
-    extend " repeat themself"
+    show watta shocked
+    r "Back to everyone"
+    show watta hype
+    w "That's great to hear!"
+    show remi hmm
+    r "But i do wonder if events are gonna"
+    extend " repeat agan"
+    show watta smile
     w "They all know who you are Remi"
-    w "You just need to be open to more people"
-    w "Letting what troubling you out"
-    r "That time when you came over, like{w=0.5} months ago"
-    r "Before the mess that is happening rn"
-    r "We were... what is it"
+    show remi look
+    w "You just need to be more open with people"
+    show watta happy
+    w "Letting what's troubling you out"
+    show remi ill
+    r "That time when you came over, like{w=0.5} a few months ago"
+    r "Before this mess happened"
+    show watta huh
+    show remi look
+    r "We were at... where was it again?"
+    show watta smile
     w "Was it the beach?"
-    r "Yes the beach, I missed that time watta."
-    r "That was exactly, the first and only time all of us were captured on the same picture"
-    r "I tried finding it again, but to no avail, i think it's lost media now"
+    show remi smile
+    r "Yes the beach, I miss that time Watta."
+    r "That was exactly the first and only time all of us were together in the same picture"
+    show remi hmm
+    r "I tried finding it again but to no avail, i think it's lost media now"
+    show watta sad
     w "Oh"
-    r "Im sorry"
-    w "Don't be, i dont think any of them mind by now"
-    r "I really missed everyone Watta, i wished to relive some of the moments, sadly it's all in my head now"
-    r "In the end"
+    show remi look
+    r "I'm sorry"
+    show watta smile
+    w "Don't be, i don't think any of them will mind"
+    show remi up
+    r "I really miss everyone Watta. I wish to relive some of these moments, sadly they're all just memories now."
+    r "Though..."
+    show watta happy
+    show remi smile
     r "Thank you for spending time with me"
-    r "I felt much better now, gotta work my way back soon."
-    r "Thanks Watta"
+    r "I feel much better now, gotta make my way back soon."
+    show remi hah
+    r "Thanks, Watta"
     show screen task_aquired("REMI'S QUEST COMPLETED", "QUALITY: GOOD", "images/task/taskremi.png")
     $ quest_end("remi")
     
     pause 3.0
-    r "While at it, ask me any question."
+    r "While you're here, let's have a nice chat."
     $ remi_first_talk_done_stage = 7
     menu:
-        r "While at it, ask me any question.{fast}"
+        r "Got anything on your mind?{fast}"
         "Ask him any question":
             hide watta
             call screen remi_screen    

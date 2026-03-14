@@ -42,8 +42,6 @@ label woogie_first_talk:
     unknown "{font=Woogie.ttf}{size=+5}Put yer hands behind yer back won't ya?"
     show watta wtf at shake
     w "Wait what did I do??? I didn't do anything???"
-    unknown "{font=Woogie.ttf}{size=+5}{i}What's yer name again?"
-    w "It's Watta, you arrested the wrong person, please let me go."
     unknown "{font=Woogie.ttf}{size=+5}{i}Pff"
     show woogie laugh3 at bounce
     unknown "{font=Woogie.ttf}{size=+5}Gyahahahaha!!"

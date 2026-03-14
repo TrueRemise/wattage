@@ -16,7 +16,7 @@ label aloy_first_talk:
     show watta default at right
     al "Yo Watta my brotherman welcome"
     show aloy noy
-    al "The day finally arrived, although it coulda been earlier if it wasn't due to my business Wahaha!."
+    al "The day finally arrived, although it coulda been earlier if it wasn't due to my business, Wahaha!."
     show watta deter
     w "You sure do own a lot of guns..."
     show watta sweat
@@ -25,10 +25,10 @@ label aloy_first_talk:
     show watta smile
     al "But I think i'll at least see the festival through first."
     w "I see"
-    al "For these final days tho, I want to do something else." 
+    al "For these final days tho, I want to do something else. " 
     show aloy close
     show watta delighted
-    extent "I want to host a party, a farewell party, with all of our friends."
+    extend "I want to host a party, a farewell party, with all of our friends."
     w "A party huh?"
     show aloy default
     al "I can totally invite them via texts but here's the thing"

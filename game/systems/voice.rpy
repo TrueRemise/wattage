@@ -32,7 +32,16 @@ init -5 python:
     TALK_VOICE_INTERVAL = {
         "w": 0.055,
         "n": 0.05,
-        "wo": 0.06,
+        "wo": 0.08,
+        "dv": 0.05,
+        "al": 0.05,
+        "nk": 0.06,
+        "rn": 0.05,
+        "c": 0.15,
+        "sn": 0.05,
+        "sc": 0.05,
+        "r": 0.05,
+        "kr": 0.05,
     }
     DEFAULT_TALK_VOICE_INTERVAL = 0.05
 
