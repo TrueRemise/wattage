@@ -58,7 +58,7 @@ screen park:
             ypos 320
             auto "images/char_int/iog_park_%s.png"
             action Jump("iog_stand")
-    if remi_opinion >= 3 and the_knower == 2 and remi_first_talk_done_stage == 4:
+    if remi_opinion >= 3 and remi_first_talk_done_stage == 4:
         imagebutton:
             xpos 508
             ypos 645

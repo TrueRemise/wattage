@@ -449,7 +449,7 @@ label remi_second_talk:
             show remi distraught
             show watta sad
             r "Stupid."
-            $ quest_desc_change("remi", ": Find and talk to Remi again next time.")
+            $ quest_desc_change("remi", ": Find and ask 3 people about Remi")
             $ remi_first_talk_done_stage = 3
             $ cutscene_on = False
             $ remi_second_talk_bad = True
@@ -487,7 +487,7 @@ label remi_second_talk:
             show remi close
             r "Please leave me be for now"
             w "Okay..."
-            $ quest_desc_change("remi", ": Find and talk to Remi again next time.")
+            $ quest_desc_change("remi", ": Find and ask 3 people about Remi")
             $ remi_first_talk_done_stage = 3
             $ cutscene_on = False
             $ remi_second_talk_bad = True
@@ -519,7 +519,7 @@ label remi_second_talk:
             r "Please let me be for now"
             show watta sad
             w "Okay..."
-            $ quest_desc_change("remi", ": Find and talk to Remi again next time.")
+            $ quest_desc_change("remi", ": Find and ask 3 people about Remi")
             $ remi_first_talk_done_stage = 3
             $ cutscene_on = False
             $ remi_second_talk_bad = True
@@ -605,6 +605,10 @@ label remi_second_talk:
     w "Hmmm, alright I will try to remember then."
     r "Thank you, this is for the better of all."
     r "Go seek Owl and tell him that, then it better be resolved."
+    r "Oh and one thing"
+    w "Huh?"
+    r "Avoid going to the lake at night, Owl told me that"
+    w "I see"
     $ quest_desc_change("remi", ": Find and ask people about Remi, including Owl.")
     $ the_knower = 2
     $ remi_first_talk_done_stage = 3
@@ -735,6 +739,7 @@ label remi_talk_before_second_talk:
     r "To put it,"
     return
 
+default crime_note_readable = False
 label remi_third_talk:
     $ cutscene_on = True
     show remi default at right
@@ -823,6 +828,8 @@ label remi_third_talk:
     r "Bye"
     show watta smile
     w "Cya"
+    $ crime_note_readable = True
+    $ quest_desc_change("remi", ": Meet Remi at the beach tomorrow.")
     $ remi_first_talk_done_stage = 5
     $ cutscene_on = False
     $ action_done()

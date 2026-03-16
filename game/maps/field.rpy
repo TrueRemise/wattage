@@ -262,6 +262,7 @@ label field_to_lake_cutscene:
     $ renpy.pause(3, hard=True)
     show bg black with Fade(2,0,0)
     $ rot = True
+    "You aquired the keys to Swan Lake."
     jump eastgate
 
 label field_to_lake_cutscene_2:

@@ -1,4 +1,4 @@
-﻿init python:
+init python:
     from collections import OrderedDict
 
     def option_add(char, option_key, label_name, pos=None):
@@ -271,7 +271,7 @@ label after_load:
         $ lan_cd_start()
     else:
         $ persistent.lan_cd = 0
-    $ renpy.notify(f"{persistent.lan_currency_last_save}")
+    #$ renpy.notify(f"{persistent.lan_currency_last_save}")
     if current_location == "lan":
         $ lan_save_scum_handling()
     return

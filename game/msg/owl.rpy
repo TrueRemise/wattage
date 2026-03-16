@@ -44,10 +44,14 @@ label owl_first_talk:
     show watta upset
     w "{i}why didn't he also tell everyone else?"
     o "Normally opening the gate is not allowed"
-    o "But as I've been here for quite a long"
+    o "But as I've been here for quite a long time"
     o "These corruption doesn't seems like spreading to a considerable extend."
     o "I think the gate being opened for now is fine"
     o "Just need to resolve the problem quickly before something bad happens"
+    o "And remember to lock the door to prevent people in."
+    o "Especially when night comes."
+    w "Something happens at night?"
+    o "Just know its dangerous to be around at night."
     show watta deter
     w "Oh right, uhh"
     extend " so what should I do?"

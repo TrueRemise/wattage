@@ -521,5 +521,6 @@ label chii_go_to_lake_talk:
     $ chii_go_to_lake_timer = 2
     hide chii
     hide watta
+    "You lent Chii a spare key to Swan Lake"
     scene bg floral respite with Fade(0.2, 0, 0.2)
     call screen shop_screen

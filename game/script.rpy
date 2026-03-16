@@ -253,6 +253,8 @@ label bed:
         show watta default at right
         w "I can finally sleep now, but do I really need to sleep?"
         menu:
+            "Read crime note" if is_item_get("Crime Note"):
+                "a"
             "Sleep til next phase":
                 hide watta
                 $next_phase()
