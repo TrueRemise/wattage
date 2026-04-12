@@ -148,9 +148,9 @@ init python:
             chii_meet_sanco_timer -= 1
             if chii_meet_sanco_timer == 0:
                 chii_meet_sanco_timer = 5
-        if chii_go_to_lake_timer > 1:
+        if chii_go_to_lake_timer > 3:
             chii_go_to_lake_timer += 1
-            if chii_go_to_lake_timer > 7:
+            if chii_go_to_lake_timer >= 8:
                 chii_go_to_lake_timer = 7
         if bailey_give_sauce_normal >= 1:
             bailey_give_sauce_normal += 1
@@ -233,6 +233,8 @@ label things_that_change_when_you_sleep:
         $ bailey_unavailable = False
         $ bailey_body_returning = False
         $ bailey_body_returned = True
+    if chii_go_to_lake_timer == 2 or chii_go_to_lake_timer == 3:
+        $ chii_go_to_lake_timer = 4
     jump homeskip
 
 

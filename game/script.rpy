@@ -253,8 +253,53 @@ label bed:
         show watta default at right
         w "I can finally sleep now, but do I really need to sleep?"
         menu:
-            "Read crime note" if is_item_get("Crime Note"):
-                "a"
+            w "I can finally sleep now, but do I really need to sleep?{fast}"
+            "Read crime note(this scene will be replaced in the official release)" if crime_note_readable:
+                w "The note Remi gave me..."
+                w "Let's see"
+                scene bg note1 with Fade(2,0.1,2)
+                w "\"If you are reading this, im no longer here\""
+                w "\"Unless this note got stolen idk\""
+                w "\"I had many secrets that I wanna hide, but i also want people to know me more.\""
+                w "\"I want someone i can trust enough to take care of them\""
+                w "\"but I dont think there will be one until i die sadly\""
+                w "\"Such is life.\""
+                w "\"If she gets to read this, im doomed\""
+                w "\"Lmao\""
+                scene bg note2 with Fade(1,0.1,1)
+                w "\"When I was young, I stole a lot of stuffs, mostly trivial things and toys\""
+                w "\"due to having a superior mindset, i look down on people and beat up those who go against me\""
+                w "\"I also had a lot of fun destroying properties and doing pranks\""
+                w "\"I grew bored out of it pretty quickly, but my mindset remained unchanged\""
+                w "\"I started getting more and more violent to get what i want\""
+                w "\"There was this kid that threw my backpack into the river, including a lot of my works,\""
+                w "\"I chopped his finger off\""
+                w "huh?"
+                scene bg note3 with dissolve
+                w "\"People found out and I got detained but not for long\""
+                w "\"I grew to realize that I should have been more sneaky\""
+                w "\"A month later, I poisoned the kid and it worked\""
+                w "\"I killed someone\""
+                w "\"No one found out\""
+                w "\"It was overwhelming at first, but it grews to be pleasure.\""
+                w "\"I did more bad stuffs\""
+                w "\"I stole my parents money, got kicked out of house.\""
+                w "\"I steal to stay alive, lurking in a corridor.\""
+                w "\"Got mad due to thirst, i started poisoning anyone i dislike.\""
+                scene bg note4 with dissolve
+                w "\"I poisoned my 2nd person, 3rd person, 4th, 5th,...\""
+                w "\"A family invited me for dinner, I treated them back\""
+                w "\"Never got caught\""
+                w "\"Until\""
+                "The note ends here"
+                w "..."
+                w "Is he serious?"
+                w "Cant be..."
+                w "I'll just..."
+                extend " ignore this"
+                $ crime_note_readable = False
+                $ remi_crime_note_read = True
+                jump bedroom
             "Sleep til next phase":
                 hide watta
                 $next_phase()

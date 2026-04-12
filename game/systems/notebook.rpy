@@ -200,12 +200,21 @@ default notebook_key_item_data = {
         "desc": "The aura of the corrupted.",
         "image": "corrupted charm"
     },
+    "Engine 1": {
+        "name": "Engine 1",
+        "desc": "SuperEngine made from self-generating super oil embedded in corrupted soil, can reach the speed of 1.0E-7 speed of light.",
+        "image": "engine 1"
+    },
+    "Red Letters": {
+        "name": "Red Letters",
+        "desc": "Letters given to you by Aloy, can be used to invite all of the important people Wahahahaha.",
+        "image": "red letters"
+    },
     "Hot Dog": {
         "name": "Hot Dog",
         "desc": "Gives 3 actions.",
         "image": "hot dog"
     },
-
     "Hot Puppy": {
         "name": "Hot Puppy",
         "desc": "Gives 1 action, i drew 3 but mean just 1.",

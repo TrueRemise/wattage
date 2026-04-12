@@ -868,8 +868,15 @@ label remi_fifth_talk:
         r "What do you think of me now, Watta?"
         show watta happy
         w "Nothing about you has changed for me Remi, you're still you"
+        w "Even tho is"
         show remi hah
-        r "I see, that's nice then"
+        r "It's pretty messed up yes,"
+        r "But people grow to learn too, everyone can change"
+        r "There is no natural bad people you know"
+        w "..ye..."
+        r "It can be forgotten now."
+        r "Give me the note, i will dispose it off later"
+        $ item_remove("Crime Note")
     r "You see"
     show remi erm
     r "I'm planning to go back"

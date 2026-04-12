@@ -31,6 +31,24 @@ label beachdef:
         call screen beach
     return
 label beach_ft:
+    show watta hype
+    w "So much wind"
+    w "I remembered the time when we met up the first time on this beach."
+    if woogie == True:
+        show watta hype at slide_to_left
+        show woogie huh at slide_in_right
+        wo "Who? Us?"
+        show watta upset
+        w "Dude you are just lurking"
+        w "..."
+        show watta huh
+        w "Sadly with this current situation I don't think we will be able to have another meet up soon"
+        show woogie hmm with dissolve
+        wo "What's wrong with people?"
+        show watta mad
+        w "What's wrong with you?"
+        hide woogie
+    hide watta
     $ beach_first = True
     jump beachdef
 

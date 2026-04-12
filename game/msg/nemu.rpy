@@ -24,7 +24,9 @@ label nemu_first_talk:
     n "If only I could get better.."
     show nemu shock at slide_to_right
     show watta default at fade_in_left
-    n "Oh Watta you surprised me"
+    n "OMG"
+    n "OMG IT'S WATTA"
+    n "You surprised me"
     show watta sweat
     w "I'm just wandering around but... you sound like you need some help, Nemu"
     show nemu dried at bounced

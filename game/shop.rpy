@@ -68,6 +68,10 @@ init python:
             item_add(name)
             key_item_add("Hydrophobic Lubricant")
             renpy.notify(f"Bought {name}!")
+        elif name == "Engine 1":
+            key_item_add("Engine 1")
+            renpy.call_in_new_context("engine_bought")
+            renpy.notify(f"Bought {name}!")
         else:
             item_add(name)
             renpy.notify(f"Bought {name}!")
@@ -364,4 +368,10 @@ label notebook_bought:
     "You bought the note."
     "You started writing down what's important to you."
     "Press \"j\" to open the notebook, alternately you can click the Gemini icon near the top right corner."
+    return
+
+label engine_bought:
+    "You bought the engine."
+    "You taped it to your bike, your bike can now run superfast."
+    $ travel_upgrade = 1
     return

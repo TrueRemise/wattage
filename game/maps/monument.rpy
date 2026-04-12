@@ -37,10 +37,16 @@ label monumentdef:
     return
 label monument_ft:
     show watta sleepy
-    w "The Monument of the lost..."
-    w "Is just a big graveyard really"
-    show watta sweat
-    w "Scary..."
+    w "This giant pillar"
+    w "This is the big monument that Reni mentioned, she should be nearby..."
+    if woogie == True:
+        show watta default at slide_to_left
+        show woogie laugh2 at slide_in_right
+        wo "It's just a big graveyard really"
+        wO "The deads are lurking"
+        show watta upset
+        w "I don't need such information"
+        hide woogie
     hide watta
     $ monument_first = True
     jump monumentdef

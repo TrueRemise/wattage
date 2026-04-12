@@ -275,6 +275,14 @@ label field_to_lake_cutscene_2:
     $ renpy.pause()
     if phase == 3:
         jump lake_at_night
+    elif is_unlocked("lake"):
+        if youcanonlygotosanco or youcanonlyrescuechii:
+            jump lake
+        else:
+            $ action_done()
+            jump lake
+    else:
+        pass
     show bg field11 with Fade(1,1,1)
     $ renpy.pause(1, hard=True)
     show bg field12 at shake
@@ -305,6 +313,23 @@ label field_to_lake_cutscene_2:
     show watta ahh
     w "They don't move at all so..."
     w "Hopefully not..."
+    if woogie == True:
+        show watta ahh at slide_to_left
+        show woogie laugh2 at slide_in_right
+        wo "Why ya so easily freaked out Winston"
+        show watta frown
+        wo "These are just boats"
+        w "They look scary"
+        show woogie hmm
+        wo "Don't ya think there is a reason she sealed this place?"
+        w "Well..."
+        wo "We should get out of here as soon as possible"
+        show woogie sus
+        wo "Focus on yer objectives Winston"
+        show watta default
+        w "Alright then"
+        hide woogie
+    hide watta
     $ loc_unlock("lake")
     $ lake_first = True
     $ current_location = "lake"

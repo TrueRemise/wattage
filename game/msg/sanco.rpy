@@ -147,9 +147,56 @@ label sanco_first_talk_branch:
         w "Oh that sounds great!"
         return
 
+default sanco_talk_after_lake = False
+default sanco_talk_after_chii_safety = False
 label sanco_second_talk:
     show bg floralia at whiten_lesser
     show sanco smile2 at fade_in_left
+    if owl_first_talk_done_stage > 0 and not sanco_talk_after_lake and not youcanonlygotosanco:
+        show watta default at fade_in_right
+        sc "Oh you are back,"
+        sc "Did it work out?"
+        w "Yes, the area is pretty safe for now, I also talked to Owl"
+        sc "Oh? How was he, what's the plan about?"
+        w "He's doing fine, I'm still waiting or further notices."
+        sc "Good luck on it Watta"
+        hide watta
+        $ sanco_talk_after_lake = True
+        call screen sanco_screen
+    if chii_go_to_lake_timer == 4 and not sanco_talk_after_chii_safety:
+        show watta default at fade_in_right
+        w "Hello sanco"
+        sc "What can I help you with Watta?"
+        w "Have you seen Chii around lately?"
+        sc "Chii? What's she going back here for?"
+        w "So she didn't tell you about it"
+        w "Chii went to the lake and got missing, i think so"
+        sc "Huh?"
+        w "So she didnt tell you about it"
+        w "I'm worried if something happened to her."
+        sc "Oh dear"
+        sc "I guess you should ask owl, I don't think i can really help with it"
+        sc "As I cant go to the lake."
+        w "I see, thanks for suggesting"
+        hide watta
+        $ sanco_talk_after_chii_safety = True
+        call screen sanco_screen
+    if youcanonlygotosanco and not youcanonlyrescuechii:
+        show watta default at fade_in_right
+        w "Sanco I neeed your help!"
+        sc "Did you find her?"
+        w "I found her, but she is eentangled in a mess of vines, I need to get rid of them"
+        sc "Oh I see, here take this scissors, it might be helpful."
+        $ item_add("Sharp Scissors")
+        w "Thank you."
+        sc "Do you want me to be there to help also?"
+        w "Is okay is okay no need to"
+        sc "I see then"
+        $ youcanonlyrescuechii = True
+        jump floralia
+    if youcanonlyrescuechii:
+        sc "Go save her Watta"
+        jump floralia
     sc "What can I help you with today?"
     label sanco_talk_skip:
     if sanco_end_toko_talk:
@@ -618,6 +665,8 @@ label sanco_about_burning:
     $ option_remove("sanco", "Burn the thorns")
     $ option_remove("sanco", "Chii")
     jump sanco_talk_skip
+label sanco_about_chii_safety:
+    sc ""
 
 
 label sanco_quest_acquired:

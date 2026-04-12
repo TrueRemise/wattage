@@ -243,6 +243,10 @@ init python:
             renpy.notify("You can not leave.")
             return
         
+        if current_location in ["balcony", "owlnest", "lake", "field"] and loc not in ["lake", "field"] and youcanonlygotosanco:
+            renpy.notify("You should ask Sanco first.")
+            return
+
         parent_here = get_parent_location(current_location)
         parent_dest = get_parent_location(loc)
         if current_location in ["mainhall", "diningroom", "workspace", "bedroom"] and loc in ["district"]:
@@ -271,6 +275,7 @@ init python:
 
         current_location = loc
         update_world_bg()
-        action_done()
+        if not youcanonlygotosanco:
+            action_done()
 
         renpy.jump(loc)

@@ -111,6 +111,7 @@ default chii_reset = True
 default chii_neko_bracelet_repeat = False
 default chii_meet_sanco_timer = 4
 default chii_go_to_lake_timer = 0
+default chii_rescue_done = False
 label chii_test:
     $ actions_locked = True
     if is_unlocked("lake") and chii_go_to_lake_timer < 2:
@@ -518,9 +519,127 @@ label chii_go_to_lake_talk:
     extend "...So yeah just a quick trip and back should be fine!~"
     show chii wink
     c "Alright, like last time buy everything you can before I go. I'll be here a little longer as i prepare."
-    $ chii_go_to_lake_timer = 2
+    w "By the way uhhh"
+    c "Huh?"
+    w "Don't go there at night, is dangerous"
+    if phase == 0:
+        c "Don't worry, it's still early in the morning, i'll be there briefly and come back before nightfall!"
+        $ chii_go_to_lake_timer = 2
+    elif phase == 1:
+        c "Don't worry, it won't be for too long, i'll be there briefly and come back before nightfall!"
+        $ chii_go_to_lake_timer = 2
+    else:
+        c "I see, geez, don't scare me like that! I'll visit it tomorrow morning then."
+        $ chii_go_to_lake_timer = 3
+
+    # 1 = unlocked, 2 = queueing, 3 = waiting until tom, 4 = going, 5 = lost cutscene
+    w "Alright, be safe out there"
     hide chii
     hide watta
     "You lent Chii a spare key to Swan Lake"
     scene bg floral respite with Fade(0.2, 0, 0.2)
     call screen shop_screen
+
+# From lake.rpy
+label chii_rescue_talk:
+    scene bg thicket with Fade(2, 0, 2)
+    show bg thicket at whiten
+    show watta default at right
+    w "How did you get here?"
+    show chii cryj at left
+    c "omg i have been waiting for so long i thought no one would come and i would starve to death waabaawhabah"
+    w "Calm down, i will find a way to get you out of there"
+    c "Becareful watta there are flesh-eating monsters out there they will get you and you will die!"
+    w "They just show up at night dont worry,"
+    w "...now,"
+    extend "how you got that high i cant reach"
+    c "i dont know i was running and lost consciousness all i had was nightmare awhwahgawwgfh"
+    w "I will have to go back to ask for a tool, hol on for a minute"
+    c "Please dont get lost also, please survive"
+    w "I have rope tied to my body look! I can just"
+    w "Wait i lose trace if i go back should i carve on the ground or..."
+    c "You should loop that rope around through a tree or something, i mean walk around a tree to comeback"
+    w "That sounds genius thank you Chii, i'll be going now to get you before night comes"
+    c "Stay safe Watta"
+    hide watta
+    hide chii
+    scene bg thicket
+    jump thicketskip
+
+label chii_scissors_rescue:
+    scene bg thicket at whiten
+    show watta default at right
+    show chii cryj at left
+    c "OMG you are back Watta"
+    w "Here take this scissors"
+    c "Thank you i can finally..."
+    scene bg thicket with Fade (2,3,2)
+    show bg thicket at whiten
+    show watta default at right
+    show chii default at left
+    pause 0.5
+    show chii default at bounce
+    c "OMG my legs and butt"
+    c "Ewrgh"
+    w "At least you are free now"
+    c "THank you watta id have die without you"
+    c "THank you so muchhh eareaugeh"
+    w "Calm down girl, let's go back"
+    scene bg black with fade
+    play sound "sfx/walking.mp3"
+    scene bg lake with Fade(0,1,2)
+    scene bg lake at whiten_lesser
+    show chii default at left
+    show watta default at right
+    c "Thank you again Watta im not going back there anymore"
+    w "Next time tie this rope around you"
+    c "Id rather learn to fly Watta"
+    show chii default at slide_to_mid
+    show owl default at slide_in_left
+    o "Here you two are"
+    w "Owl? You were waiting here"
+    o "I rushed back as soon as you whistled"
+    o "Glad to see the girl being fine"
+    c "Hello Owl nice to see you"
+    o "Now go home and dont come back, I will be back to my house"
+    show owl default at slide_out_left
+    show chii default at slide_to_left
+    c "At least greet me back"
+    c "Argh"
+    w "Let's go back"
+    scene bg black with fade
+    play sound "sfx/walking.mp3"
+    "You 2 walked back to the centre"
+
+    scene bg floral respitel with Fade(0,2,3)
+    show watta default at right
+    show chii default at left
+    pause 0.5
+    play music "bgm_chiko2.mp3" fadein 2.5
+    show chii default at bounced
+    c "Cant thank you enough Watta"
+    c "I am now walking in one piece"
+    w "Glad I can help you Chii"
+    c "Not wasting any of your efforts, I brough back some exotic items I can sell"
+    c "Due to being so rare they might be incredibly expensive"
+    c "But I can make it cheaper for you Watta"
+    w "Waohh, no need to actually"
+    c "Are you sure?"
+    c "Okay then"
+    $shop_item_add(
+        "Engine 1",
+        "400", 
+        "An artifact I found in the Swan Lake! You can tape this to anything and it will move superfast, without friction as well so be careful. I escaped from the swans by taping this to a stick and fleed.",
+        "engine"
+    )
+    scene bg floral respite with dissolve
+    $ youcanonlyrescuechii = False
+    $ youcanonlygotosanco = False
+    $ chii_rescue_done = True
+    $ actions_locked = False
+    $ cutscene_on = False
+    $ current_location = "centre"
+    $ chii_settled = True
+    $ chii_go_to_lake_timer = 20
+    call screen shop_screen
+

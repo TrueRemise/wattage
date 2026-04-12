@@ -10,6 +10,27 @@ label owl_test:
         $ option_add("owl", "Remi", "owl_about_remi", pos=0)
     if owl_first_talk_done_stage == 0:
         jump owl_first_talk
+    elif chii_go_to_lake_timer == 7 and not owl_about_chii_safety:
+        show owl default at left
+        show watta default at right
+        w "Hello owl"
+        show owl speak
+        o "What is up?"
+        w "So I uhh..."
+        o "What?"
+        w "I let someone be in here and now they are lost"
+        o "WHAT?"
+        w "Im really sorry but I need to make sure they are safe first"
+        o "I can look into the past, but not if they have been there more than 12 hours ago"
+        w "I think she has..."
+        o "I can check the soil around for the direction she likely headed towards"
+        w "Thank you so much owl"
+        o "Get to the west gate of bloomfield first."
+        hide watta
+        hide owl
+        $ owl_about_chii_safety = True
+        $ owl_presence = False
+        jump owlnest
     elif owl_first_talk_done_stage == 1 and not owl_quest_done:
         jump owl_first_talk_2
     elif owl_quest_done:
@@ -102,14 +123,22 @@ label owl_first_talk_2:
     jump owlnestskip
 
 label owl_bridge:
-    show watta deter
-    o "Hey don't touch that"
-    show watta ahh
-    w "Ahh!"
-    o "Don't touch other people's stuffs."
-    show watta sad
-    w "Sorry."
-    hide watta
+    if owl_presence:
+        show watta deter
+        o "Hey don't touch that"
+        show watta ahh
+        w "Ahh!"
+        o "Don't touch other people's stuffs."
+        show watta sad
+        w "Sorry."
+        hide watta
+    else:
+        menu:
+            "Do you want to pull the lever?{fast}"
+            "Owl isn't here so... Yes":
+                "You don't have enough STR."
+            "Owl isn't here so... No":
+                pass
     jump balconyskip
 
 label owl_lake_night:
@@ -206,7 +235,7 @@ label owl_quest_restart:
 
 
 
-
+default owl_about_chii_safety = False
 label owl_second_talk:
     show bg owlnest at whiten_lesser
     show owl default at fade_in_left

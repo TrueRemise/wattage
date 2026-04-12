@@ -3,7 +3,7 @@
 screen map_toggle():
     zorder 93
     key "K_m" action If(
-        map_unl and not actions_locked and not all_locked,
+        map_unl and not actions_locked and not all_locked or youcanonlygotosanco,
         true = [
             If(map_open,
                 [Hide("map_screen"), SetVariable("map_open", False)],

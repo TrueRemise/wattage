@@ -34,15 +34,18 @@ label bridgedef:
     return
 label bridge_ft:
     show watta default
-    w "The halfbridge... connecting the North and South Sidurina"
-    w "I don't come here that often."
+    w "It's the bridge, I have just been here once since"
+    w "People are calling it the Halfbridge for some reason."
     if woogie == True:
         show watta default at slide_to_left
         show woogie laugh2 at slide_in_right
-        wo "And this is the only one beside Spiralia Ruins that connects between 2 regions..."
-        wo "There used to be another one on the West side but it's locked underwater."
-        wo "The Queen locked it on the lake's side and abandoned it right after so we can't really do anything about it now."
-        w "Hmm..."
+        wo "Because it's made under 2 rulers"
+        w "There are 2 rulers of this land?"
+        wo "Sound like ya need some history 101 knowledge"
+        w "Well..."
+        wo "Won't be fun if im intruding all the time tho, I'll let ya figure it out on yer own"
+        show watta upset
+        w "Why are you turning this into a game?"
         hide woogie
     hide watta
     $ bridge_first = True
@@ -357,6 +360,7 @@ label iog_gate_check:
         w "Interesting..."
         w "That store named Floralia, that's Sanco house."
         w "I should go check it out."
+        
         $ loc_unlock("field")
         $ field_first = True
         $ action_done()

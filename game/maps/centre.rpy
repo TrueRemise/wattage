@@ -29,8 +29,15 @@ label centreintrotest:
     else:
         jump centreskip
 
-
+$ chii_go_to_lake_timer_centre = False
 label centredef:
+    if chii_go_to_lake_timer == 7 and not chii_go_to_lake_timer_centre:
+        show watta default
+        w "Is been a while, Chii hasn't been back"
+        w "I'm worried about her..."
+        w "I should go check just in case"
+        hide watta
+        $ chii_go_to_lake_timer_centre = True
     call screen centre
     return
 label centre_ft:
@@ -52,7 +59,7 @@ screen centre:
         ypos 65
         auto "images/int/rng_%s.png"
         action Jump("rng")
-    if not chii_settled or chii_meet_sanco_timer <= 2 or chii_go_to_lake_timer > 2:
+    if not chii_settled or chii_meet_sanco_timer <= 2 or chii_go_to_lake_timer > 3 and chii_go_to_lake_timer <20:
         imagebutton:
             xpos 1390
             ypos 50
@@ -83,9 +90,9 @@ label floral:
 label floralskip:
     if sanco_talked_about_chii == True:
         $option_add("shop_chat", "sanco", "chii_about_sanco")
-    if not chii_settled or chii_meet_sanco_timer <= 2 or chii_go_to_lake_timer > 2:
+    if not chii_settled or chii_meet_sanco_timer <= 2 or chii_go_to_lake_timer > 3 and chii_go_to_lake_timer < 20:
         scene bg floral respitel with Fade(0, 0, 0)
-        if chii_meet_sanco_timer <= 2 or chii_go_to_lake_timer > 2:
+        if chii_meet_sanco_timer <= 2 or chii_go_to_lake_timer > 3:
             show black at alpha_half
             stop music
             play music "bgm_empty.mp3"

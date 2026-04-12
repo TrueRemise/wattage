@@ -123,7 +123,7 @@ screen phone_screen():
         if map_unl:
             imagebutton auto "gui/map_%s.png" xpos 1500 ypos 500:
                 action If(
-                    not actions_locked,
+                    not actions_locked or youcanonlygotosanco,
                     [
                         Hide("phone_screen"),
                         Show("map_screen"),
