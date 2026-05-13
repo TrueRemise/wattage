@@ -446,6 +446,40 @@ init python:
                 return True
         return False
 
+
+    def notebook_sort_key_items():
+        if "Memorizing Sheet" in notebook_key_items:
+            notebook_key_items.remove("Memorizing Sheet")
+            notebook_key_items.insert(0, "Memorizing Sheet")
+
+    def notebook_sync_key_items_from_inventory(include_inventory=True):
+        ordered_ids = []
+        counts = {}
+
+        def push(item_id):
+            if item_id not in notebook_key_item_data:
+                return
+            if item_id not in counts:
+                ordered_ids.append(item_id)
+                counts[item_id] = 1
+            else:
+                counts[item_id] += 1
+
+        if include_inventory:
+            for item_id in inventory_items:
+                push(item_id)
+
+        for item_id in notebook_key_items:
+            if item_id in notebook_key_item_data and item_id not in counts:
+                amount = notebook_key_item_count.get(item_id, 1)
+                for _ in range(max(amount, 1)):
+                    push(item_id)
+
+        notebook_key_items[:] = ordered_ids
+        notebook_key_item_count.clear()
+        notebook_key_item_count.update(counts)
+        notebook_sort_key_items()
+
     def refresh_key_item_inventory(clear_all=False):
         if clear_all:
             notebook_key_items[:] = []
@@ -459,10 +493,14 @@ init python:
             return
 
         if item_id not in notebook_key_items:
-            notebook_key_items.append(item_id)
+            if item_id == "Memorizing Sheet":
+                notebook_key_items.insert(0, item_id)
+            else:
+                notebook_key_items.append(item_id)
             notebook_key_item_count[item_id] = 1
         else:
             notebook_key_item_count[item_id] = notebook_key_item_count.get(item_id, 0) + 1
+            notebook_sort_key_items()
 
         renpy.notify(f"Obtained: {notebook_key_item_data[item_id]['name']}")
 

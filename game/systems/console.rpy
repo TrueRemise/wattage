@@ -150,7 +150,7 @@ screen console_screen():
                 yalign 0.5
                 background Solid("#ffffffd9")
                 hover_background Solid("#ffffffd9")
-                action SetVariable("travel_upgrade",0)
+                action SetVariable("travel_upgrade", 1 if "Engine 1" in notebook_key_items else 0)
                 text "Walk like normal":
                     size 50
                     xalign 0.0

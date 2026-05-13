@@ -321,11 +321,164 @@ screen thicket:
         ypos 400
         auto "images/int/right_%s.png"
         action Jump("thicket_go_back")
+        
+image test_img = "images/test.png"
+image test_tint_red:
+    "images/test.png"
+    matrixcolor TintMatrix("#ff0000")
 
+image test_tint_green:
+    "images/test.png"
+    matrixcolor TintMatrix("#00ff00")
+
+image test_tint_blue:
+    "images/test.png"
+    matrixcolor TintMatrix("#0000ff")
+
+image test_tint_white_that_does_nothing:
+    "images/test.png"
+    matrixcolor TintMatrix("#ffffff")   # no tint
+
+image test_tint_half_red:
+    "images/test.png"
+    matrixcolor TintMatrix("#ff8080")   # lighter red tint
+
+image test_tint_dark_red:
+    "images/test.png"
+    matrixcolor TintMatrix("#800000")   # darker red
+image test_sat_0:
+    "images/test.png"
+    matrixcolor SaturationMatrix(0.0)   # grayscale
+
+image test_sat_half:
+    "images/test.png"
+    matrixcolor SaturationMatrix(0.5)
+
+image test_sat_1:
+    "images/test.png"
+    matrixcolor SaturationMatrix(1.0)
+
+image test_sat_2:
+    "images/test.png"
+    matrixcolor SaturationMatrix(2.0)
+
+image test_sat_3:
+    "images/test.png"
+    matrixcolor SaturationMatrix(3.0)
+image test_bright_negfull:
+    "images/test.png"
+    matrixcolor BrightnessMatrix(-1)
+image test_bright_neghalf:
+    "images/test.png"
+    matrixcolor BrightnessMatrix(-0.5)
+
+image test_bright_0:
+    "images/test.png"
+    matrixcolor BrightnessMatrix(0.0)
+
+image test_bright_half:
+    "images/test.png"
+    matrixcolor BrightnessMatrix(0.5)
+
+image test_bright_1:
+    "images/test.png"
+    matrixcolor BrightnessMatrix(1.0)
+image test_combo_1:
+    "images/test.png"
+    matrixcolor TintMatrix("#32a1ef") * SaturationMatrix(1.5)
+
+image test_combo_2:
+    "images/test.png"
+    matrixcolor SaturationMatrix(0.0) * BrightnessMatrix(0.2)
+
+image test_combo_3:
+    "images/test.png"
+    matrixcolor TintMatrix("#ff29c9") * BrightnessMatrix(0.2)
+
+image test_combo_4:
+    "images/test.png"
+    matrixcolor SaturationMatrix(2.0) * BrightnessMatrix(-0.2)
+screen matrix_test():
+
+    default index = 0
+
+    $ tests = [
+        ("test_img", "None"),
+
+        # Tint
+        ("test_tint_red", 'TintMatrix("#ff0000")'),
+        ("test_tint_green", 'TintMatrix("#00ff00")'),
+        ("test_tint_blue", 'TintMatrix("#0000ff")'),
+        ("test_tint_white_that_does_nothing", 'TintMatrix("#ffffff")'),
+        ("test_tint_half_red", 'TintMatrix("#ff8080")'),
+        ("test_tint_dark_red", 'TintMatrix("#800000")'),
+
+        # Saturation
+        ("test_sat_0", "SaturationMatrix(0.0)"),
+        ("test_sat_half", "SaturationMatrix(0.5)"),
+        ("test_sat_1", "SaturationMatrix(1.0)"),
+        ("test_sat_2", "SaturationMatrix(2.0)"),
+        ("test_sat_3", "SaturationMatrix(3.0)"),
+
+        # Brightness
+        ("test_bright_negfull", "BrightnessMatrix(-1)"),
+        ("test_bright_neghalf", "BrightnessMatrix(-0.5)"),
+        ("test_bright_0", "BrightnessMatrix(0.0)"),
+        ("test_bright_half", "BrightnessMatrix(0.5)"),
+        ("test_bright_1", "BrightnessMatrix(1.0)"),
+
+        # Combined
+        ("test_combo_1", 'TintMatrix("#ffcccc") * SaturationMatrix(1.5)'),
+        ("test_combo_2", 'TintMatrix("#ccccff") * SaturationMatrix(0.0)'),
+        ("test_combo_3", 'TintMatrix("#aaffff") * BrightnessMatrix(0.3)'),
+        ("test_combo_4", 'SaturationMatrix(2.0) * BrightnessMatrix(-0.3)'),
+    ]
+    $ current_img, current_code = tests[index]
+
+    add current_img xalign 0.5 yalign 0.45
+
+    frame:
+        xalign 0.5
+        yalign 0.9
+        background "#00000000"
+        padding (15, 10)
+
+        text current_code:
+            color "#000000"
+            size 30
+            font "DejaVuSans.ttf"
+    frame:
+        xalign 0.5
+        yalign 0.83
+        background "#00000000"
+        padding (15, 10)
+
+        text current_img:
+            color "#000000"
+            size 100
+            font "DejaVuSans.ttf"
+
+
+    imagebutton:
+        xpos 27
+        ypos 400
+        auto "images/int/left_%s.png"
+        action SetScreenVariable("index", (index - 1) % len(tests))
+
+    imagebutton:
+        xpos 1752
+        ypos 400
+        auto "images/int/right_%s.png"
+        action SetScreenVariable("index", (index + 1) % len(tests))
 label chii_thicket_interact:
     show chii cryj
-    c "Go and save the world Watta"
+    #c "Go and save the world Watta"
+    c "TintMatrix(col) is simply just multiplying colors"
+    c "SaturationMatric(sat) is Gray_image + color*sat (sat from 0 to 1)"
+    c "BrightnessMatrix(brg) is just linear add/sub of the col channels"
     hide chii
+    show bg white
+    call screen matrix_test()
     jump thicketskip
 label thicket_mushroom_get:
     w "First time seeing this kind of mushroom, better get some"

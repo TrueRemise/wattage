@@ -1,4 +1,4 @@
-﻿default travel_upgrade = 0   # 0 = normal, 1 = unrestricted, 2 = free travel
+default travel_upgrade = 0   # 0 = adjacent only, 1 = up to 2 steps away, 2 = free travel
 default unlocked_locations = ["outhome", "district", "park", "bridge", "monument", "centre", "beach"]
 default locked_locations = ["field", "lake", "spira", "alley"]
 default park_first = False
@@ -141,24 +141,43 @@ init python:
 
     def is_travel_allowed(dest):
         """
-        New travel rule:
-        - If travel upgrade = unrestricted → always allowed
-        - Normal rule: dest must be adjacent to current_location
-        - NEW: If current location is a sub-location, check parent adjacency
+        Travel rule:
+        - upgrade 2: always allowed
+        - upgrade 1: can move up to 2 edges away
+        - upgrade 0: can move 1 edge away (adjacent)
         """
         global travel_upgrade
-        if travel_upgrade >= 1:
+        if travel_upgrade >= 2:
             return True
 
-        # direct adjacency
-        if dest in location_paths.get(current_location, []):
+        start = get_parent_location(current_location)
+        target = get_parent_location(dest)
+        max_steps = 2 if travel_upgrade == 1 else 1
+
+        if start == target:
             return True
 
-        # check parent locations of current_location
-        parents = get_parent_locations(current_location)
-        for p in parents:
-            if dest in location_paths.get(p, []):
-                return True
+        frontier = {start}
+        visited = {start}
+
+        for _ in range(max_steps):
+            next_frontier = set()
+            for node in frontier:
+                for neighbor in location_paths.get(node, []):
+                    if neighbor == target:
+                        return True
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        next_frontier.add(neighbor)
+            frontier = next_frontier
+            if not frontier:
+                break
+
+            # check parent locations of current_location
+            parents = get_parent_locations(current_location)
+            for p in parents:
+                if dest in location_paths.get(p, []):
+                    return True
 
         return False
 
@@ -247,13 +266,11 @@ init python:
             renpy.notify("You should ask Sanco first.")
             return
 
-        parent_here = get_parent_location(current_location)
-        parent_dest = get_parent_location(loc)
         if current_location in ["mainhall", "diningroom", "workspace", "bedroom"] and loc in ["district"]:
             renpy.notify("Get out of your house first")
             return
             
-        if travel_upgrade == 0 and parent_dest not in location_paths.get(parent_here, []):
+        if not is_travel_allowed(loc):
             renpy.notify("Can't reach " + loc.title() + " from here.")
             return
 

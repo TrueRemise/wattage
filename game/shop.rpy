@@ -60,7 +60,7 @@ init python:
             key_item_add("Twisted Stone")
         elif name == "Memorizing Sheet":
             item_add(name)
-            key_item_add("Memorizing Sheet")
+            notebook_sync_key_items_from_inventory()
             renpy.notify(f"Bought {name}!")
             renpy.show_screen("notebook_toggle")
             renpy.call_in_new_context("notebook_bought")
